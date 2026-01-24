@@ -1,0 +1,79 @@
+# ============================
+#   LARAVEL (backend)
+# ============================
+
+backend/vendor/
+backend/storage/
+backend/.env
+
+# Archivos comunes de Laravel
+backend/.phpunit.result.cache
+backend/.phpunit.cache
+backend/.phpactor.json
+backend/Homestead.json
+backend/Homestead.yaml
+backend/public/storage
+backend/storage/*.key
+backend/storage/pail
+
+# ============================
+#   ANGULAR (frontend)
+# ============================
+
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Angular build cache
+frontend/.angular/cache
+
+# ============================
+#   NODE / GENERAL
+# ============================
+
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# ============================
+#   EDITORES / IDEs
+# ============================
+
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# ============================
+#   ARCHIVOS DEL SISTEMA
+# ============================
+
+.DS_Store
+Thumbs.db
+
+# ============================
+#   OTROS
+# ============================
+
+/dist
+/tmp
+/out-tsc
+/bazel-out
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
+.sass-cache/
+.history/

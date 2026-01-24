@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+# Mejoras de diff
+*.blade.php diff=html
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+# Archivos que no deben incluirse en exportaciones (por ejemplo, composer archive)
+.github export-ignore
+CHANGELOG.md export-ignore
+.styleci.yml export-ignore
