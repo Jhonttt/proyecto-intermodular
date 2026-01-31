@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('resumen');
-            $table->text('descripcion');
+            $table->text('descripción');
             $table->string('curso');
             $table->string('alumnos');
             $table->string('video_url');
