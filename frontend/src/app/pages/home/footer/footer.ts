@@ -10,8 +10,8 @@ import { LinksSection } from "../links-section/links-section";
 
 export class Footer {
  footerLinks1 = [
-    { label: 'Privacidad', url: '#' },
-    { label: 'Términos', url: '#' },
+    { label: 'Acerca de', url: '#' },
+    { label: 'Ayuda', url: '#' },
     { label: 'Contacto', url: '#' }
   ];
  footerLinks2 = [
