@@ -1,0 +1,16 @@
+.footer-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.footer-info b{
+    display: block;
+    margin-bottom: 8px;
+}
+
+.footer-bottom{
+    margin-top: 24px;
+    text-align: center;
+    
+}
