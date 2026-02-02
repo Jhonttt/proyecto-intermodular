@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Header } from './header/header';
+import { Article } from './article/article';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Header],
-  template: `<app-header></app-header>`
+  imports: [Article],
+  template: `<app-article></app-article>`
 })
 export class Home {}
