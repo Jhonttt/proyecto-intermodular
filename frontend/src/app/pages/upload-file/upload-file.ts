@@ -9,3 +9,12 @@ import { Component } from '@angular/core';
 export class UploadFile {
 
 }
+
+
+export class UploadFileComponent {
+
+  enviarFormulario() {
+    console.log('Formulario enviado');
+  }
+
+}
