@@ -6,7 +6,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 @Component({
   selector: 'app-root',
   standalone: true, // Esto es clave en tu estructura
-  imports: [CommonModule, ReactiveFormsModule], 
+  imports: [CommonModule, ReactiveFormsModule, RouterOutlet], 
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
