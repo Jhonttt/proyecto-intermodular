@@ -1,9 +1,0 @@
-.links {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-a{
-  text-decoration: none;
-}
