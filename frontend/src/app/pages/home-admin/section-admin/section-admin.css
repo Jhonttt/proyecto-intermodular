@@ -1,0 +1,21 @@
+section{
+    text-align: center;
+    margin-top: 2em;
+}
+input{
+    margin-right: 5px;
+    margin-bottom: 2em;
+}
+select{
+    margin-left: 8px;
+}
+
+/* Cabecera */
+.section-header {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    gap: 29vw;
+}

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
-import { Home } from './pages/home/home';
+import { Home } from './pages/home/home'; 
+import { HomeAdmin } from './pages/home-admin/home-admin';
 
 import { DetailsForm } from './pages/details-form/details-form';
 import { Form } from './pages/form/form';
@@ -10,6 +11,7 @@ export const routes: Routes = [
   { path: 'login', component: Form},
   { path: 'home', component: Home },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'admin', component: HomeAdmin },
   { path: "details-form/:id", component: DetailsForm },
   { path: 'shared', component: Shared },
   { path: 'forgot-password', component: ForgotPassword}
