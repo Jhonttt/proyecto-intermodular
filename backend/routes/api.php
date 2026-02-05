@@ -24,3 +24,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
+// Route::post('/login', [AuthController::class, 'login']);
+
+// Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+//     Route::get('/proyectos', [ProyectoController::class, 'index']);
+//     Route::post('/logout', [AuthController::class, 'logout']);
+// });
