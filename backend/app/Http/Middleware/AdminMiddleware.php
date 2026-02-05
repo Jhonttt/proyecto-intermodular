@@ -15,6 +15,11 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+         if (!$request->user() || !$request->user()->isAdmin()) {
+            return response()->json([
+                'message' => 'Acceso denegado. Solo administradores.'
+            ], 403);
+        }
         return $next($request);
     }
 }
