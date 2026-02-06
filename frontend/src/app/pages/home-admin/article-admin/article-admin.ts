@@ -7,6 +7,9 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './article-admin.html',
   styleUrl: './article-admin.css',
+    host: {
+    '[style.display]': '"contents"'
+  }
 })
 export class ArticleAdmin {
   //@Input() imagen!: string;
