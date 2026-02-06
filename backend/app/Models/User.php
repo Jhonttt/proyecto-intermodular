@@ -23,9 +23,9 @@ class User extends Authenticatable {
         'remember_token',
     ];
 
-    protected function casts(): array {
-        return [
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'password' => 'hashed',
+        'email_verified_at' => 'datetime'
+    ];
 }
+

@@ -1,0 +1,1 @@
+<h1>HOLA</h1><?php /**PATH C:\Users\vespertino\Documents\proyecto-intermodular\backend\resources\views/hola.blade.php ENDPATH**/ ?>
