@@ -1,0 +1,61 @@
+/*==================
+VARIABLES GLOBALES:
+====================*/
+
+:root{
+
+/*Colores: Definición de las variables de la paleta de color*/ 
+
+--color-primary: #0D77D1;
+--color-primary-hover: #0C589C;
+
+--color-background: #FFFFFF;
+--color-background-secondary: #F8F9FA;
+
+--color-btn-secondary:#b8c1ca;
+
+--color-border: #CED4DA;
+
+--color-text-main: #1D2125;
+--color-text-secondary: #6A737B;
+--color-link: #094478;
+
+--color-danger: #D10001;
+--color-danger-secondary:#ab0000; 
+/*Colores de estado opcionales:*/
+
+--color-danger2:#f4d6d2; 
+--color-note:#CCE6EA;
+--color-check:#357A32;
+
+/*Tipografia:*/
+
+--font-heading: 'Libre Franklin', sans-serif;
+
+--font-body: 'Open Sans', sans-serif;
+
+--font-size-h1: 32px;
+--font-size-h2: 24px;
+--font-size-h3: 20px;
+--font-size-base: 16px;
+--font-size-small: 14px;
+
+--font-weight-regular: 400;
+--font-weight-medium: 500;
+--font-weight-semibold: 600;
+--font-weight-bold: 700;
+
+/*Espaciados:*/
+
+--spacing-xs: 8px;
+--spacing-sm: 16px;
+--spacing-md: 24px;
+--spacing-lg: 32px;
+
+/*Bordes:*/
+
+--radius-sm: 4px;
+--radius-md: 8px;
+--border-default: 1px solid var(--color-border);
+
+}
