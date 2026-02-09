@@ -1,17 +1,17 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Para directivas como ngIf
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  standalone: true, // Esto es clave en tu estructura
-  imports: [CommonModule, ReactiveFormsModule, RouterOutlet], 
-  templateUrl: './app.html',
-  styleUrls: ['./app.css']
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './form.html',
+  styleUrls: ['./form.css']
 })
 
-export class App {
+export class AppComponent { 
   loginForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
