@@ -17,7 +17,7 @@ class ProyectoController extends Controller
             'curso' => 'required|string|max:255',
             'alumnos' => 'required|string',
             'video_url' => 'nullable|url',
-            'archivo' => 'required|file|max:30720', // 30 MB (KB)
+            'archivo' => 'required|file|max:30720', // 30 MB en KB
         ]);
 
         //Guardar archivo
