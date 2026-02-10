@@ -20,6 +20,7 @@ class AuthController extends Controller {
             ], 401);
         }
 
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if (!$user->activo) {
