@@ -10,50 +10,64 @@ import { Footer } from './footer/footer';
   imports: [Header, Article, Section, Footer],
   template: `
     <app-header></app-header>
-    <div class="container mb-4">
-      <app-section></app-section>
-      <app-article
-        imagen="images/prueba.webp"
-        titulo="Sistema de Gestión Universitaria"
-        anio="2019"
-        descripcion="Sistema para la administración académica y administrativa."
-        [tecnologias]="['Angular', 'React', 'Javascript']"
-      ></app-article>
-      <app-article
-        imagen="images/prueba.webp"
-        titulo="Sistema de Gestión Universitaria"
-        anio="2019"
-        descripcion="Sistema para la administración académica y administrativa."
-        [tecnologias]="['Angular', 'React', 'Javascript']"
-      ></app-article>
-      <app-article
-        imagen="images/prueba.webp"
-        titulo="Sistema de Gestión Universitaria"
-        anio="2019"
-        descripcion="Sistema para la administración académica y administrativa."
-        [tecnologias]="['Angular', 'React', 'Javascript']"
-      ></app-article>
-      <app-article
-        imagen="images/prueba.webp"
-        titulo="Sistema de Gestión Universitaria"
-        anio="2019"
-        descripcion="Sistema para la administración académica y administrativa."
-        [tecnologias]="['Angular', 'React', 'Javascript']"
-      ></app-article>
-      <app-article
-        imagen="images/prueba.webp"
-        titulo="Sistema de Gestión Universitaria"
-        anio="2019"
-        descripcion="Sistema para la administración académica y administrativa."
-        [tecnologias]="['Angular', 'React', 'Javascript']"
-      ></app-article>
-      <app-article
-        imagen="images/prueba.webp"
-        titulo="Sistema de Gestión Universitaria"
-        anio="2019"
-        descripcion="Sistema para la administración académica y administrativa."
-        [tecnologias]="['Angular', 'React', 'Javascript']"
-      ></app-article>
+    <app-section></app-section>
+    <div class="container mb-4 justify-content-center ">
+      <div class="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+        <div class="col">
+          <app-article
+            imagen="images/prueba.webp"
+            titulo="Sistema de Gestión Universitaria"
+            anio="2019"
+            descripcion="Sistema para la administración académica y administrativa."
+            [tecnologias]="['Angular', 'React', 'Javascript']"
+          ></app-article>
+        </div>
+        <div class="col">
+          <app-article
+            imagen="images/prueba.webp"
+            titulo="Sistema de Gestión Universitaria"
+            anio="2019"
+            descripcion="Sistema para la administración académica y administrativa."
+            [tecnologias]="['Angular', 'React', 'Javascript']"
+          ></app-article>
+        </div>
+        <div class="col">
+          <app-article
+            imagen="images/prueba.webp"
+            titulo="Sistema de Gestión Universitaria"
+            anio="2019"
+            descripcion="Sistema para la administración académica y administrativa."
+            [tecnologias]="['Angular', 'React', 'Javascript']"
+          ></app-article>
+        </div>
+        <div class="col">
+          <app-article
+            imagen="images/prueba.webp"
+            titulo="Sistema de Gestión Universitaria"
+            anio="2019"
+            descripcion="Sistema para la administración académica y administrativa."
+            [tecnologias]="['Angular', 'React', 'Javascript']"
+          ></app-article>
+        </div>
+        <div class="col">
+          <app-article
+            imagen="images/prueba.webp"
+            titulo="Sistema de Gestión Universitaria"
+            anio="2019"
+            descripcion="Sistema para la administración académica y administrativa."
+            [tecnologias]="['Angular', 'React', 'Javascript']"
+          ></app-article>
+        </div>
+        <div class="col">
+          <app-article
+            imagen="images/prueba.webp"
+            titulo="Sistema de Gestión Universitaria"
+            anio="2019"
+            descripcion="Sistema para la administración académica y administrativa."
+            [tecnologias]="['Angular', 'React', 'Javascript']"
+          ></app-article>
+        </div>
+      </div>
     </div>
     <app-footer></app-footer>
   `,
