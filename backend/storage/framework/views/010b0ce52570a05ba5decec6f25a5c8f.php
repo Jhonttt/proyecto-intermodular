@@ -29,7 +29,7 @@
         <label>Rol</label><br>
         <select name="rol">
             <option value="admin">Admin</option>
-            <option value="alumno">Alumno</option>
+            <option value="usu">Usuario</option>
         </select>
     </div>
 
