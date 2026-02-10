@@ -5,7 +5,7 @@
     <label>Rol</label>
     <select name="rol">
         <option value="admin" {{ $usuario->rol == 'admin' ? 'selected' : '' }}>Admin</option>
-        <option value="alumno" {{ $usuario->rol == 'alumno' ? 'selected' : '' }}>Alumno</option>
+        <option value="usuario" {{ $usuario->rol == 'usu' ? 'selected' : '' }}>Usuario</option>
     </select>
 
     <label>Activo</label>
