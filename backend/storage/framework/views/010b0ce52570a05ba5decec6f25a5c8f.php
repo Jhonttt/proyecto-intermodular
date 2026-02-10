@@ -1,7 +1,7 @@
 <h1>Crear usuario</h1>
 
-<form method="POST" action="{{ route('admin.usuarios.store') }}">
-    @csrf
+<form method="POST" action="<?php echo e(route('admin.usuarios.store')); ?>">
+    <?php echo csrf_field(); ?>
 
 
     <div>
@@ -29,7 +29,7 @@
         <label>Rol</label><br>
         <select name="rol">
             <option value="admin">Admin</option>
-            <option value="alumno">Alumno</option>
+            <option value="usu">Usuario</option>
         </select>
     </div>
 
@@ -49,4 +49,5 @@
 
 <br>
 
-<a href="{{ url('/admin/usuarios') }}">Volver al listado</a>
+<a href="<?php echo e(url('/admin/usuarios')); ?>">Volver al listado</a>
+<?php /**PATH C:\xampp\htdocs\proyecto-intermodular\backend\resources\views/admin/usuarios/create.blade.php ENDPATH**/ ?>
