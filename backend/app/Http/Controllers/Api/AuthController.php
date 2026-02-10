@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AuthController extends Controller {
     public function login(Request $request) {
@@ -22,6 +20,7 @@ class AuthController extends Controller {
             ], 401);
         }
 
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if (!$user->activo) {
@@ -38,11 +37,11 @@ class AuthController extends Controller {
             ], 403);
         }
 
-        // $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Login Exitoso',
-            // 'access_token' => $token,
+            'access_token' => $token,
             'token_type' => 'Bearer',
             'user' => [
                 'id' => $user->id,
@@ -62,4 +61,5 @@ class AuthController extends Controller {
         ], 200);
 
     }
+
 }
