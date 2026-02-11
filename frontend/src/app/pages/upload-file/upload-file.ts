@@ -2,12 +2,13 @@
 // Importamos FormsModule para poder usar [(ngModel)] en el template
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 // Decorador @Component define metadatos del componente
 @Component({
   selector: 'app-upload-file',       // Nombre del selector para usar en HTML
   standalone: true,                   // Indica que es un componente standalone
-  imports: [FormsModule],             // Importa FormsModule para usar ngModel
+  imports: [FormsModule, CommonModule],             // Importa FormsModule para usar ngModel
   templateUrl: './upload-file.html',  // Archivo HTML del template
   styleUrls: ['./upload-file.css']    // Archivo(s) CSS del componente
 })

@@ -5,9 +5,8 @@ import { BotonesProyecto } from './botones-proyecto/botones-proyecto';
   selector: 'app-shared',
   standalone: true,
   imports: [BotonesProyecto],
-  template: ` <app-botones-proyecto [esPrivado]="true"></app-botones-proyecto> 
-   <app-botones-proyecto [esPrivado]="false"></app-botones-proyecto> `, 
-  //  Para el home público, [esPrivado]="false", esto quita el botón de validar automáticamente
+  template: ` <app-botones-proyecto [esPrivado]="true"/> `,
+  //  Para el home público, [esPrivado]="false", esto quita el botón de validar y eliminar automáticamente. Para el home privado, [esPrivado]="true", muestra validar y eliminar
   //  Se puede hacer que cada botón ejecute una función del padre poniendo <app-botones-proyecto (onValidar)="funciónPadre()">
 })
 export class Shared {}
