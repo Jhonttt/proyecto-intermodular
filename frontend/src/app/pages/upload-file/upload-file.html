@@ -1,0 +1,84 @@
+<h2>Subir proyecto</h2>
+
+<!-- Formulario principal -->
+<!-- (ngSubmit) se ejecuta al hacer submit del formulario -->
+<form (ngSubmit)="enviarProyecto()">
+
+ 
+  <div>
+    <label>Título del proyecto</label><br />
+    <!-- [(ngModel)] enlaza el input con proyecto.titulo en TS -->
+    <!-- name es obligatorio para ngModel en formularios template-driven -->
+    <!-- required indica que este campo es obligatorio -->
+    <input type="text" [(ngModel)]="proyecto.titulo" name="titulo" required />
+  </div>
+
+  <!-- Campo para autores -->
+  <div>
+    <label>Autor/autores</label><br />
+    <!-- Aquí el usuario puede ingresar varios autores separados por comas -->
+    <input
+      type="text"
+      [(ngModel)]="autoresTexto"
+      name="autores"
+      placeholder="Ej: Juan, María"
+      required
+    />
+  </div>
+
+  <!-- Campo para seleccionar curso -->
+  <div>
+    <label>Curso</label><br />
+    <!-- ngModel enlaza con proyecto.curso -->
+    <select [(ngModel)]="proyecto.curso" name="curso" required>
+      <option value="">Selecciona curso</option>
+      <option>DAW</option>
+      <option>DAM</option>
+      <option>Administración y Finanzas</option>
+      <option>Automoción</option>
+      <option>Administración y finanzas</option>
+      
+    </select>
+  </div>
+
+
+  <div>
+    <label>Descripción</label><br />
+    <!-- textarea enlaza con proyecto.descripcion -->
+    <textarea [(ngModel)]="proyecto.descripcion" name="descripcion" required></textarea>
+  </div>
+
+
+  <div>
+    <label>Etiquetas</label><br />
+    <!-- El usuario puede ingresar etiquetas separadas por comas -->
+    <input
+      type="text"
+      [(ngModel)]="etiquetasTexto"
+      name="etiquetas"
+      placeholder="Angular, Laravel"
+    />
+  </div>
+
+  
+  <div>
+    <label>Imagen representativa (obligatoria, max 30 MB)</label><br />
+    <!-- No usamos ngModel para archivos, solo (change) -->
+    <!-- El evento onImagenSeleccionada valida tamaño y guarda archivo -->
+    <input type="file" (change)="onImagenSeleccionada($event)" required />
+    <!-- Mensaje de error, solo se muestra si errorImagen no está vacío -->
+    <div *ngIf="errorImagen" style="color:red">{{ errorImagen }}</div>
+  </div>
+
+  
+  <div>
+    <label>Vídeo del proyecto (obligatorio, max 30 MB)</label><br />
+    <!-- Evento onVideoSeleccionado valida tamaño y guarda archivo -->
+    <input type="file" (change)="onVideoSeleccionado($event)" required />
+    <!-- Mensaje de error para vídeo -->
+    <div *ngIf="errorVideo" style="color:red">{{ errorVideo }}</div>
+  </div>
+
+  <!-- Botón de envío -->
+  <button type="submit">Enviar</button>
+</form>

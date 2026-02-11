@@ -74,3 +74,10 @@ testem.log
 __screenshots__/
 .sass-cache/
 .history/
+
+/storage
+/storage/*
+/storage/framework
+/storage/framework/*
+/storage/logs
+/storage/logs/*

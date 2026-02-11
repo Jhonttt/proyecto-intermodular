@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./form.css">
+  <title>Login</title>
+</head>
+<body>
+  <div class="login-card">
+    <h1>Inicio de Sesión</h1>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="input-group">
+            <label for="correo">Correo electrónico</label>
+            <input 
+                type="email" 
+                id="correo" 
+                formControlName="correo"
+                placeholder="ejemplo@correo.com">
+            <small *ngIf="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched" class="error-text">
+                Email no válido
+            </small>
+        </div>
+        
+        <div class="input-group">
+            <label for="passwd">Contraseña</label>
+            <input 
+                type="password" 
+                id="passwd" 
+                formControlName="passwd"
+                placeholder="********">
+        </div>
+        
+        <button type="submit" class="btn-submit" [disabled]="loginForm.invalid">
+            Acceder
+        </button>
+    </form>
+</div>
+</body>
+</html>
