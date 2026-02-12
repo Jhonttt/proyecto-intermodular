@@ -26,3 +26,8 @@ Route::prefix('admin')->group(function () {
         ->name('admin.proyectos.index');
 });
 
+
+Route::post('/store', [ProyectoController::class, 'store'])->name('alumno.proyectos.store');
+Route::get('/create', function(){
+    return view("alumno.proyectos.create");
+});
