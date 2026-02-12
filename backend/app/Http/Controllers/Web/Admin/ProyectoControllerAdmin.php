@@ -38,7 +38,7 @@ class ProyectoControllerAdmin extends Controller
     {
         $proyecto = Proyecto::findOrFail($id);
 
-        return view('admin.proyects.show', compact('proyecto'));
+        return view('admin.proyectos.show', compact('proyecto'));
     }
 
     public function check($id)

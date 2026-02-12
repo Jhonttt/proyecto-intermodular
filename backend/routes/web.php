@@ -13,21 +13,21 @@ Route::prefix('admin')->group(function () {
     Route::post('/usuarios', [UserController::class, 'store'])->name('admin.usuarios.store');
     Route::get('/usuarios/{id}/edit', [UserController::class, 'edit'])->name('admin.usuarios.edit');
     Route::put('/usuarios/{id}', [UserController::class, 'update'])->name('admin.usuarios.update');
-
-    // Proyectos
-    Route::get('/proyectos/{id}', [ProyectoController::class, 'show'])
-        ->name('admin.proyectos.show');
-
-    Route::patch('/proyectos/{id}/check', [ProyectoController::class, 'check'])
-        ->name('admin.proyectos.check');
-
-    /* Asocio controlador Proyecto a index */
-    Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index'])
-        ->name('admin.proyectos.index');
 });
 
 
 Route::post('/store', [ProyectoController::class, 'store'])->name('alumno.proyectos.store');
-Route::get('/create', function(){
+Route::get('/create', function () {
     return view("alumno.proyectos.create");
 });
+
+// Proyectos
+Route::get('/proyectos/{id}', [ProyectoControllerAdmin::class, 'show'])
+    ->name('admin.proyectos.show');
+
+Route::patch('/proyectos/{id}/check', [ProyectoControllerAdmin::class, 'check'])
+    ->name('admin.proyectos.check');
+
+/* Asocio controlador Proyecto a index */
+Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index'])
+    ->name('admin.proyectos.index');
