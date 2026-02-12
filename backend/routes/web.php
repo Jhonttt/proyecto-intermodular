@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\Web\Alumno\ProyectoController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Web\Admin\ProyectoController;
+use App\Http\Controllers\Web\Admin\ProyectoControllerAdmin;
 
 Route::prefix('admin')->group(function () {
     // Usuarios
@@ -19,4 +20,9 @@ Route::prefix('admin')->group(function () {
 
     Route::patch('/proyectos/{id}/check', [ProyectoController::class, 'check'])
         ->name('admin.proyectos.check');
+
+    /* Asocio controlador Proyecto a index */
+    Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index'])
+        ->name('admin.proyectos.index');
 });
+
