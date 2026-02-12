@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './form.html',

@@ -9,6 +9,6 @@ export const routes: Routes = [
   { path: 'login', component: AppComponent},
   { path: 'home', component: Home },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: "details-form/:id", component: DetailsForm }
-  { path: 'shared', component: Shared },
+  { path: "details-form/:id", component: DetailsForm },
+  { path: 'shared', component: Shared }
 ];
