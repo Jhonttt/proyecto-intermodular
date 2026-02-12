@@ -2,12 +2,22 @@
   <div class="container">
     <section>
       @if (esPrivado) {
-        <button class="btn btn-submit" (click)="validar()">Validar</button>
+        <button class="btn btn-submit" (click)="validar()">
+          <span class="material-icons">add</span>
+          Validar
+        </button>
       }
-  
-      <button class="btn btn-primary" (click)="modificar()">Modificar</button>
+
+      <button class="btn btn-primary" (click)="modificar()">
+        <span class="material-icons">edit</span>
+        Modificar
+      </button>
+
       @if (esPrivado) {
-        <button class="btn btn-danger" (click)="eliminar()">Eliminar</button>
+        <button class="btn btn-danger" (click)="eliminar()">
+          <span class="material-icons">delete</span>
+          Eliminar
+        </button>
       }
     </section>
   </div>
