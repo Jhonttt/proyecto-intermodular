@@ -1,18 +1,18 @@
-import { Component, signal } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router'; // <--- Importante: RouterModule
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule], // <--- Añádelo aquí
   templateUrl: './form.html',
   styleUrls: ['./form.css']
 })
-
 export class AppComponent { 
   loginForm: FormGroup;
+  loginError: string = ''; // <--- Nueva variable para controlar el mensaje de error visual
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({
@@ -27,20 +27,21 @@ export class AppComponent {
   ];
 
   onLogin() {
+    this.loginError = ''; // Reiniciamos el error al intentar loguear
+
     if (this.loginForm.valid) {
       const { correo, passwd } = this.loginForm.value;
 
-      // Buscamos si los credenciales coinciden con algún usuario de nuestra "lista"
       const usuarioEncontrado = this.usuariosValidos.find(
         u => u.correo === correo && u.clave === passwd
       );
 
       if (usuarioEncontrado) {
         console.log('Login exitoso');
-        // Redirigimos al Home
-        this.router.navigate(['./home']); 
+        this.router.navigate(['/home']); 
       } else {
-        alert('Correo o contraseña incorrectos.');
+        // En lugar de alert(), usamos la variable para activar la clase .alert-error
+        this.loginError = 'Correo o contraseña incorrectos.';
       }
     }
   }
