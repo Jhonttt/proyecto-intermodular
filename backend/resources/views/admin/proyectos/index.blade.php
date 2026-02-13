@@ -20,6 +20,3 @@
         </p>
     @endforeach
 @endsection
-@section('content-admin')
-<h1>pito</h1>
-@endsection
