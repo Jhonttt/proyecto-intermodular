@@ -1,0 +1,6 @@
+<b>{{titulo}}</b>
+<br>
+<a *ngFor="let link of links" [href]="link.url">
+   {{ link.label }}
+   <br>
+ </a>
