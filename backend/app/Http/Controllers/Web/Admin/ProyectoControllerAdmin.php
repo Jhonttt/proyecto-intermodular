@@ -38,7 +38,7 @@ class ProyectoControllerAdmin extends Controller
     {
         $proyecto = Proyecto::findOrFail($id);
 
-        return view('admin.proyects.show', compact('proyecto'));
+        return view('admin.proyectos.show', compact('proyecto'));
     }
 
     public function check($id)
@@ -50,5 +50,14 @@ class ProyectoControllerAdmin extends Controller
         return redirect()
             ->route('admin.proyectos.show', $id)
             ->with('success', 'Proyecto validado correctamente');
+    }
+
+    public function uncheck($id)
+    {
+        $proyecto = Proyecto::findOrFail($id);
+        $proyecto->checked = false;
+        $proyecto->save();
+
+        return redirect()->back();
     }
 }
