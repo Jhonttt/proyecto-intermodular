@@ -51,4 +51,13 @@ class ProyectoControllerAdmin extends Controller
             ->route('admin.proyectos.show', $id)
             ->with('success', 'Proyecto validado correctamente');
     }
+
+    public function uncheck($id)
+    {
+        $proyecto = Proyecto::findOrFail($id);
+        $proyecto->checked = false;
+        $proyecto->save();
+
+        return redirect()->back();
+    }
 }

@@ -28,6 +28,9 @@ Route::get('/proyectos/{id}', [ProyectoControllerAdmin::class, 'show'])
 Route::patch('/proyectos/{id}/check', [ProyectoControllerAdmin::class, 'check'])
     ->name('admin.proyectos.check');
 
+Route::patch('/admin/proyectos/{id}/uncheck', [ProyectoControllerAdmin::class, 'uncheck'])
+    ->name('admin.proyectos.uncheck');
+
 /* Asocio controlador Proyecto a index */
 Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index'])
     ->name('admin.proyectos.index');

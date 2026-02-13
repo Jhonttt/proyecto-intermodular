@@ -52,6 +52,14 @@
                 Marcar como validado
             </button>
         </form>
+    <?php else: ?>
+        <form method="POST" action="<?php echo e(route('admin.proyectos.uncheck', $proyecto->id)); ?>" class="mt-3">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PATCH'); ?>
+            <button class="btn btn-danger">
+                Quitar validación
+            </button>
+        </form>
     <?php endif; ?>
 
 </div>

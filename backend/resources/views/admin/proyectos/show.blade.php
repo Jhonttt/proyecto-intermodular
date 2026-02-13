@@ -52,6 +52,14 @@
                 Marcar como validado
             </button>
         </form>
+    @else
+        <form method="POST" action="{{ route('admin.proyectos.uncheck', $proyecto->id) }}" class="mt-3">
+            @csrf
+            @method('PATCH')
+            <button class="btn btn-danger">
+                Quitar validación
+            </button>
+        </form>
     @endif
 
 </div>
