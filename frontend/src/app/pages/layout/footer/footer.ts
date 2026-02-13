@@ -5,7 +5,7 @@ import { LinksSection } from "../links-section/links-section";
   selector: 'app-footer',
   imports: [LinksSection],
   templateUrl: './footer.html',
-  styleUrl: './footer.css',
+
 })
 
 export class Footer {
