@@ -21,7 +21,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
     </style>
-    <link rel="stylesheet" href="{{ asset('backend\resources\css\app.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('backend\resources\css\app.css')); ?>">
 </head>
 
 <body>
@@ -29,19 +29,20 @@
         <div class="container">
             <a class="navbar-brand" href="#">IES Lázaro Cárdenas | Repositorio</a>
             <div class="navbar-nav ms-auto">
-                <span class="nav-link text-light">Hola, {{ auth()->user()->name ?? 'Usuario' }}</span>
+                <span class="nav-link text-light">Hola, <?php echo e(auth()->user()->name ?? 'Usuario'); ?></span>
                 <a class="nav-link btn btn-danger btn-sm text-white ms-3" href="#">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
 
     <main class="main-container">
-        @yield('content')
+        <?php echo $__env->yieldContent('content'); ?>
     </main>
 
     <footer class="text-center py-4 mt-5 text-muted">
-        &copy; {{ date('Y') }} IES Lázaro Cárdenas - Proyecto Intermodular
+        &copy; <?php echo e(date('Y')); ?> IES Lázaro Cárdenas - Proyecto Intermodular
     </footer>
 </body>
 
 </html>
+<?php /**PATH C:\Users\vespertino\Documents\proyecto-intermodular\backend\resources\views/layouts/app.blade.php ENDPATH**/ ?>
