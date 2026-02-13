@@ -1,30 +1,29 @@
-// forgot-password.ts
-window.addEventListener('DOMContentLoaded', () => {
-  const sendBtn = document.getElementById('sendBtn') as HTMLButtonElement | null;
-  const emailInput = document.getElementById('email') as HTMLInputElement | null;
-  const messageDiv = document.getElementById('message') as HTMLDivElement | null;
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-  if (!sendBtn || !emailInput || !messageDiv) return;
+@Component({
+  selector: 'app-forgot-password',
+  imports: [FormsModule, CommonModule],
+  standalone: true,
+  templateUrl: './forgot-password.html',
+  styleUrls: ['./forgot-password.css', "./base.css", "./componentes.css", "./layout.css"],
+})
+export class ForgotPassword {
 
-  sendBtn.addEventListener('click', () => {
-    const email: string = emailInput.value.trim();
+  email: string = '';
+  message: string = '';
+  messageClass: string = '';
 
-    // Reset mensaje
-    messageDiv.style.display = 'none';
-    messageDiv.className = '';
-
-    if (!email) {
-      messageDiv.innerText = 'Por favor, introduce un correo válido.';
-      messageDiv.style.display = 'block';
-      messageDiv.classList.add('error');
-      emailInput.focus();
+  sendEmail() {
+    if (!this.email.trim()) {
+      this.message = 'Por favor, introduce un correo válido.';
+      this.messageClass = 'error';
       return;
     }
 
-    messageDiv.innerText = `Se ha enviado un correo de recuperación a ${email}`;
-    messageDiv.style.display = 'block';
-    messageDiv.classList.add('success');
-
-    emailInput.value = '';
-  });
-});
+    this.message = `Se ha enviado un correo de recuperación a ${this.email}`;
+    this.messageClass = 'success';
+    this.email = '';
+  }
+}
