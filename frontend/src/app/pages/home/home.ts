@@ -1,18 +1,15 @@
 import { Component } from '@angular/core';
-import { Header } from './header/header';
 import { Article } from './article/article';
 import { Section } from './section/section';
-import { Footer } from './footer/footer';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Header, Article, Section, Footer],
+  imports: [Article, Section],
   template: `
-    <app-header></app-header>
-    <app-section></app-section>
-    <div class="container mb-4 justify-content-center ">
-      <div class="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+    <app-section clsas="mb-5" />
+    <div class="container py-5">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <div class="col">
           <app-article
             imagen="images/prueba.webp"
@@ -69,7 +66,6 @@ import { Footer } from './footer/footer';
         </div>
       </div>
     </div>
-    <app-footer></app-footer>
   `,
 })
 export class Home {}
