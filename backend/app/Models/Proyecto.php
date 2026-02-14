@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,14 +17,14 @@ class Proyecto extends Model {
         "curso",
         "alumnos",
         "video_url",
-        "documentos",    
-        "tags",          
+        "documentos",
+        "tags",
         "checked",
         "observaciones",
     ];
 
     protected $casts = [
-        'documentos' => 'array', 
+        'documentos' => 'array',
         'tags' => 'array',
         'checked' => 'boolean',
     ];

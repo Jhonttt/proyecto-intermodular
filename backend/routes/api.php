@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ProyectoController as ApiProyectoController;
-use App\Http\Controllers\Web\Alumno\ProyectoController as AlumnoProyectoController;
+use App\Http\Controllers\Api\Admin\UserController;
+use App\Http\Controllers\Api\Alumno\ProyectoController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,12 +17,12 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name("api.user");
 
     Route::prefix("proyectos")->group(function () {
-        Route::get('/', [ApiProyectoController::class, 'index'])->name('api.proyectos.index');
-        Route::post('/', [ApiProyectoController::class, 'store'])->name('api.proyectos.store');
-        Route::get('/{id}', [ApiProyectoController::class, 'show'])->name('api.proyectos.show');
-        Route::put('/{id}', [ApiProyectoController::class, 'update'])->name('api.proyectos.update');
-        Route::patch('/{id}', [ApiProyectoController::class, 'update'])->name('api.proyectos.patch');
-        Route::delete('/{id}', [ApiProyectoController::class, 'destroy'])->name('api.proyectos.destroy');
+        Route::get('/', [ProyectoController::class, 'index'])->name('api.proyectos.index');
+        Route::post('/', [ProyectoController::class, 'store'])->name('api.proyectos.store');
+        Route::get('/{id}', [ProyectoController::class, 'show'])->name('api.proyectos.show');
+        Route::put('/{id}', [ProyectoController::class, 'update'])->name('api.proyectos.update');
+        Route::patch('/{id}', [ProyectoController::class, 'update'])->name('api.proyectos.patch');
+        Route::delete('/{id}', [ProyectoController::class, 'destroy'])->name('api.proyectos.destroy');
     });
 
 
@@ -42,10 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");
-Route::post('/store', [AlumnoProyectoController::class, 'store'])->name('alumno.proyectos.store');
-
-
+// Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");
+// Route::post('/store', [AlumnoProyectoController::class, 'store'])->name('alumno.proyectos.store');
 
 // Route::post('/login', [AuthController::class, 'login']);
 
