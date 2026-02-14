@@ -12,7 +12,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
 // Lista de proyectos panel admin
 Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index'])->name('admin.proyectos.index');
 
-// Proyecto descripción para admin
+// Proyecto descripcion para admin
 Route::get('/proyectos/{id}', [ProyectoControllerAdmin::class, 'show'])->name('admin.proyectos.show');
 Route::patch('/proyectos/{id}/check', [ProyectoControllerAdmin::class, 'check'])->name('admin.proyectos.check');
 Route::patch('/admin/proyectos/{id}/uncheck', [ProyectoControllerAdmin::class, 'uncheck'])->name('admin.proyectos.uncheck');

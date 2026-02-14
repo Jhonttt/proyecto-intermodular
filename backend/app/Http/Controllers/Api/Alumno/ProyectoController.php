@@ -8,15 +8,22 @@ use Illuminate\Http\Request;
 
 class ProyectoController extends Controller {
     public function index(Request $request) {
-        $user = $request->user();
+        try {
+            $proyectos = Proyecto::where('checked', true)
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-        // Solo ADMIN
-        if ($user->rol !== 'admin') {
-            return response()->json(['message' => 'No autorizado'], 403);
+            return response()->json([
+                'success' => true,
+                'data' => $proyectos
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener los proyectos',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $proyectos = Proyecto::all();
-        return response()->json($proyectos, 200);
     }
 
     public function store(Request $request) {
@@ -28,7 +35,7 @@ class ProyectoController extends Controller {
         $data = $request->validate([
             'nombre' => 'required|string',
             'resumen' => 'required|string',
-            'descripción' => 'required|string',
+            'descripcion' => 'required|string',
             'curso' => 'required|string',
             'alumnos' => 'required|string',
             'video_url' => 'nullable|url',
@@ -42,17 +49,35 @@ class ProyectoController extends Controller {
     }
 
     public function show(Request $request, $id) {
-        $user = $request->user();
-        if ($user->rol !== 'admin') {
-            return response()->json(['message' => 'No autorizado'], 403);
+        // Validar que el ID sea numérico
+        if (!is_numeric($id)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'ID de proyecto inválido'
+            ], 400);
         }
 
-        $proyecto = Proyecto::find($id);
-        if (!$proyecto) {
-            return response()->json(['message' => 'No encontrado'], 404);
-        }
+        try {
+            $proyecto = Proyecto::find($id);
 
-        return response()->json($proyecto, 200);
+            if (!$proyecto) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Proyecto no encontrado'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $proyecto
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener el proyecto',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function update(Request $request, $id) {

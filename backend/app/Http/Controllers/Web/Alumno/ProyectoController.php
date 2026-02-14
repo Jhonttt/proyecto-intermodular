@@ -16,7 +16,7 @@ class ProyectoController extends Controller {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'resumen' => 'required|string',
-            'descripción' => 'required|string',
+            'descripcion' => 'required|string',
             'curso' => 'required|string|max:255',
             'alumnos' => 'required|string',
             'video_url' => 'nullable|url',
@@ -30,7 +30,7 @@ class ProyectoController extends Controller {
         $proyecto = Proyecto::create([
             'nombre' => $request->nombre,
             'resumen' => $request->resumen,
-            'descripción' => $request->descripción,
+            'descripcion' => $request->descripcion,
             'curso' => $request->curso,
             'alumnos' => $request->alumnos,
             'video_url' => $request->video_url,

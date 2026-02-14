@@ -13,7 +13,7 @@ class Proyecto extends Model {
     protected $fillable = [
         "nombre",
         "resumen",
-        "descripción",
+        "descripcion",
         "curso",
         "alumnos",
         "video_url",
