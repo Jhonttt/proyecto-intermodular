@@ -16,7 +16,15 @@ class Proyecto extends Model {
         "curso",
         "alumnos",
         "video_url",
+        "documentos",    
+        "tags",          
         "checked",
         "observaciones",
+    ];
+
+    protected $casts = [
+        'documentos' => 'array', 
+        'tags' => 'array',
+        'checked' => 'boolean',
     ];
 }
