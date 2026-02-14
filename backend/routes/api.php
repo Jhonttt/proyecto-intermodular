@@ -1,35 +1,49 @@
 <?php
 
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProyectoController as ApiProyectoController;
 use App\Http\Controllers\Web\Alumno\ProyectoController as AlumnoProyectoController;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Login de Angular
+Route::post("/login", [AuthController::class, "login"])->name("api.login.index");
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/proyectos', [AlumnoProyectoController::class, 'index']);
-    Route::post('/proyectos', [AlumnoProyectoController::class, 'store']);
-    Route::get('/proyectos/{id}', [AlumnoProyectoController::class, 'show']);
-    Route::put('/proyectos/{id}', [AlumnoProyectoController::class, 'update']);
-    Route::delete('/proyectos/{id}', [AlumnoProyectoController::class, 'destroy']);
-});
-    
+    Route::post("/logout", [AuthController::class, "logout"])->name("api.logout");
 
-Route::prefix('admin')->group(function () {
-    // Usuarios
-    Route::get('/usuarios', [UserController::class, 'index'])->name('admin.usuarios.index');
-    Route::get('/usuarios/create', [UserController::class, 'create'])->name('admin.usuarios.create');
-    Route::post('/usuarios', [UserController::class, 'store'])->name('admin.usuarios.store');
-    Route::get('/usuarios/{id}/edit', [UserController::class, 'edit'])->name('admin.usuarios.edit');
-    Route::put('/usuarios/{id}', [UserController::class, 'update'])->name('admin.usuarios.update');
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    })->name("api.user");
+
+    Route::prefix("proyectos")->group(function () {
+        Route::get('/', [ApiProyectoController::class, 'index'])->name('api.proyectos.index');
+        Route::post('/', [ApiProyectoController::class, 'store'])->name('api.proyectos.store');
+        Route::get('/{id}', [ApiProyectoController::class, 'show'])->name('api.proyectos.show');
+        Route::put('/{id}', [ApiProyectoController::class, 'update'])->name('api.proyectos.update');
+        Route::patch('/{id}', [ApiProyectoController::class, 'update'])->name('api.proyectos.patch');
+        Route::delete('/{id}', [ApiProyectoController::class, 'destroy'])->name('api.proyectos.destroy');
+    });
+
+
+    Route::prefix('admin')->group(function () {
+        Route::prefix("users")->group(function () {
+            // Usuarios
+            Route::get('/', [UserController::class, 'index'])->name('api.admin.users.index');
+            Route::post('/', [UserController::class, 'store'])->name('api.admin.users.store');
+            Route::get('/{id}', [UserController::class, 'show'])->name('api.admin.users.show');
+            Route::put('/{id}', [UserController::class, 'update'])->name('api.admin.users.update');
+            Route::patch('/{id}', [UserController::class, 'update'])->name('api.admin.users.patch');
+            Route::delete('/{id}', [UserController::class, 'destroy'])->name('api.admin.users.destroy');
+        });
+    });
 });
 
-Route::get('/create', [ApiProyectoController::class, "index"])->name("alumno.proyectos.index");
-Route::post('/store', [ApiProyectoController::class, 'store'])->name('alumno.proyectos.store');
+
+
+Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");
+Route::post('/store', [AlumnoProyectoController::class, 'store'])->name('alumno.proyectos.store');
 
 
 

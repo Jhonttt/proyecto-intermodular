@@ -19,7 +19,6 @@ class ProyectoController extends Controller {
         return response()->json($proyectos, 200);
     }
 
-
     public function store(Request $request) {
         $user = $request->user();
         if ($user->rol !== 'admin') {
@@ -29,7 +28,7 @@ class ProyectoController extends Controller {
         $data = $request->validate([
             'nombre' => 'required|string',
             'resumen' => 'required|string',
-            'descripcion' => 'required|string',
+            'descripción' => 'required|string',
             'curso' => 'required|string',
             'alumnos' => 'required|string',
             'video_url' => 'nullable|url',
@@ -41,7 +40,6 @@ class ProyectoController extends Controller {
 
         return response()->json($proyecto, 201);
     }
-
 
     public function show(Request $request, $id) {
         $user = $request->user();
@@ -56,7 +54,6 @@ class ProyectoController extends Controller {
 
         return response()->json($proyecto, 200);
     }
-
 
     public function update(Request $request, $id) {
         $user = $request->user();
@@ -85,7 +82,6 @@ class ProyectoController extends Controller {
         return response()->json($proyecto, 200);
     }
 
-
     public function destroy(Request $request, $id) {
         $user = $request->user();
         if ($user->rol !== 'admin') {
@@ -101,7 +97,4 @@ class ProyectoController extends Controller {
 
         return response()->json(['message' => 'Proyecto eliminado'], 200);
     }
-
-
-
 }

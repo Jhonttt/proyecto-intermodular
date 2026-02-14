@@ -18,8 +18,8 @@ return new class extends Migration {
             $table->string('curso');
             $table->string('alumnos');
             $table->string('video_url');
-            $table->json('documentos');
-            $table->json("tags");
+            $table->json('documentos')->nullable();
+            $table->json("tags")->nullable();
             $table->boolean('checked')->default(false);
             $table->text('observaciones')->nullable();
             $table->timestamps();
