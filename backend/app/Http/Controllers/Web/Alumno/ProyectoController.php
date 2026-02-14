@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Proyecto;
 
-class ProyectoController extends Controller
-{
-     public function store(Request $request)
-    {
-      // Validación
+class ProyectoController extends Controller {
+    public function index() {
+        return view("alumno.proyectos.create");
+    }
+
+    public function store(Request $request) {
+        // Validación
         $request->validate([
             'nombre' => 'required|string|max:255',
             'resumen' => 'required|string',

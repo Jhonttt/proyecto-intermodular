@@ -6,18 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
-class AuthController extends Controller
-{
+class AuthController extends Controller {
     //Muestra el formulario de login
-    public function showLogin()
-    {
+    public function showLogin() {
         return view('admin.auth.login');
     }
 
-    
-    public function login(Request $request)
-    {
+    public function login(Request $request) {
         //Validar formulario
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -61,8 +56,7 @@ class AuthController extends Controller
      * Regenera sesión
      * Redirige al dashboard
      */
-    public function logout(Request $request)
-    {
+    public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
