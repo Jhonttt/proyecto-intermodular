@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./forgot-password.css']
 })
 
-export class ForgotPasswordComponent {
+export class ForgotPassword {
 email: string = '';
   message: string = '';
   messageType: 'success' | 'error' | '' = '';
