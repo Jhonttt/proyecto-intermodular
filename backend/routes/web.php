@@ -1,13 +1,23 @@
 <?php
-
-use App\Http\Controllers\Web\Alumno\ProyectoController;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Web\Admin\ProyectoControllerAdmin;
+use App\Http\Controllers\Web\Admin\AuthController;
+use App\Http\Controllers\Web\Admin\UserController;
+use App\Http\Controllers\Web\Alumno\ProyectoController as AlumnoProyectoController;
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('admin.login.index');
+Route::post('/login', [AuthController::class, 'login'])->name('admin.login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
+
+// Lista de proyectos panel admin
+Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index'])->name('admin.proyectos.index');
+
+// Proyecto descripcion para admin
+Route::get('/proyectos/{id}', [ProyectoControllerAdmin::class, 'show'])->name('admin.proyectos.show');
+Route::patch('/proyectos/{id}/check', [ProyectoControllerAdmin::class, 'check'])->name('admin.proyectos.check');
+Route::patch('/admin/proyectos/{id}/uncheck', [ProyectoControllerAdmin::class, 'uncheck'])->name('admin.proyectos.uncheck');
 
 Route::prefix('admin')->group(function () {
-    // Usuarios
     Route::get('/usuarios', [UserController::class, 'index'])->name('admin.usuarios.index');
     Route::get('/usuarios/create', [UserController::class, 'create'])->name('admin.usuarios.create');
     Route::post('/usuarios', [UserController::class, 'store'])->name('admin.usuarios.store');
@@ -15,22 +25,5 @@ Route::prefix('admin')->group(function () {
     Route::put('/usuarios/{id}', [UserController::class, 'update'])->name('admin.usuarios.update');
 });
 
-
-Route::post('/store', [ProyectoController::class, 'store'])->name('alumno.proyectos.store');
-Route::get('/create', function () {
-    return view("alumno.proyectos.create");
-});
-
-// Proyectos
-Route::get('/proyectos/{id}', [ProyectoControllerAdmin::class, 'show'])
-    ->name('admin.proyectos.show');
-
-Route::patch('/proyectos/{id}/check', [ProyectoControllerAdmin::class, 'check'])
-    ->name('admin.proyectos.check');
-
-Route::patch('/admin/proyectos/{id}/uncheck', [ProyectoControllerAdmin::class, 'uncheck'])
-    ->name('admin.proyectos.uncheck');
-
-/* Asocio controlador Proyecto a index */
-Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index'])
-    ->name('admin.proyectos.index');
+Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");
+Route::post('/store', [AlumnoProyectoController::class, 'store'])->name('alumno.proyectos.store');

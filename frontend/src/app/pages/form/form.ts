@@ -11,7 +11,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   styleUrls: ['./form.css']
 })
 
-export class AppComponent { 
+export class Form { 
   loginForm: FormGroup;
 
   constructor(private fb: FormBuilder, private router: Router) {

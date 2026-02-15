@@ -1,39 +1,32 @@
-<!doctype html>
-<html lang="es">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Login Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+@section('content')
+<h1>Login Admin</h1>
 
-<body>
+<!-- Mostrar errores si los hubiera -->
+@if ($errors->any())
+<div>
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 
-    <h1>Login Admin</h1>
+<form method="POST" action="{{ route('admin.login.submit') }}">
+    @csrf
 
-    <!-- Mostrar errores si los hubiera -->
-    @if ($errors->any())
-    <div>
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>• {{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
+    <label for="email">Email</label>
+    <input id="email" type="email" name="email" value="{{ old('email') }}" required>
 
-    <form method="POST" action="{{ route('admin.login.submit') }}">
-        @csrf
+    <label for="password">Contraseña</label>
+    <input id="password" type="password" name="password" required>
 
-        <label for="email">Email</label>
-        <input id="email" type="email" name="email" value="{{ old('email') }}" required>
-
-        <label for="password">Contraseña</label>
-        <input id="password" type="password" name="password" required>
-
-        <button type="submit">Iniciar sesión</button>
-    </form>
+    <button type="submit">Iniciar sesión</button>
+</form>
 
 </body>
 
 </html>
+@endsection

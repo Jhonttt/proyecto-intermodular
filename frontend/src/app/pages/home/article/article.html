@@ -1,27 +1,24 @@
-<section class="d-inline-flex m-3">
-  <div class="card" style="width: 24rem">
-    <img [src]="imagen" class="card-img-top" [alt]="titulo" />
+<div class="card card-project">
+  <img [src]="imagen" [alt]="titulo" class="card-img-top" />
 
-    <div class="card-body pb-0">
-      <div class="d-flex justify-content-between">
-        <p class="card-title d-inline-flex">{{ titulo }}</p>
-        <p class="border rounded d-inline-flex p-1 bg-primary text-white px">
-          {{ anio }}
-        </p>
-      </div>
+  <div class="card-project-body">
+    <div class="card-project-title">
+      {{ titulo }}
+    </div>
 
-      <p class="card-text">
-        {{ descripcion }}
-      </p>
+    <div class="card-project-subtitle">
+      {{ descripcion }}
+      <span class="badge-year">{{ anio }}</span>
+    </div>
 
-      <div class="d-flex justify-content-evenly align-items-center">
-        <p
-          *ngFor="let tech of tecnologias"
-          class="border rounded d-inline-flex p-1 bg-success text-white px-2"
-        >
-          {{ tech }}
-        </p>
-      </div>
+    <div class="d-flex justify-content-evenly align-items-center flex-wrap gap-2 mt-2">
+      <span *ngFor="let tech of tecnologias" class="tech-tag">
+        {{ tech }}
+      </span>
+    </div>
+
+    <div class="card-project-actions">
+      <button class="btn btn-primary" (click)="verDetalle()">Ver proyecto</button>
     </div>
   </div>
-</section>
+</div>

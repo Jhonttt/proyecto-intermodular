@@ -1,29 +1,37 @@
-import { CommonModule } from '@angular/common';
+// forgot-password.ts
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-forgot-password',
-  imports: [FormsModule, CommonModule],
-  standalone: true,
+   standalone: true,
+     imports: [FormsModule, CommonModule],
   templateUrl: './forgot-password.html',
-  styleUrls: ['./forgot-password.css', "./base.css", "./componentes.css", "./layout.css"],
+  styleUrls: ['./forgot-password.css']
 })
-export class ForgotPassword {
 
-  email: string = '';
+export class ForgotPasswordComponent {
+email: string = '';
   message: string = '';
-  messageClass: string = '';
+  messageType: 'success' | 'error' | '' = '';
 
-  sendEmail() {
+constructor() {
+    console.log("¡Componente cargado con éxito!");
+  }
+  
+   sendEmail() {
+    console.log('Botón pulsado', this.email);
+    this.message = '';
+    this.messageType = '';
+
     if (!this.email.trim()) {
       this.message = 'Por favor, introduce un correo válido.';
-      this.messageClass = 'error';
+      this.messageType = 'error';
       return;
     }
 
     this.message = `Se ha enviado un correo de recuperación a ${this.email}`;
-    this.messageClass = 'success';
+    this.messageType = 'success';
     this.email = '';
   }
 }
