@@ -42,5 +42,5 @@ class ProyectoController extends Controller {
             'message' => 'Proyecto guardado correctamente',
             'data'    => $proyecto
         ], 201);
-    }
+    } 
 }
