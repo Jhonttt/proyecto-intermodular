@@ -19,8 +19,8 @@
     </div>
 
     <div class="mb-3">
-        <strong>Descripción:</strong>
-        <p>{{ $proyecto->descripción }}</p>
+        <strong>descripcion:</strong>
+        <p>{{ $proyecto->descripcion }}</p>
     </div>
 
     @if($proyecto->video_url)

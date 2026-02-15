@@ -6,16 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
-class ProyectoControllerAdmin extends Controller
-{
+class ProyectoControllerAdmin extends Controller {
     /**
      * Mostrar el listado de proyectos y los filtros por:
      * -curso
      * -nombre
      * -alumno
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $query = Proyecto::query();
         //Filtro por curso
         if ($request->filled('curso')) {
@@ -34,15 +32,14 @@ class ProyectoControllerAdmin extends Controller
 
         return view('admin.proyectos.index', compact('proyectos'));
     }
-    public function show($id)
-    {
+    
+    public function show($id) {
         $proyecto = Proyecto::findOrFail($id);
 
         return view('admin.proyectos.show', compact('proyecto'));
     }
 
-    public function check($id)
-    {
+    public function check($id) {
         $proyecto = Proyecto::findOrFail($id);
         $proyecto->checked = true;
         $proyecto->save();
@@ -52,8 +49,7 @@ class ProyectoControllerAdmin extends Controller
             ->with('success', 'Proyecto validado correctamente');
     }
 
-    public function uncheck($id)
-    {
+    public function uncheck($id) {
         $proyecto = Proyecto::findOrFail($id);
         $proyecto->checked = false;
         $proyecto->save();
