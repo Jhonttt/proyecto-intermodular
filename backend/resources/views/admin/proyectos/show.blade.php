@@ -19,7 +19,7 @@
     </div>
 
     <div class="mb-3">
-        <strong>Descripción:</strong>
+        <strong>descripcion:</strong>
         <p>{{ $proyecto->descripcion }}</p>
     </div>
 
@@ -50,6 +50,14 @@
             @method('PATCH')
             <button class="btn btn-success">
                 Marcar como validado
+            </button>
+        </form>
+    @else
+        <form method="POST" action="{{ route('admin.proyectos.uncheck', $proyecto->id) }}" class="mt-3">
+            @csrf
+            @method('PATCH')
+            <button class="btn btn-danger">
+                Quitar validación
             </button>
         </form>
     @endif

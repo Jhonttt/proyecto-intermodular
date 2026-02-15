@@ -6,18 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
-class AuthController extends Controller
-{
+class AuthController extends Controller {
     //Muestra el formulario de login
-    public function showLogin()
-    {
+    public function showLogin() {
         return view('admin.auth.login');
     }
 
-    
-    public function login(Request $request)
-    {
+    public function login(Request $request) {
         //Validar formulario
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -30,7 +25,7 @@ class AuthController extends Controller
             $user = Auth::user();
 
             //Comprobar si es admin
-            if (!isset($user->role) || $user->role !== 'admin') {
+            if (empty($user->rol) || $user->rol !== 'admin') {
                 Auth::logout();
                 return back()->withErrors([
                     'email' => 'No tienes permisos para acceder al panel de administración.',
@@ -46,7 +41,7 @@ class AuthController extends Controller
             }
 
             //Si todo OK, redirige al panel
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.proyectos.index');
         }
 
         //En caso de credenciales incorrectas, avisa del error
@@ -55,18 +50,11 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Valida email y contraseña, autentifica con Laravel
-     * Bloquea usuarios no admin e inactivos
-     * Regenera sesión
-     * Redirige al dashboard
-     */
-    public function logout(Request $request)
-    {
+    public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login');
+        return redirect()->route('admin.login.index');
     }
 }
