@@ -32,10 +32,10 @@
                 <input type="text" name="resumen" class="form-control" value="{{ old('resumen') }}" required>
             </div>
 
-            {{-- Descripción --}}
+            {{-- descripcion --}}
             <div class="mb-3">
-                <label class="form-label">Descripción completa</label>
-                <textarea name="descripción" class="form-control" rows="5" required>{{ old('descripción') }}</textarea>
+                <label class="form-label">descripcion completa</label>
+                <textarea name="descripcion" class="form-control" rows="5" required>{{ old('descripcion') }}</textarea>
             </div>
 
             {{-- Curso --}}

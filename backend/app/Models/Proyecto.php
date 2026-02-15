@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,11 +13,19 @@ class Proyecto extends Model {
     protected $fillable = [
         "nombre",
         "resumen",
-        "descripción",
+        "descripcion",
         "curso",
         "alumnos",
         "video_url",
+        "documentos",
+        "tags",
         "checked",
         "observaciones",
+    ];
+
+    protected $casts = [
+        'documentos' => 'array',
+        'tags' => 'array',
+        'checked' => 'boolean',
     ];
 }
