@@ -8,7 +8,7 @@
     <form (ngSubmit)="enviarProyecto()">
 
       <div>
-        <label>Título del proyecto</label><br />
+        <label>Título del proyecto:</label><br>
         <!-- [(ngModel)] enlaza el input con proyecto.titulo en TS -->
         <!-- name es obligatorio para ngModel en formularios template-driven -->
         <!-- required indica que este campo es obligatorio -->
@@ -20,10 +20,10 @@
           required
         />
       </div>
-
+      <br>
       <!-- Campo para autores -->
       <div>
-        <label>Autor/autores</label><br />
+        <label>Autor/autores:</label><br>
         <!-- Aquí el usuario puede ingresar varios autores separados por comas -->
         <input
           class="input"
@@ -35,10 +35,21 @@
         />
         <small>Separados por comas</small>
       </div>
-
+      <br>
       <!-- Campo para seleccionar curso -->
       <div>
-        <label>Curso</label><br />
+        <label>Curso:</label><br>
+        <input
+          class="input"
+          type="text"
+          name="curso"
+          required
+        />
+      </div>
+      <br>
+      <!-- Campo para seleccionar ciclo -->
+      <div>
+        <label>Ciclo:</label><br>
         <!-- ngModel enlaza con proyecto.curso -->
         <select
           class="input"
@@ -46,28 +57,32 @@
           name="curso"
           required
         >
-          <option value="">Selecciona curso</option>
+          <option value="">Selecciona ciclo</option>
           <option>DAW</option>
           <option>DAM</option>
           <option>Administración y Finanzas</option>
           <option>Automoción</option>
+          <option>Asistencia a la dirección</option>
         </select>
       </div>
-
+      <br>
       <div>
-        <label>Descripción</label><br />
+        <label>Descripción:</label><br>
         <!-- textarea enlaza con proyecto.descripcion -->
         <textarea
           class="input"
           rows="4"
           [(ngModel)]="proyecto.descripcion"
           name="descripcion"
+          minlength="25"
+          maxlength="200"
           required
         ></textarea>
       </div>
-
+      <br>
+      
       <div>
-        <label>Etiquetas</label><br />
+        <label>Etiquetas:</label><br>
         <!-- El usuario puede ingresar etiquetas separadas por comas -->
         <input
           class="input"
@@ -77,28 +92,36 @@
           placeholder="Angular, Laravel"
         />
       </div>
-
-      <div>
-        <label>Imagen representativa (obligatoria, max 30 MB)</label><br />
-        <!-- No usamos ngModel para archivos, solo (change) -->
-        <!-- El evento onImagenSeleccionada valida tamaño y guarda archivo -->
-        <input class="input" type="file" (change)="onImagenSeleccionada($event)" required />
-        <!-- Mensaje de error, solo se muestra si errorImagen no está vacío -->
-        <div *ngIf="errorImagen" class="alert alert-error">
-          {{ errorImagen }}
-        </div>
-      </div>
+      <br>
       
       <div>
         <label>Vídeo del proyecto (obligatorio, max 30 MB)</label><br />
         <!-- Evento onVideoSeleccionado valida tamaño y guarda archivo -->
-        <input class="input" type="file" (change)="onVideoSeleccionado($event)" required />
+        <input 
+          class="input" 
+          type="file" 
+          (change)="onVideoSeleccionado($event)" 
+          [(ngModel)]="proyecto.videoUrl" 
+          name="videoUrl" 
+          required/>
         <!-- Mensaje de error para vídeo -->
         <div *ngIf="errorVideo" class="alert alert-error">
           {{ errorVideo }}
         </div>
       </div>
+      <br>
 
+      <!-- Documentación -->
+      <div>
+        <label>Documentación del proyecto (obligatorio, max 30 MB):</label><br>
+        <textarea
+          class="input"
+          rows="3"
+          [(ngModel)]="proyecto.documentacion"
+          name="documentacion"
+        ></textarea>
+      </div>
+      <br>
       <!-- Botón de envío -->
       <button class="btn btn-submit" type="submit">
         Enviar
