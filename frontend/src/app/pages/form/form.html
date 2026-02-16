@@ -1,31 +1,65 @@
-<main class="main">
-  <div class="login-card">
-    <h1>Inicio de Sesión</h1>
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-      <div class="input-group">
-        <label for="correo">Correo electrónico</label>
-        <input type="email" id="correo" formControlName="correo" placeholder="ejemplo@correo.com" />
-        <small
-          *ngIf="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched"
-          class="error-text"
+<main class="main login-center">
+  <div class="container">
+    
+    <div class="card login-box">
+      <h1>Inicio de Sesión</h1>
+      
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        
+        <div style="margin-bottom: var(--spacing-md);">
+          <label for="correo" style="display:block; margin-bottom: 5px; font-weight: var(--font-weight-medium);">
+            Correo electrónico
+          </label>
+          <input 
+            type="email" 
+            id="correo" 
+            class="input"
+            [class.input-error]="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched"
+            formControlName="correo" 
+            placeholder="ejemplo@correo.com" 
+          />
+          
+          <small
+            *ngIf="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched"
+            style="color: var(--color-danger); display: block; margin-top: 4px;"
+          >
+            Email no válido
+          </small>
+        </div>
+
+        <div style="margin-bottom: var(--spacing-md);">
+          <label for="passwd" style="display:block; margin-bottom: 5px; font-weight: var(--font-weight-medium);">
+            Contraseña
+          </label>
+          <input 
+            type="password" 
+            id="passwd" 
+            class="input"
+            [class.input-error]="loginForm.get('passwd')?.invalid && loginForm.get('passwd')?.touched"
+            formControlName="passwd" 
+            placeholder="********" 
+          />
+        </div>
+
+        <div style="margin-bottom: var(--spacing-lg);">
+          <p style="font-size: var(--font-size-small);">
+            ¿Olvidaste tu contraseña?
+            <a routerLink="/forgot-password" style="font-weight: var(--font-weight-semibold);">
+              Recupérala
+            </a>.
+          </p>
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="loginForm.invalid"
+          style="width: 100%; justify-content: center;"
         >
-          Email no válido
-        </small>
-      </div>
+          Acceder
+        </button>
+      </form>
+    </div>
 
-      <div class="input-group">
-        <label for="passwd">Contraseña</label>
-        <input type="password" id="passwd" formControlName="passwd" placeholder="********" />
-      </div>
-
-      <div>
-        <p>
-          ¿Olvidaste tu contraseña?
-          <a routerLink="/forgot-password">Recupérala</a>.
-        </p>
-      </div>
-
-      <button type="submit" class="btn-submit" [disabled]="loginForm.invalid">Acceder</button>
-    </form>
   </div>
 </main>

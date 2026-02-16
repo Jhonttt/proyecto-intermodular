@@ -1,0 +1,18 @@
+/* Alineación vertical */
+.login-center {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    min-height: calc(100vh - 140px); /* Restamos header/footer aprox */
+    background-color: var(--color-background-secondary); /* Fondo gris suave */
+    padding: var(--spacing-lg) 0;
+}
+
+/* Tamaño de la tarjeta */
+.login-box {
+    width: 100%;
+    max-width: 400px; /* Evita que se estire demasiado */
+    margin: 0 auto;
+    padding: var(--spacing-lg); /* 32px de relleno */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
