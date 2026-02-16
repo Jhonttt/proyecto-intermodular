@@ -1,29 +1,47 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './form.html',
   styleUrls: ['./form.css']
 })
 
-export class AppComponent { 
+export class Form { 
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({
       correo: ['', [Validators.required, Validators.email]],
       passwd: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
+  private usuariosValidos = [
+    { correo: 'usuario@test.com', clave: '123456'},
+    { correo: 'admin@test.com', clave: '123456'}
+  ];
+
   onLogin() {
     if (this.loginForm.valid) {
-      console.log('Datos listos para enviar:', this.loginForm.value);
+      const { correo, passwd } = this.loginForm.value;
+
+      // Buscamos si los credenciales coinciden con algún usuario de nuestra "lista"
+      const usuarioEncontrado = this.usuariosValidos.find(
+        u => u.correo === correo && u.clave === passwd
+      );
+
+      if (usuarioEncontrado) {
+        console.log('Login exitoso');
+        // Redirigimos al Home
+        this.router.navigate(['./home']); 
+      } else {
+        alert('Correo o contraseña incorrectos.');
+      }
     }
   }
 }
