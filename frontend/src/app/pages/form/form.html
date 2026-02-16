@@ -61,5 +61,27 @@
       </form>
     </div>
 
+    <div class="modal-overlay" *ngIf="showModal">
+      <div class="card modal-box">
+        
+        <div style="text-align: center; margin-bottom: var(--spacing-sm);">
+          <span class="material-icons icon-danger" style="font-size: 48px;">error_outline</span>
+        </div>
+
+        <h3 style="text-align: center; color: var(--color-danger);">Error de acceso</h3>
+        
+        <p style="text-align: center; color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">
+          Las credenciales introducidas no son correctas. Por favor, revisa el correo y la contraseña.
+        </p>
+
+        <div style="display: flex; justify-content: center;">
+          <button class="btn btn-danger" (click)="closeModal()">
+            Cerrar y reintentar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </main>
