@@ -2,3 +2,32 @@
 <td class="anio">({{ anio }})</td>
 <td class="descripcion">{{ descripcion }}</td>
 <td class="tecnologias">{{ tecnologias.join(', ') }}</td>
+<td class="estado">
+  <span 
+    *ngIf="estado === 'validado'">
+    Validado
+    </span>
+  <span 
+    *ngIf="estado === 'pendiente'">
+    Pendiente
+    </span>
+</td>
+<td class="actions">
+  <button
+    *ngIf="acciones.includes('validar') && estado === 'pendiente'" 
+    (click)="onValidar()">
+    Validar
+  </button>
+
+  <button 
+    *ngIf="acciones.includes('editar')" 
+    (click)="onEditar()">
+    Editar
+  </button>
+
+  <button 
+    *ngIf="acciones.includes('eliminar')" 
+    (click)="onEliminar()">
+    Eliminar
+  </button>
+</td>
