@@ -30,7 +30,10 @@
             <a class="navbar-brand" href="#">IES Lázaro Cárdenas | Repositorio</a>
             <div class="navbar-nav ms-auto">
                 <span class="nav-link text-light">Hola, {{ auth()->user()->name ?? 'Usuario' }}</span>
-                <a class="nav-link btn btn-danger btn-sm text-white ms-3" href="#">Cerrar Sesión</a>
+                <form action="{{route("admin.logout")}}" method="POST">
+                    @csrf
+                    <button class="nav-link btn btn-danger btn-sm text-white ms-3">Cerrar Sesión</button>
+                </form>
             </div>
         </div>
     </nav>

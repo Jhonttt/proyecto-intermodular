@@ -6,15 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Proyecto;
 
-class ProyectoController extends Controller
-{
-     public function store(Request $request)
-    {
-      // Validación
+class ProyectoController extends Controller {
+    public function index() {
+        return view("alumno.proyectos.create");
+    }
+
+    public function store(Request $request) {
+        // Validación
         $request->validate([
             'nombre' => 'required|string|max:255',
             'resumen' => 'required|string',
-            'descripción' => 'required|string',
+            'descripcion' => 'required|string',
             'curso' => 'required|string|max:255',
             'alumnos' => 'required|string',
             'video_url' => 'nullable|url',
@@ -28,7 +30,7 @@ class ProyectoController extends Controller
         $proyecto = Proyecto::create([
             'nombre' => $request->nombre,
             'resumen' => $request->resumen,
-            'descripción' => $request->descripción,
+            'descripcion' => $request->descripcion,
             'curso' => $request->curso,
             'alumnos' => $request->alumnos,
             'video_url' => $request->video_url,
@@ -40,5 +42,5 @@ class ProyectoController extends Controller
             'message' => 'Proyecto guardado correctamente',
             'data'    => $proyecto
         ], 201);
-    }
+    } 
 }

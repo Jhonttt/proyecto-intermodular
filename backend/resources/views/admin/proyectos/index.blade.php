@@ -14,12 +14,9 @@
 
     @foreach ($proyectos as $proyecto)
         <p>
-            {{ $proyecto->nombre }} |
+            <a href="{{ route('admin.proyectos.show', ['id'=>$proyecto->id]) }}">{{ $proyecto->nombre }}</a> |
             {{ $proyecto->curso }} |
             {{ $proyecto->alumnos }}
         </p>
     @endforeach
-@endsection
-@section('content-admin')
-<h1>pito</h1>
 @endsection
