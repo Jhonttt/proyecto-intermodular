@@ -38,7 +38,9 @@ class ProyectoController extends Controller {
             'descripcion' => 'required|string',
             'curso' => 'required|string',
             'alumnos' => 'required|string',
-            'video_url' => 'nullable|url',
+            'video_url' => 'required|string',
+            'documentos' => 'required|string',
+            'tags' => 'nullable|string',
             'checked' => 'boolean',
             'observaciones' => 'nullable|string',
         ]);
@@ -97,7 +99,9 @@ class ProyectoController extends Controller {
             'descripcion' => 'sometimes|string',
             'curso' => 'sometimes|string',
             'alumnos' => 'sometimes|string',
-            'video_url' => 'nullable|url',
+            'video_url' => 'sometimes|string',
+            'documentos' => 'sometimes|string',
+            'tags' => 'sometimes|string',
             'checked' => 'sometimes|boolean',
             'observaciones' => 'nullable|string',
         ]);
