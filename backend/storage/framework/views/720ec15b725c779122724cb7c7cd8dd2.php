@@ -32,8 +32,8 @@
 
             
             <div class="mb-3">
-                <label class="form-label">Descripción completa</label>
-                <textarea name="descripción" class="form-control" rows="5" required><?php echo e(old('descripción')); ?></textarea>
+                <label class="form-label">descripcion completa</label>
+                <textarea name="descripcion" class="form-control" rows="5" required><?php echo e(old('descripcion')); ?></textarea>
             </div>
 
             

@@ -18,6 +18,9 @@ Route::middleware(["auth:sanctum", "admin"])->group(function () {
         Route::get('/proyectos/{id}', [ProyectoControllerAdmin::class, 'show'])->name('admin.proyectos.show');
         Route::patch('/proyectos/{id}/check', [ProyectoControllerAdmin::class, 'check'])->name('admin.proyectos.check');
         Route::patch('/proyectos/{id}/uncheck', [ProyectoControllerAdmin::class, 'uncheck'])->name('admin.proyectos.uncheck');
+        // Route::get('/proyectos/{id}/edit', [ProyectoControllerAdmin::class, 'edit'])->name('admin.proyectos.edit');
+        Route::delete('/proyectos/{id}/destroy', [ProyectoControllerAdmin::class, 'destroy'])->name('admin.proyectos.destroy');
+        
         Route::get('/usuarios', [UserController::class, 'index'])->name('admin.usuarios.index');
         Route::get('/usuarios/create', [UserController::class, 'create'])->name('admin.usuarios.create');
         Route::post('/usuarios', [UserController::class, 'store'])->name('admin.usuarios.store');
