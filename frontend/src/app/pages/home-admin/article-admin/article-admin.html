@@ -2,3 +2,9 @@
 <td class="anio">({{ anio }})</td>
 <td class="descripcion">{{ descripcion }}</td>
 <td class="tecnologias">{{ tecnologias.join(', ') }}</td>
+<td class="estado">{{ estado }}</td>
+<td class="botones">
+    <app-botones-proyecto 
+        [esPrivado]="true">
+    </app-botones-proyecto>
+</td>

@@ -1,23 +1,22 @@
 import { Component } from '@angular/core';
-import { HeaderAdmin } from './header-admin/header-admin';
 import { SectionAdmin } from './section-admin/section-admin';
 import { ArticleAdmin } from './article-admin/article-admin';
-import { Footer } from '../home/footer/footer';
 
 @Component({
   selector: 'app-home-admin',
   standalone: true,
-  imports: [HeaderAdmin, SectionAdmin, ArticleAdmin, Footer],
+  imports: [SectionAdmin, ArticleAdmin],
+  styleUrl: './home-admin.css',
   template: `
-    <app-header-admin></app-header-admin>
     <app-section-admin></app-section-admin>
-    <div class="container-fluid">
+    <div class="container-fluid text-center mb-4">
       <table class="table">
         <tr>
           <th>Título</th>
           <th>Año</th>
           <th>Descripción</th>
           <th>Tecnologías</th>
+          <th>Estado</th>
         </tr>
         <tr>
           <app-article-admin
@@ -25,6 +24,7 @@ import { Footer } from '../home/footer/footer';
             [anio]="2024"
             descripcion="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             [tecnologias]="['Angular', 'React', 'Javascript']"
+            estado="Pendiente";
           ></app-article-admin>
         </tr>
 
@@ -33,6 +33,7 @@ import { Footer } from '../home/footer/footer';
             titulo="Sistema de Biblioteca Escolar"
             [anio]="2024"
             [tecnologias]="['Angular', 'React', 'Javascript']"
+            estado="Pendiente";
           ></app-article-admin>
         </tr>
         <tr>
@@ -40,6 +41,7 @@ import { Footer } from '../home/footer/footer';
             titulo="Sistema de Biblioteca Escolar"
             [anio]="2024"
             [tecnologias]="['Angular', 'React', 'Javascript']"
+            estado="Pendiente";
           ></app-article-admin>
         </tr>
         <tr>
@@ -47,6 +49,7 @@ import { Footer } from '../home/footer/footer';
             titulo="Sistema de Biblioteca Escolar"
             [anio]="2024"
             [tecnologias]="['Angular', 'React', 'Javascript']"
+            estado="Pendiente";
           ></app-article-admin>
         </tr>
         <tr>
@@ -54,6 +57,7 @@ import { Footer } from '../home/footer/footer';
             titulo="Sistema de Biblioteca Escolar"
             [anio]="2024"
             [tecnologias]="['Angular', 'React', 'Javascript']"
+            estado="Pendiente";
           ></app-article-admin>
         </tr>
         <tr>
@@ -61,6 +65,7 @@ import { Footer } from '../home/footer/footer';
             titulo="Sistema de Biblioteca Escolar"
             [anio]="2024"
             [tecnologias]="['Angular', 'React', 'Javascript']"
+            estado="Pendiente";
           ></app-article-admin>
         </tr>
         <tr>
@@ -68,6 +73,7 @@ import { Footer } from '../home/footer/footer';
             titulo="Sistema de Biblioteca Escolar"
             [anio]="2024"
             [tecnologias]="['Angular', 'React', 'Javascript']"
+            estado="Pendiente";
           ></app-article-admin>
         </tr>
         <tr>
@@ -75,12 +81,19 @@ import { Footer } from '../home/footer/footer';
             titulo="Sistema de Biblioteca Escolar"
             [anio]="2024"
             [tecnologias]="['Angular', 'React', 'Javascript']"
+            estado="Pendiente";
           ></app-article-admin>
         </tr>
       </table>
-    </div>
 
-    <app-footer></app-footer>
+      <div
+        class="paginacion d-flex justify-content-center align-items-center gap-3">
+        <span>1–8 de 15</span>
+        <input type="number" class="form-control text-center" style="width: 50px">
+        <button class="btn fs-5" disabled>‹</button>
+        <button class="btn fs-5">›</button>
+      </div>
+    </div>
   `,
 })
 export class HomeAdmin {}
