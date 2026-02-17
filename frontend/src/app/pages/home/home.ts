@@ -10,7 +10,7 @@ import { Proyecto } from '../../core/models/proyecto.model';
   standalone: true,
   imports: [CommonModule, Article, Section],
   template: `
-    <app-section class="mb-5" />
+    <app-section (searchChange)="filterProyectos($event)" class="mb-5"></app-section>
     
     <div class="container py-5">
       <!-- Loading state -->
@@ -59,6 +59,7 @@ import { Proyecto } from '../../core/models/proyecto.model';
 })
 export class Home implements OnInit {
   proyectos: Proyecto[] = [];
+  proyectosOriginal: Proyecto[] = [];
   loading = false;
   error = '';
 
@@ -78,13 +79,12 @@ export class Home implements OnInit {
 
     this.proyectoService.getAll().subscribe({
       next: (response) => {
-        console.log('Proyectos recibidos:', response);
-        this.proyectos = response.data || [];
+        this.proyectosOriginal = response.data || []; // guardamos lista original
+        this.proyectos = [...this.proyectosOriginal]; // lista que se filtra
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar proyectos:', err);
         this.error = err.error?.message || 'Error al cargar los proyectos';
         this.loading = false;
         this.cdr.detectChanges();
@@ -103,19 +103,26 @@ export class Home implements OnInit {
         return firstDoc;
       }
     }
-    
+
     if (proyecto.video_url && proyecto.video_url.includes('youtube.com')) {
       const videoId = this.getYouTubeVideoId(proyecto.video_url);
       if (videoId) {
         return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       }
     }
-    
+
     return 'images/prueba.webp';
   }
 
   getYouTubeVideoId(url: string): string | null {
     const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
     return match ? match[1] : null;
+  }
+
+  filterProyectos(search: string) {
+    const term = search.toLowerCase();
+    this.proyectos = this.proyectosOriginal.filter(p =>
+      p.nombre.toLowerCase().includes(term)
+    );
   }
 }

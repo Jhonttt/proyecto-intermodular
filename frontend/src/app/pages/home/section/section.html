@@ -1,12 +1,11 @@
 <section>
-    <h1 class="display-2">Repositorios de Proyectos</h1>
-    <p>Explota y descubre proyectos innovadores desarrollados por estudiantes</p>
-    <input type="search" name="search" placeholder="Buscar proyectos...">
-    <select name="filter" id="filter">
-        <option value="default">Todos los cursos</option>
-    </select>
-    <select name="tag" id="tag">
-        <option value="default">Tags</option>
-    </select>
+  <h1 class="display-2">Repositorios de Proyectos</h1>
+  <p>Explota y descubre proyectos innovadores desarrollados por estudiantes</p>
 
+  <input
+    type="search"
+    placeholder="Buscar proyectos..."
+    [(ngModel)]="searchTerm"
+    (input)="onSearchChange()"
+  />
 </section>
