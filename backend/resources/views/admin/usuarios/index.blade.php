@@ -1,15 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <!DOCTYPE html>
-    <html lang="es">
-
-    <head>
-        <meta charset="UTF-8">
-        <title>Usuarios</title>
-    </head>
-
-    <body>
         <h1>Listado de usuarios</h1>
 
         <a href="{{ url('/admin/usuarios/create') }}">
@@ -37,7 +28,4 @@
                 @endforeach
             </ul>
         @endif
-    </body>
-
-    </html>
 @endsection
