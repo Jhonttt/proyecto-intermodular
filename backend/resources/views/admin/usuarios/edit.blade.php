@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <form method="POST" action="{{ route('admin.usuarios.update', $usuario->id) }}">
     @csrf
     @method('PUT')
@@ -5,7 +8,7 @@
     <label>Rol</label>
     <select name="rol">
         <option value="admin" {{ $usuario->rol == 'admin' ? 'selected' : '' }}>Admin</option>
-        <option value="usuario" {{ $usuario->rol == 'usu' ? 'selected' : '' }}>Usuario</option>
+        <option value="usu" {{ $usuario->rol == 'usu' ? 'selected' : '' }}>Usuario</option>
     </select>
 
     <label>Activo</label>
@@ -16,3 +19,4 @@
 
     <button type="submit">Guardar</button>
 </form>
+@endsection
