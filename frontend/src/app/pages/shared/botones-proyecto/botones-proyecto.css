@@ -1,0 +1,13 @@
+.material-icons {
+  color: white;
+}
+
+.btn {
+  margin: var(--spacing-xs);
+}
+
+.btn:hover {
+  color: #fff;
+  cursor: pointer;
+}
+
