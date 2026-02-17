@@ -23,8 +23,8 @@ export class Form {
   }
 
   private usuariosValidos = [
-    { correo: 'usuario@test.com', clave: '123456'},
-    { correo: 'admin@test.com', clave: '123456'}
+  { correo: 'usuario@test.com', clave: '123456'},
+  { correo: 'admin@test.com', clave: '123456'}      
   ];
 
   onLogin() {
