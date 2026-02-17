@@ -30,7 +30,10 @@
             <a class="navbar-brand" href="#">IES Lázaro Cárdenas | Repositorio</a>
             <div class="navbar-nav ms-auto">
                 <span class="nav-link text-light">Hola, <?php echo e(auth()->user()->name ?? 'Usuario'); ?></span>
-                <a class="nav-link btn btn-danger btn-sm text-white ms-3" href="#">Cerrar Sesión</a>
+                <form action="<?php echo e(route("admin.logout")); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <button class="nav-link btn btn-danger btn-sm text-white ms-3">Cerrar Sesión</button>
+                </form>
             </div>
         </div>
     </nav>
@@ -44,5 +47,4 @@
     </footer>
 </body>
 
-</html>
-<?php /**PATH C:\Users\vespertino\Documents\proyecto-intermodular\backend\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\vespertino\Documents\proyecto-intermodular\backend\resources\views/layouts/app.blade.php ENDPATH**/ ?>
