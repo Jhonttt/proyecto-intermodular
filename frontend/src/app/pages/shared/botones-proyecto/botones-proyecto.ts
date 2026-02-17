@@ -13,13 +13,13 @@ export class BotonesProyecto {
   @Input() esPrivado: boolean = false;
 
   // Acciones que puede tener el componente
-  onValidar = output<void>();
+  // onValidar = output<void>();
   onModificar = output<void>();
   onEliminar = output<void>();
 
-  validar() {
-    this.onValidar.emit();
-  }
+  // validar() {
+    // this.onValidar.emit();
+  // }
   modificar() {
     this.onModificar.emit();
   }
