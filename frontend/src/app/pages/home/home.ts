@@ -66,7 +66,7 @@ export class Home implements OnInit {
   constructor(
     private proyectoService: ProyectoService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadProyectos();
@@ -122,7 +122,10 @@ export class Home implements OnInit {
   filterProyectos(search: string) {
     const term = search.toLowerCase();
     this.proyectos = this.proyectosOriginal.filter(p =>
-      p.nombre.toLowerCase().includes(term)
+    (p.nombre?.toLowerCase().includes(term) ||
+      p.resumen?.toLowerCase().includes(term)||
+      p.curso?.toLowerCase().includes(term))
     );
+    
   }
 }
