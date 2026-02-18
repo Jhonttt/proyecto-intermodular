@@ -13,11 +13,15 @@ class AdminMiddleware {
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response {
-        if (!$request->user() || !$request->user()->isAdmin()) {
-            return response()->json([
-                'message' => 'Acceso denegado. Solo administradores.'
-            ], 403);
+
+        if (!$request->user()->hasRole("admin")) {
+            return response()->json(["message" => "Acceso Denegado"], 403);
         }
+
+        if (!$request->user()->activo) {
+            return redirect()->route("admin.login.index")->with("error", "Cuenta Inactiva");
+        }
+
         return $next($request);
     }
 }

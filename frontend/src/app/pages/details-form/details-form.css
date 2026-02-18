@@ -1,96 +1,151 @@
-.page__details {
-  max-width: 900px;
-  margin: 24px auto;
-  padding: 0 16px;
+/* Espaciado vertical propio de esta página */
+.details {
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
-.page__title {
-  margin: 0 0 12px 0;
+.page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* separación entre volver y el título */
 }
 
-.card {
-  border: 1px solid #e6e6e6;
-  border-radius: 14px;
-  padding: 16px;
-  background: #fff;
+.page__title {
+  margin: 0;
+  font-size: 32px; /* H1 */
+  font-weight: 700; /* Bold */
 }
+
+/* Extensión de la card global */
+.details-card {
+  padding: 16px;
+  border-radius: 14px;
+}
+
+/* Header de la card */
 .card__header {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  align-items: center;
+  align-items: flex-start;
 }
+
 .card__title {
-  margin: 0;
+  margin: 0 0 4px 0;
   font-size: 1.25rem;
 }
 
-.badge {
-  color: rgb(148, 148, 148);
-  border: 1px solid #ddd;
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-
+/* Secciones */
 .section {
   margin-top: 14px;
 }
+
 .section__title {
   margin: 0 0 8px 0;
   font-size: 1rem;
   opacity: 0.9;
 }
+
+/* Seccion curso*/
+.section--curso .text {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0;
+}
+.section--curso {
+  margin-top: 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.estado__icon {
+  font-size: 24px; /* “un poco más grande” */
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* Texto */
 .text {
   margin: 0;
   line-height: 1.5;
 }
 
+/* Listas */
 .list {
   margin: 0;
   padding-left: 18px;
 }
+
 .list__item {
-  margin: 2px 0;
+  margin: 4px 0;
 }
 
+/*TagList*/
+.tag-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background: #f8f9fa; /* Background secondary */
+  border: 1px solid #ced4da; /* Border / Light Gray */
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 14px; /* Small */
+  line-height: 1;
+}
+
+/* Metadatos */
 .meta {
   margin: 14px 0 0;
 }
+
 .meta__row {
   display: grid;
-  grid-template-columns: 120px 1fr;
+  grid-template-columns: 160px 1fr;
   gap: 12px;
+  margin-bottom: 6px;
 }
+
 .meta__row dt {
   opacity: 0.7;
 }
+
 .meta__row dd {
   margin: 0;
 }
 
+/* Separadores */
 .divider {
   margin: 16px 0;
   border: 0;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #615e5e;
 }
 
-.grid {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: 1fr;
-}
-@media (min-width: 720px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-  }
+/*Iconos*/
+.doc-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.file {
-  display: grid;
-  gap: 6px;
+.doc-link__icon {
+  font-size: 16px; /* tamaño estándar tipo guía */
 }
-.file__label {
-  font-size: 0.9rem;
-  opacity: 0.85;
+
+.section__title--bold {
+  font-weight: 700;
+}
+
+.btn--icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn--icon .material-icons {
+  font-size: 16px; /* “como el 11” */
 }
