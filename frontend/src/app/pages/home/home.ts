@@ -124,7 +124,8 @@ export class Home implements OnInit {
     this.proyectos = this.proyectosOriginal.filter(p =>
     (p.nombre?.toLowerCase().includes(term) ||
       p.resumen?.toLowerCase().includes(term)||
-      p.curso?.toLowerCase().includes(term))
+      p.curso?.toLowerCase().includes(term) ||
+      p.alumnos?.toLocaleLowerCase().includes(term))
     );
     
   }
