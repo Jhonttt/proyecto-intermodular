@@ -2,10 +2,17 @@
   <h1 class="display-2">Repositorios de Proyectos</h1>
   <p>Explota y descubre proyectos innovadores desarrollados por estudiantes</p>
 
-  <input
-    type="search"
-    placeholder="Buscar proyectos..."
-    [(ngModel)]="searchTerm"
-    (input)="onSearchChange()"
-  />
+  <input type="search" 
+  placeholder="Buscar proyectos..." 
+  [(ngModel)]="searchTerm" 
+  (input)="onSearchChange()" />
+
+  <select [(ngModel)]="selectedTag" (change)="onTagChange()">
+    <option value="">Todos los tags</option>
+    <option *ngFor="let tag of tagsUnicos" [value]="tag">
+      {{ tag }}
+    </option>
+  </select>
+
+
 </section>

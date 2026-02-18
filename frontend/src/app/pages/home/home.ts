@@ -10,7 +10,12 @@ import { Proyecto } from '../../core/models/proyecto.model';
   standalone: true,
   imports: [CommonModule, Article, Section],
   template: `
-    <app-section (searchChange)="filterProyectos($event)" class="mb-5"></app-section>
+    <app-section
+  [tagsUnicos]="tagsUnicos"
+  (searchChange)="filterProyectos($event)"
+  (tagChange)="onTagFilter($event)">
+</app-section>
+
     
     <div class="container py-5">
       <!-- Loading state -->
@@ -60,6 +65,10 @@ import { Proyecto } from '../../core/models/proyecto.model';
 export class Home implements OnInit {
   proyectos: Proyecto[] = [];
   proyectosOriginal: Proyecto[] = [];
+  tagsUnicos: string[] = [];
+  selectedTag: string = '';
+  searchTerm: string = '';
+
   loading = false;
   error = '';
 
@@ -81,6 +90,7 @@ export class Home implements OnInit {
       next: (response) => {
         this.proyectosOriginal = response.data || []; // guardamos lista original
         this.proyectos = [...this.proyectosOriginal]; // lista que se filtra
+        this.obtenerTagsUnicos();
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -119,14 +129,41 @@ export class Home implements OnInit {
     return match ? match[1] : null;
   }
 
-  filterProyectos(search: string) {
-    const term = search.toLowerCase();
-    this.proyectos = this.proyectosOriginal.filter(p =>
-    (p.nombre?.toLowerCase().includes(term) ||
-      p.resumen?.toLowerCase().includes(term)||
-      p.curso?.toLowerCase().includes(term) ||
-      p.alumnos?.toLocaleLowerCase().includes(term))
-    );
-    
+  obtenerTagsUnicos() {
+    const todosTags = this.proyectosOriginal
+      .flatMap(p => p.tags || []);
+
+    this.tagsUnicos = [...new Set(todosTags)];
   }
-}
+  filterProyectos(search: string) {
+    this.searchTerm = search;
+    this.aplicarFiltros();
+  }
+
+  onTagFilter(tag: string) {
+    this.selectedTag = tag;
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros() {
+    const term = this.searchTerm.toLowerCase();
+
+    this.proyectos = this.proyectosOriginal.filter(p => {
+
+      const matchTexto =
+        p.nombre?.toLowerCase().includes(term) ||
+        p.resumen?.toLowerCase().includes(term) ||
+        p.curso?.toLowerCase().includes(term) ||
+        p.alumnos?.toLowerCase().includes(term) ||
+        p.tags?.some(tag => tag.toLowerCase().includes(term));
+
+      const matchTag =
+        !this.selectedTag ||
+        p.tags?.includes(this.selectedTag);
+
+      return matchTexto && matchTag;
+    });
+  }
+
+
+} 
