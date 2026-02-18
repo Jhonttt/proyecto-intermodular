@@ -1,11 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BotonesProyecto } from '../../shared/botones-proyecto/botones-proyecto';
 
 @Component({
   selector: 'app-article-admin',
   standalone: true,
-  imports: [CommonModule, BotonesProyecto ],
+  imports: [CommonModule ],
   templateUrl: './article-admin.html',
   styleUrl: './article-admin.css',
     host: {
@@ -16,7 +15,7 @@ export class ArticleAdmin {
   //@Input() imagen!: string;
   @Input() titulo!: string;
   @Input() anio!: string | number;
+  @Input() curso!: string;
   @Input() descripcion!: string;
-  @Input() tecnologias: string[] = [];
-  @Input() estado!: 'Valido' | 'Pendiente';
+  @Input() estado!: 'Validado' | 'Pendiente';
 }
