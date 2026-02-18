@@ -25,7 +25,7 @@ class ProyectoController extends Controller
             'tags' => 'nullable|array',
             'tags.*' => 'string|max:50',
             'alumnos' => 'required|string',
-            'video_url' => 'required|url',
+            'video_url' => 'required|file|mimes:mp4|max:30720',//maximo 30MB, tipo mp4
             'archivo' => 'nullable|file|max:30720',
         ]);
 
