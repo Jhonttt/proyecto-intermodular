@@ -18,6 +18,10 @@ class AdminMiddleware {
             return response()->json(["message" => "Acceso Denegado"], 403);
         }
 
+        if (!$request->user()->activo) {
+            return redirect()->route("admin.login.index")->with("error", "Cuenta Inactiva");
+        }
+
         return $next($request);
     }
 }
