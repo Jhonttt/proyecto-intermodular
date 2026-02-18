@@ -4,14 +4,18 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-article-admin',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule ],
   templateUrl: './article-admin.html',
   styleUrl: './article-admin.css',
+    host: {
+    '[style.display]': '"contents"'
+  }
 })
 export class ArticleAdmin {
-  //@Input() imagen!: string;
   @Input() titulo!: string;
   @Input() anio!: string | number;
-  @Input() descripcion!: string;
   @Input() tecnologias: string[] = [];
+  @Input() curso!: string;
+  @Input() descripcion!: string;
+  @Input() estado!: 'Validado' | 'Pendiente';
 }

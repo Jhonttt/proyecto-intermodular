@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Test de estilos - Sistema de diseño</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Iconos -->
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="componentes.css">
+  <link rel="stylesheet" href="layout.css">
+</head>
+
+<body>
+
+  <main class="main">
+
+  <div class="container">
+
+    <!-- TÍTULOS -->
+    <section>
+      <h1>Repositorio de Proyectos</h1>
+      <h2>Listado de proyectos</h2>
+      <h3>Proyecto destacado</h3>
+      <p>
+        Este es un texto de prueba para comprobar la tipografía base,
+        el interlineado y los márgenes de los párrafos.
+      </p>
+      <small>Texto secundario o informativo</small>
+    </section>
+
+    <hr style="margin: 32px 0;">
+
+    <!-- BOTONES -->
+    <section>
+      <h2>Botones</h2>
+
+      <button class="btn btn-primary">Botón primario</button>
+      <button class="btn btn-secondary">Botón secundario</button>
+      <button class="btn btn-danger">Eliminar</button>
+      <button class="btn btn-submit">Enviar</button>
+
+    </section>
+
+    <hr style="margin: 32px 0;">
+
+    <!-- INPUTS -->
+    <section>
+      <h2>Inputs</h2>
+
+      <input class="input" type="text" placeholder="Input normal">
+
+      <br><br>
+
+      <input class="input input-error" type="text" placeholder="Input con error">
+    </section>
+
+    <hr style="margin: 32px 0;">
+
+    <!-- CARD -->
+    <section>
+      <h2>Card</h2>
+
+      <div class="card">
+        <h3>Proyecto DAW</h3>
+        <p>
+          Aplicación web desarrollada como proyecto intermodular
+          del ciclo de Desarrollo de Aplicaciones Web.
+        </p>
+        <button class="btn btn-primary">Ver proyecto</button>
+      </div>
+    </section>
+      <br>
+    <div class="projects-grid">
+    
+<!--PRUEBAS DE CARD + IMG-->
+
+  <!-- Card 1 -->
+  <div class="card card-project">
+
+    <img src="proyecto-img.jpg" alt="Imagen proyecto">
+
+    <div class="card-project-body">
+
+      <div class="card-project-title">
+        Sistema de Gestión Universitaria
+      </div>
+
+      <div class="card-project-subtitle">
+        Plataforma web completa
+        <span class="badge-year">2024-2025</span>
+      </div>
+
+      
+
+      <div class="card-project-actions">
+        <button class="btn btn-primary">
+          Ver proyecto
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Card 2 -->
+  <div class="card card-project">
+
+    <img src="proyecto-img.jpg" alt="Imagen proyecto">
+
+    <div class="card-project-body">
+
+      <div class="card-project-title">
+        App Móvil de Delivery
+      </div>
+
+      <div class="card-project-subtitle">
+        Aplicación móvil
+        <span class="badge-year">2023-2024</span>
+      </div>
+
+
+      <div class="card-project-actions">
+        <button class="btn btn-primary">
+          Ver proyecto
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Card 3 -->
+  <div class="card card-project">
+
+    <img src="proyecto-img.jpg" alt="Imagen proyecto">
+
+    <div class="card-project-body">
+
+      <div class="card-project-title">
+        Plataforma E-Learning
+      </div>
+
+      <div class="card-project-subtitle">
+        Sistema educativo online
+      <span class="badge-year">2022-2023</span> 
+      </div>
+
+      
+
+      <div class="card-project-actions">
+        <button class="btn btn-primary">
+         Ver proyecto
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <hr style="margin: 32px 0;">
+
+    <span class="material-icons">task_alt</span>
+    <span class="material-icons">edit</span>
+    <span class="material-icons">delete</span>
+    <span class="material-icons">logout</span>
+    <span class="material-icons">visibility</span>
+
+
+    <!-- ALERTA -->
+    <section>
+      <h2>Alertas</h2>
+
+      <div class="alert alert-error">
+        Error al guardar los datos. Revisa el formulario.
+      </div>
+    </section>
+
+    <hr style="margin: 32px 0;">
+
+    <!-- LINKS -->
+    <section>
+      <h2>Enlaces</h2>
+      <a href="#">Enlace de prueba</a>
+    </section>
+
+    </div>
+</main>
+
+</body>
+</html>

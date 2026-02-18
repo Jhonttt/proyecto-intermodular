@@ -1,9 +1,22 @@
-<div class="d-inline m-2 ">
+<main class="main">
+  <div class="container">
+    <section>
+      <!-- @if (esPrivado) {
+        <button class="btn btn-submit" (click)="validar()">
+          <span class="material-icons">task_alt</span>
+          Validar
+        </button>
+      } -->
+      
+      <button class="btn btn-primary" (click)="modificar()">
+        <span class="material-icons">edit</span>
+        Modificar
+      </button>
 
-  @if (esPrivado) {
-    <button class="btn btn-success border border-dark border-2 m-2" (click)="validar()">Validar</button>
-  }
-
-  <button class="btn btn-warning border border-dark border-2 m-2" (click)="modificar()">Modificar</button>
-  <button class="btn btn-danger border border-dark border-2 m-2" (click)="eliminar()">Eliminar</button>
-</div>
+      <button class="btn btn-danger" (click)="eliminar()">
+        <span class="material-icons">delete</span>
+        Eliminar
+      </button>
+    </section>
+  </div>
+</main>

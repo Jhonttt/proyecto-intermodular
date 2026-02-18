@@ -1,1 +1,208 @@
-<p>details-form works!</p>
+<section class="page">
+  <!-- Header -->
+  <header class="page__header">
+    <button class="btn btn-link" (click)="volverAlHome()">
+      ← Volver al inicio
+    </button>
+    <h1 class="page__title">Detalle del Proyecto</h1>
+  </header>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Cargando proyecto...</span>
+      </div>
+      <p class="text mt-3 text-muted">Cargando información del proyecto...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !loading) {
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Error al cargar el proyecto</h4>
+      <p>{{ error }}</p>
+      <hr>
+      <button class="btn btn-primary" (click)="volverAlHome()">
+        Volver al inicio
+      </button>
+    </div>
+  }
+
+  <!-- Project Details -->
+  @if (project && !loading && !error) {
+    <article class="card shadow-sm" id="details-form-container">
+      
+      <!-- Card Header -->
+      <div class="card__header bg-primary text-white p-4">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h2 class="card__title mb-2">{{ project.nombre }}</h2>
+            <p class="mb-0 opacity-75">{{ project.resumen }}</p>
+          </div>
+          <span [class]="getEstadoClass()" style="font-size: 0.9rem;">
+            {{ getEstadoProyecto() }}
+          </span>
+        </div>
+      </div>
+
+      <div class="card-body p-4">
+        
+        <!-- Información General -->
+        <section class="section mb-4">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <h3 class="section__title">
+                <i class="bi bi-book"></i> Curso
+              </h3>
+              <p class="text">{{ project.curso }}</p>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <h3 class="section__title">
+                <i class="bi bi-calendar"></i> Fecha de Creación
+              </h3>
+              <p class="text">{{ getFechaCreacion() }}</p>
+            </div>
+          </div>
+        </section>
+
+        <hr class="divider my-4" />
+
+        <!-- Autores/Alumnos -->
+        <section class="section mb-4">
+          <h3 class="section__title">
+            <i class="bi bi-people"></i> Autores
+          </h3>
+          <ul class="list">
+            @for (autor of autoresArray; track autor) {
+              <li class="list__item">
+                <span class="badge bg-secondary">{{ autor }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+
+        <hr class="divider my-4" />
+
+        <!-- descripcion -->
+        <section class="section mb-4">
+          <h3 class="section__title">
+            <i class="bi bi-file-text"></i> descripcion del Proyecto
+          </h3>
+          <p class="text" style="white-space: pre-wrap;">{{ project.descripcion }}</p>
+        </section>
+
+        <hr class="divider my-4" />
+
+        <!-- Tags/Etiquetas -->
+        @if (hasTags()) {
+          <section class="section mb-4">
+            <h3 class="section__title">
+              <i class="bi bi-tags"></i> Tecnologías y Etiquetas
+            </h3>
+            <div class="d-flex flex-wrap gap-2">
+              @for (tag of project.tags; track tag) {
+                <span class="badge bg-primary" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                  {{ tag }}
+                </span>
+              }
+            </div>
+          </section>
+          <hr class="divider my-4" />
+        }
+
+        <!-- Video del Proyecto -->
+        @if (project.video_url) {
+          <section class="section mb-4">
+            <h3 class="section__title">
+              <i class="bi bi-youtube"></i> Video del Proyecto
+            </h3>
+            
+            @if (getYouTubeEmbedUrl()) {
+              <div class="ratio ratio-16x9">
+                <iframe 
+                  [src]="getYouTubeEmbedUrl()!" 
+                  title="Video del proyecto"
+                  allowfullscreen
+                  style="border-radius: 8px;"
+                ></iframe>
+              </div>
+            } @else {
+              <a [href]="project.video_url" target="_blank" class="btn btn-outline-primary">
+                <i class="bi bi-box-arrow-up-right"></i> Ver video
+              </a>
+            }
+          </section>
+          <hr class="divider my-4" />
+        }
+
+        <!-- Documentos -->
+        @if (hasDocumentos()) {
+          <section class="section mb-4">
+            <h3 class="section__title">
+              <i class="bi bi-file-earmark"></i> Documentos Adjuntos
+            </h3>
+            <ul class="list-group">
+              @for (doc of project.documentos; track doc) {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span>
+                    <span class="me-2">{{ getFileIcon(doc) }}</span>
+                    {{ doc }}
+                  </span>
+                  <a [href]="doc" target="_blank" class="btn btn-sm btn-outline-primary">
+                    Descargar
+                  </a>
+                </li>
+              }
+            </ul>
+          </section>
+          <hr class="divider my-4" />
+        }
+
+        <!-- Observaciones -->
+        @if (project.observaciones && project.observaciones !== 'null') {
+          <section class="section mb-4">
+            <h3 class="section__title">
+              <i class="bi bi-chat-square-text"></i> Observaciones
+            </h3>
+            <div class="alert alert-info">
+              <p class="text mb-0" style="white-space: pre-wrap;">{{ project.observaciones }}</p>
+            </div>
+          </section>
+        }
+
+        <!-- Metadatos -->
+        <section class="section">
+          <h3 class="section__title">Información del Sistema</h3>
+          <dl class="meta row">
+            <div class="col-md-4 mb-2">
+              <dt class="text-muted small">ID del Proyecto</dt>
+              <dd class="fw-bold">#{{ project.id }}</dd>
+            </div>
+            <div class="col-md-4 mb-2">
+              <dt class="text-muted small">Fecha de Creación</dt>
+              <dd>{{ project.created_at | date:'short' }}</dd>
+            </div>
+            <div class="col-md-4 mb-2">
+              <dt class="text-muted small">Última Actualización</dt>
+              <dd>{{ project.updated_at | date:'short' }}</dd>
+            </div>
+          </dl>
+        </section>
+
+      </div>
+
+      <!-- Card Footer -->
+      <div class="card-footer bg-light p-3 text-center">
+        <button class="btn btn-primary me-2" (click)="volverAlHome()">
+          <i class="bi bi-arrow-left"></i> Volver al Inicio
+        </button>
+        <a [href]="project.video_url" target="_blank" class="btn btn-outline-secondary">
+          <i class="bi bi-box-arrow-up-right"></i> Ver Video Original
+        </a>
+      </div>
+
+    </article>
+  }
+</section>
