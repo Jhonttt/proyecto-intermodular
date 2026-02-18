@@ -1,60 +1,40 @@
-// Importamos Component para poder crear un componente en Angular
-import { Component } from '@angular/core';
 
-// Importamos FormsModule para poder usar [(ngModel)] en formularios template-driven
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-// Decorador @Component: define los metadatos del componente
 @Component({
-  selector: 'app-upload-file',       // Nombre del selector para usar en HTML
-  standalone: true,                   // Indica que es un componente standalone
-  imports: [FormsModule, CommonModule],             // Importa FormsModule para usar ngModel
-  templateUrl: './upload-file.html',  // Archivo HTML del template
-  styleUrls: ['./upload-file.css']    // Archivo(s) CSS del componente
+  selector: 'app-upload-file',
+  standalone: true,
+  imports: [FormsModule, CommonModule],
+  templateUrl: './upload-file.html',
+  styleUrls: ['./upload-file.css']
 })
 export class UploadFileComponent {
 
-  /* ===============================
-     DATOS DEL PROYECTO
-     =============================== */
-
-  // Objeto principal que almacena los datos básicos del proyecto
   proyecto: any = {
     titulo: '',
     curso: '',
+    ciclo: '',
     descripcion: ''
   };
 
-  // Campos de texto que luego se convertirán en arrays
-  autoresTexto: string = '';    // Ej: "Juan, María"
-  etiquetasTexto: string = '';  // Ej: "Angular, Laravel"
+  autoresTexto = '';
+  etiquetasTexto = '';
 
-  /* ===============================
-     ARCHIVOS
-     =============================== */
+  imagen: File | null = null;
+  video: File | null = null;
+  archivo: File | null = null;
 
-  // Archivos seleccionados por el usuario
-  imagen: File | null = null;   // Imagen representativa del proyecto
-  video: File | null = null;    // Vídeo del proyecto
-
-  // Mensajes de error para mostrar en el HTML
   errorImagen: string = '';
   errorVideo: string = '';
+  errorArchivo: string = '';
 
-  // Tamaño máximo permitido (30 MB)
-  MAX_SIZE = 30 * 1024 * 1024; // 30 MB en bytes
+  MAX_SIZE = 30 * 1024 * 1024; // 30 MB
 
-  /* ===============================
-     MÉTODOS DE SELECCIÓN DE ARCHIVOS
-     =============================== */
-
-  // Método que se ejecuta cuando el usuario selecciona una imagen
-  onImagenSeleccionada(event: any): void {
-    const file = event.target.files[0]; // Obtenemos el archivo seleccionado
-
+  onImagenSeleccionada(event: any) {
+    const file = event.target.files[0];
     if (file) {
-      // Comprobamos que el tamaño no supere el máximo permitido
       if (file.size > this.MAX_SIZE) {
         this.errorImagen = 'La imagen no puede superar los 30 MB';
         this.imagen = null;
@@ -65,12 +45,9 @@ export class UploadFileComponent {
     }
   }
 
-  // Método que se ejecuta cuando el usuario selecciona un vídeo
-  onVideoSeleccionado(event: any): void {
-    const file = event.target.files[0]; // Obtenemos el archivo seleccionado
-
+  onVideoSeleccionado(event: any) {
+    const file = event.target.files[0];
     if (file) {
-      // Comprobamos que el tamaño no supere el máximo permitido
       if (file.size > this.MAX_SIZE) {
         this.errorVideo = 'El vídeo no puede superar los 30 MB';
         this.video = null;
@@ -81,63 +58,55 @@ export class UploadFileComponent {
     }
   }
 
-  /* ===============================
-     ENVÍO DEL FORMULARIO
-     =============================== */
+  onArchivoSeleccionado(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.size > this.MAX_SIZE) {
+        this.errorArchivo = 'El archivo no puede superar los 30 MB';
+        this.archivo = null;
+        return;
+      }
 
-  // Método que se ejecuta al enviar el formulario
-  enviarProyecto(): void {
+      const extensionesPermitidas = ['.zip', '.rar'];
+      const nombre = file.name.toLowerCase();
+      const extension = nombre.substring(nombre.lastIndexOf('.'));
+      if (!extensionesPermitidas.includes(extension)) {
+        this.errorArchivo = 'Solo se permiten archivos ZIP o RAR';
+        this.archivo = null;
+        return;
+      }
 
-    // Validamos que se haya seleccionado una imagen
+      this.errorArchivo = '';
+      this.archivo = file;
+    }
+  }
+
+  enviarProyecto() {
     if (!this.imagen) {
       this.errorImagen = 'Es obligatorio subir una imagen';
       return;
     }
 
-    // Validamos que se haya seleccionado un vídeo
     if (!this.video) {
       this.errorVideo = 'Es obligatorio subir un vídeo';
       return;
     }
 
-    // Creamos un objeto FormData para enviar datos y archivos al backend
     const formData = new FormData();
-
-    // Añadimos los campos de texto
     formData.append('titulo', this.proyecto.titulo);
     formData.append('curso', this.proyecto.curso);
+    formData.append('ciclo', this.proyecto.ciclo);
     formData.append('descripcion', this.proyecto.descripcion);
-
-    // Convertimos el texto de autores en un array limpio y lo enviamos como JSON
-    formData.append(
-      'autores',
-      JSON.stringify(
-        this.autoresTexto
-          .split(',')
-          .map(autor => autor.trim())
-          .filter(autor => autor.length > 0)
-      )
-    );
-
-    // Convertimos el texto de etiquetas en un array limpio y lo enviamos como JSON
-    formData.append(
-      'etiquetas',
-      JSON.stringify(
-        this.etiquetasTexto
-          .split(',')
-          .map(etiqueta => etiqueta.trim())
-          .filter(etiqueta => etiqueta.length > 0)
-      )
-    );
-
-    // Añadimos los archivos
+    formData.append('autores', JSON.stringify(this.autoresTexto.split(',').map(a => a.trim())));
+    formData.append('etiquetas', JSON.stringify(this.etiquetasTexto.split(',').map(e => e.trim())));
     formData.append('imagen', this.imagen);
     formData.append('video', this.video);
 
-    // Aquí iría la llamada HTTP al backend (Laravel)
-    // this.http.post('url-del-backend', formData).subscribe(...);
+    if (this.archivo) {
+      formData.append('archivo', this.archivo);
+    }
 
-    // Por ahora mostramos el FormData en consola
-    console.log('Proyecto listo para enviar a Laravel', formData);
+    console.log('Proyecto listo para enviar a backend:', formData);
   }
+
 }

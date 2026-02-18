@@ -1,134 +1,94 @@
-<div class="container">
-  <div class="card" style="padding: var(--spacing-md); max-width: 600px; margin: 0 auto;">
+<h2>Subir proyecto</h2>
 
-    <h2>Subir proyecto</h2>
-
-    <!-- Formulario principal -->
-    <!-- (ngSubmit) se ejecuta al hacer submit del formulario -->
-    <form (ngSubmit)="enviarProyecto()">
-
-      <div>
-        <label>Título del proyecto:</label><br>
-        <!-- [(ngModel)] enlaza el input con proyecto.titulo en TS -->
-        <!-- name es obligatorio para ngModel en formularios template-driven -->
-        <!-- required indica que este campo es obligatorio -->
-        <input
-          class="input"
-          type="text"
-          [(ngModel)]="proyecto.titulo"
-          name="titulo"
-          required
-        />
-      </div>
-      <br>
-      <!-- Campo para autores -->
-      <div>
-        <label>Autor/autores:</label><br>
-        <!-- Aquí el usuario puede ingresar varios autores separados por comas -->
-        <input
-          class="input"
-          type="text"
-          [(ngModel)]="autoresTexto"
-          name="autores"
-          placeholder="Ej: Juan, María"
-          required
-        />
-        <small>Separados por comas</small>
-      </div>
-      <br>
-      <!-- Campo para seleccionar curso -->
-      <div>
-        <label>Curso:</label><br>
-        <input
-          class="input"
-          type="text"
-          name="curso"
-          required
-        />
-      </div>
-      <br>
-      <!-- Campo para seleccionar ciclo -->
-      <div>
-        <label>Ciclo:</label><br>
-        <!-- ngModel enlaza con proyecto.curso -->
-        <select
-          class="input"
-          [(ngModel)]="proyecto.curso"
-          name="curso"
-          required
-        >
-          <option value="">Selecciona ciclo</option>
-          <option>DAW</option>
-          <option>DAM</option>
-          <option>Administración y Finanzas</option>
-          <option>Automoción</option>
-          <option>Asistencia a la dirección</option>
-        </select>
-      </div>
-      <br>
-      <div>
-        <label>Descripción:</label><br>
-        <!-- textarea enlaza con proyecto.descripcion -->
-        <textarea
-          class="input"
-          rows="4"
-          [(ngModel)]="proyecto.descripcion"
-          name="descripcion"
-          minlength="25"
-          maxlength="200"
-          required
-        ></textarea>
-      </div>
-      <br>
-      
-      <div>
-        <label>Etiquetas:</label><br>
-        <!-- El usuario puede ingresar etiquetas separadas por comas -->
-        <input
-          class="input"
-          type="text"
-          [(ngModel)]="etiquetasTexto"
-          name="etiquetas"
-          placeholder="Angular, Laravel"
-        />
-      </div>
-      <br>
-      
-      <div>
-        <label>Vídeo del proyecto (obligatorio, max 30 MB)</label><br />
-        <!-- Evento onVideoSeleccionado valida tamaño y guarda archivo -->
-        <input 
-          class="input" 
-          type="file" 
-          (change)="onVideoSeleccionado($event)" 
-          [(ngModel)]="proyecto.videoUrl" 
-          name="videoUrl" 
-          required/>
-        <!-- Mensaje de error para vídeo -->
-        <div *ngIf="errorVideo" class="alert alert-error">
-          {{ errorVideo }}
-        </div>
-      </div>
-      <br>
-
-      <!-- Documentación -->
-      <div>
-        <label>Documentación del proyecto (obligatorio, max 30 MB):</label><br>
-        <textarea
-          class="input"
-          rows="3"
-          [(ngModel)]="proyecto.documentacion"
-          name="documentacion"
-        ></textarea>
-      </div>
-      <br>
-      <!-- Botón de envío -->
-      <button class="btn btn-submit" type="submit">
-        Enviar
-      </button>
-      
-    </form>
+<!-- Formulario principal -->
+<!-- (ngSubmit) se ejecuta al hacer submit del formulario -->
+<form (ngSubmit)="enviarProyecto()">
 
 
+  <div>
+    <label for="titulo">Título del proyecto:</label><br>
+    <!-- [(ngModel)] enlaza el input con proyecto.titulo en TS -->
+    <!-- name es obligatorio para ngModel en formularios template-driven -->
+    <!-- required indica que este campo es obligatorio -->
+    <input id="titulo" type="text" [(ngModel)]="proyecto.titulo" name="titulo" required />
+  </div>
+
+  <!-- Campo para autores -->
+  <div>
+    <label for="autores">Autor/autores: </label><br>
+    <!-- Aquí el usuario puede ingresar varios autores separados por comas -->
+    <input id="autores" type="text" [(ngModel)]="autoresTexto" name="autores" placeholder="Ej: Nombre1, Nombre2"
+      required />
+  </div>
+
+  <!--Curso académico-->
+  <div>
+    <label for="curso">Curso académico:</label><br>
+    <select id="curso" [(ngModel)]="proyecto.curso" name="curso" required>
+      <option value="" disabled>Selecciona curso</option>
+      <option value="2022/2023">2022/2023</option>
+      <option value="2023/2024">2023/2024</option>
+      <option value="2024/2025">2024/2025</option>
+      <option value="2025/2026">2025/2026</option>
+    </select>
+  </div>
+
+
+  <!-- Campo para seleccionar ciclo -->
+  <div>
+    <label for="ciclo">Ciclo:</label><br>
+    <!-- ngModel enlaza con proyecto.ciclo --> <!--VER EL COMPONENTE CICLO/CURSO-->
+    <select id="ciclo" [(ngModel)]="proyecto.ciclo" name="ciclo" required>
+      <option value="">Selecciona ciclo</option>
+
+      <option value="DAW">Desarrollo de Aplicaciones Web</option>
+      <option value="DAM">Desarrollo de Aplicaciones Multiplataforma</option>
+      <option value="ASIR">Administración de Sistemas Informáticos en Red</option>
+      <option value="AF">Administración y Finanzas</option>
+      <option value="AD">Asistencia a la Dirección</option>
+      <option value="AUT">Automoción</option>
+    </select>
+  </div>
+
+
+  <div>
+    <label>Descripción:</label><br>
+    <!-- textarea enlaza con proyecto.descripcion -->
+    <textarea [(ngModel)]="proyecto.descripcion" name="descripcion" required maxlength="200" minlength="25"></textarea>
+  </div>
+
+
+  <div>
+    <label>Etiquetas: </label><br>
+    <!-- El usuario puede ingresar etiquetas separadas por comas -->
+    <input type="text" [(ngModel)]="etiquetasTexto" name="etiquetas" placeholder="Angular, Laravel..." />
+  </div>
+
+
+  <div>
+    <label>Vídeo del proyecto (obligatorio, max 30 MB)</label><br />
+    <!-- Evento onVideoSeleccionado valida tamaño y guarda archivo -->
+    <input type="file" (change)="onVideoSeleccionado($event)" required />
+    <!-- Mensaje de error para vídeo -->
+    <div *ngIf="errorVideo" style="color:red">{{ errorVideo }}</div>
+  </div>
+
+
+  <!-- Archivo del proyecto -->
+<div>
+  <label for="archivo">Archivo del proyecto (ZIP o RAR):</label><br>
+  <input
+    id="archivo"
+    type="file"
+    accept=".zip,.rar"
+    (change)="onArchivoSeleccionado($event)"
+  />
+  <div *ngIf="errorArchivo" style="color:red">
+    {{ errorArchivo }}
   </div>
 </div>
+
+
+  <!-- Botón de envío -->
+  <button type="submit">Enviar</button>
+</form>
