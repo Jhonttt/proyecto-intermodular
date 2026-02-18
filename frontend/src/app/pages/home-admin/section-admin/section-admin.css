@@ -10,12 +10,14 @@ select{
     margin-left: 8px;
 }
 
-/* Cabecera */
-.section-header {
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    background-color: #e9ecef;
-    border-radius: 4px;
-    gap: 29vw;
+@media screen and (max-width:422px) {
+    input {
+
+        width: 120px;
+        height: 28px;
+        font-size: 12px;
+        padding: 3px 5px;
+
+
+    }
 }

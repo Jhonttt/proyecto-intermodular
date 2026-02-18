@@ -24,7 +24,7 @@ import { ArticleAdmin } from './article-admin/article-admin';
         <tr *ngIf="paginaActual === 1">
           <app-article-admin
             titulo="Sistema de Biblioteca Escolar"
-            [anio]="2024"
+            anio="2024"
             curso="DAW 2º"
             descripcion=""
             estado="Pendiente">
