@@ -6,17 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Proyecto;
 
-class ProyectoController extends Controller
-{
-    public function index()
-    {
+class ProyectoController extends Controller {
+    public function index() {
         return view("alumno.proyectos.create");
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         // Validación
-        $proyecto= $request->validate([
+        $proyecto = $request->validate([
             'nombre' => 'required|string|max:255',
             'resumen' => 'required|string',
             'descripcion' => 'required|string',
@@ -38,19 +35,18 @@ class ProyectoController extends Controller
             'nombre' => $proyecto["nombre"],
             'resumen' => $request->resumen,
             'descripcion' => $request->descripcion,
-            'anio' => $request->curso,
+            'anio' => $request->anio,
             'ciclo' => $request->ciclo,
             'tags' => $request->tags,
-            'alumnos' => 'required|array',
-            'alumnos.*' => 'string',
-            'video' => $request->video_url,
+            'alumnos' => $request->alumnos,
+            'video_url' => $request->video_url,
             'checked' => false,
             'observaciones' => null,
         ]);
 
         return response()->json([
             'message' => 'Proyecto guardado correctamente',
-            'data'    => $proyecto
+            'data' => $proyecto
         ], 201);
     }
 }
