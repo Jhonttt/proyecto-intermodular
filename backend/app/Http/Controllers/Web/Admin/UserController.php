@@ -6,47 +6,61 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
-{
-    public function index()
-    {
+class UserController extends Controller {
+    public function index() {
         $usuarios = User::all();
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
-    public function create()
-    {
+    public function create() {
         return view('admin.usuarios.create');
     }
 
     public function store(Request $request)
-    {
-        User::create([
-        'name'     => $request->name,
-        'email'    => $request->email,
-        'password' => bcrypt($request->password),
-        'rol'      => $request->rol,
-        'activo'   => 1, 
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+        'rol' => 'required|in:admin,usu',
     ]);
 
-    return redirect()->route('admin.usuarios.index');
-    }
+    User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+        'rol' => $request->rol,
+        'activo' => $request->has('activo') ? 1 : 0,
+    ]);
 
-    public function edit($id)
-    {
+    return redirect()
+        ->route('admin.usuarios.index')
+        ->with('success', 'Usuario creado correctamente.');
+}
+
+
+    public function edit($id) {
         $usuario = User::findOrFail($id);
         return view('admin.usuarios.edit', compact('usuario'));
     }
 
     public function update(Request $request, $id)
-    {
-        $usuario = User::findOrFail($id);
+{
+    $request->validate([
+        'rol' => 'required|in:admin,usu',
+        'activo' => 'required|boolean',
+    ]);
 
-        $usuario->update([
-            'rol'    => $request->rol,
-            'activo' => $request->activo,
-        ]);
+    $usuario = User::findOrFail($id);
 
-        return redirect()->route('admin.usuarios.index');
-    }
+    $usuario->update([
+        'rol' => $request->rol,
+        'activo' => $request->activo,
+    ]);
+
+    return redirect()
+        ->route('admin.usuarios.index')
+        ->with('success', 'Usuario actualizado correctamente.');
+}
+
 }

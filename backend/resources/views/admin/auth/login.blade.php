@@ -4,6 +4,12 @@
 <h1>Login Admin</h1>
 
 <!-- Mostrar errores si los hubiera -->
+@if (session("error"))
+    <ul>
+        <li>{{ session("error") }}</li>
+    </ul>
+@endif
+
 @if ($errors->any())
 <div>
     <ul>

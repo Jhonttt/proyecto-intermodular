@@ -1,23 +1,26 @@
 <footer class="footer">
-    <div class="container footer-top">
-        <div class="footer-column">
-            <b>Repositorios de Proyectos</b>
-            <p class="footer-text">Plataforma académica para compartir y descubrir proyectos estudiantiles innovadores
-            </p>
-        </div>
+  <div class="container footer-top">
 
-        <div class="footer-column">
-            <app-links-section titulo="Enlaces" [links]="footerLinks1" class="footer-links">
-            </app-links-section>
-        </div>
-
-        <div class="footer-column">
-            <app-links-section titulo="Legal" [links]="footerLinks2" class="footer-links">
-            </app-links-section>
-        </div>
+    <div class="footer-column">
+      <b class="footer-title">Repositorios de Proyectos</b>
+      <p class="footer-text">
+        Plataforma académica para compartir y descubrir proyectos estudiantiles innovadores
+      </p>
     </div>
-    <footer class="footer-bottom">
-        <div class="container">
-            © Proyecto Intermodular - 2 DAW. Todos los derechos reservados
-        </div>
-    </footer>
+
+    <div class="footer-column">
+      <app-links-section titulo="Enlaces" [links]="footerLinks1"></app-links-section>
+    </div>
+
+    <div class="footer-column">
+      <app-links-section titulo="Legal" [links]="footerLinks2"></app-links-section>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      © Proyecto Intermodular - 2 DAW. Todos los derechos reservados
+    </div>
+  </div>
+</footer>

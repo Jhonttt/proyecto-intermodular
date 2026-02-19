@@ -19,8 +19,8 @@
     </div>
 
     <div class="mb-3">
-        <strong>Descripción:</strong>
-        <p><?php echo e($proyecto->descripción); ?></p>
+        <strong>descripcion:</strong>
+        <p><?php echo e($proyecto->descripcion); ?></p>
     </div>
 
     <?php if($proyecto->video_url): ?>

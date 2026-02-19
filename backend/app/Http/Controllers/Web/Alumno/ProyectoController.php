@@ -20,7 +20,7 @@ class ProyectoController extends Controller {
             'curso' => 'required|string|max:255',
             'alumnos' => 'required|string',
             'video_url' => 'nullable|url',
-            'archivo' => 'required|file|max:30720', // 30 MB en KB
+            'archivo' => 'required|file|max:30720',
         ]);
 
         //Guardar archivo
@@ -34,7 +34,7 @@ class ProyectoController extends Controller {
             'curso' => $request->curso,
             'alumnos' => $request->alumnos,
             'video_url' => $request->video_url,
-            'checked' => false,           //false por defecto
+            'checked' => false,
             'observaciones' => null,
         ]);
 
