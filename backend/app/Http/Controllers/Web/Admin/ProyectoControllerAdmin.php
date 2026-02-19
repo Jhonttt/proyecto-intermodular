@@ -56,4 +56,22 @@ class ProyectoControllerAdmin extends Controller {
 
         return redirect()->back();
     }
+
+    // La ruta 'admin.proyectos.edit' no existe aún
+    // public function edit($id)
+    // {
+    //     $proyecto = Proyecto::findOrFail($id);
+
+    //     return view('admin.proyectos.edit', compact('proyecto'));
+    // }
+
+    public function destroy($id)
+    {
+        $proyecto = Proyecto::findOrFail($id);
+        $proyecto->delete();
+
+        return redirect()
+            ->route('admin.proyectos.index')
+            ->with('success', 'Proyecto eliminado correctamente');
+    }
 }

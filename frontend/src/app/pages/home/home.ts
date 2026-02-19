@@ -10,7 +10,12 @@ import { Proyecto } from '../../core/models/proyecto.model';
   standalone: true,
   imports: [CommonModule, Article, Section],
   template: `
-    <app-section class="mb-5" />
+    <app-section
+  [tagsUnicos]="tagsUnicos"
+  (searchChange)="filterProyectos($event)"
+  (tagChange)="onTagFilter($event)">
+</app-section>
+
     
     <div class="container py-5">
       <!-- Loading state -->
@@ -59,13 +64,18 @@ import { Proyecto } from '../../core/models/proyecto.model';
 })
 export class Home implements OnInit {
   proyectos: Proyecto[] = [];
+  proyectosOriginal: Proyecto[] = [];
+  tagsUnicos: string[] = [];
+  selectedTag: string = '';
+  searchTerm: string = '';
+
   loading = false;
   error = '';
 
   constructor(
     private proyectoService: ProyectoService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadProyectos();
@@ -78,13 +88,13 @@ export class Home implements OnInit {
 
     this.proyectoService.getAll().subscribe({
       next: (response) => {
-        console.log('Proyectos recibidos:', response);
-        this.proyectos = response.data || [];
+        this.proyectosOriginal = response.data || []; // guardamos lista original
+        this.proyectos = [...this.proyectosOriginal]; // lista que se filtra
+        this.obtenerTagsUnicos();
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar proyectos:', err);
         this.error = err.error?.message || 'Error al cargar los proyectos';
         this.loading = false;
         this.cdr.detectChanges();
@@ -103,14 +113,14 @@ export class Home implements OnInit {
         return firstDoc;
       }
     }
-    
+
     if (proyecto.video_url && proyecto.video_url.includes('youtube.com')) {
       const videoId = this.getYouTubeVideoId(proyecto.video_url);
       if (videoId) {
         return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       }
     }
-    
+
     return 'images/prueba.webp';
   }
 
@@ -118,4 +128,42 @@ export class Home implements OnInit {
     const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
     return match ? match[1] : null;
   }
-}
+
+  obtenerTagsUnicos() {
+    const todosTags = this.proyectosOriginal
+      .flatMap(p => p.tags || []);
+
+    this.tagsUnicos = [...new Set(todosTags)];
+  }
+  filterProyectos(search: string) {
+    this.searchTerm = search;
+    this.aplicarFiltros();
+  }
+
+  onTagFilter(tag: string) {
+    this.selectedTag = tag;
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros() {
+    const term = this.searchTerm.toLowerCase();
+
+    this.proyectos = this.proyectosOriginal.filter(p => {
+
+      const matchTexto =
+        p.nombre?.toLowerCase().includes(term) ||
+        p.resumen?.toLowerCase().includes(term) ||
+        p.curso?.toLowerCase().includes(term) ||
+        p.alumnos?.toLowerCase().includes(term) ||
+        p.tags?.some(tag => tag.toLowerCase().includes(term));
+
+      const matchTag =
+        !this.selectedTag ||
+        p.tags?.includes(this.selectedTag);
+
+      return matchTexto && matchTag;
+    });
+  }
+
+
+} 
