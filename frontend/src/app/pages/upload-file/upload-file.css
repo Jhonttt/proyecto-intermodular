@@ -1,9 +1,8 @@
 /*=============================
-ESTILOS FORMULARIO SUBIR PROYECTO
+FORMULARIO SUBIR PROYECTO
 ===============================*/
 
-/* Contenedor del formulario */
-form {
+.upload-form {
   max-width: 600px;
   margin: 0 auto;
   padding: var(--spacing-md);
@@ -15,25 +14,23 @@ form {
   gap: var(--spacing-md);
 }
 
-/* Campos del formulario */
-form div {
+.upload-form .form-group {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
 }
 
-/* Labels */
-form label {
+.upload-form label {
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-base);
   color: var(--color-text-main);
 }
 
-/* Inputs y selects */
-form input[type="text"],
-form input[type="file"],
-form select,
-form textarea {
+.upload-form input[type="text"],
+.upload-form input[type="file"],
+.upload-form select,
+.upload-form textarea {
+  width: 100%;
   padding: 8px 12px;
   font-family: var(--font-body);
   font-size: var(--font-size-base);
@@ -43,29 +40,24 @@ form textarea {
   transition: border-color 0.2s ease;
 }
 
-/* Focus en inputs y selects */
-form input[type="text"]:focus,
-form input[type="file"]:focus,
-form select:focus,
-form textarea:focus {
+.upload-form input:focus,
+.upload-form select:focus,
+.upload-form textarea:focus {
   border-color: var(--color-primary);
 }
 
-/* Textarea */
-form textarea {
+.upload-form textarea {
   resize: vertical;
   min-height: 80px;
 }
 
-/* Mensajes de error */
-form div > div[ng-reflect-ng-if] {
+.error {
   font-size: var(--font-size-small);
   color: var(--color-danger);
   margin-top: 4px;
 }
 
-/* Botón enviar */
-form button[type="submit"] {
+.upload-form button[type="submit"] {
   padding: 10px 16px;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
@@ -77,25 +69,16 @@ form button[type="submit"] {
   transition: background-color 0.2s ease;
 }
 
-/* Hover botón enviar */
-form button[type="submit"]:hover {
+.upload-form button[type="submit"]:hover {
   background-color: var(--color-check2);
 }
 
-/* Placeholder de inputs */
-form input::placeholder {
-  color: var(--color-text-secondary);
-  opacity: 1;
-}
-
-/* Select placeholder */
-form select option[disabled] {
+.upload-form input::placeholder {
   color: var(--color-text-secondary);
 }
 
-/* Ajustes responsive */
 @media (max-width: 640px) {
-  form {
+  .upload-form {
     padding: var(--spacing-sm);
   }
 }

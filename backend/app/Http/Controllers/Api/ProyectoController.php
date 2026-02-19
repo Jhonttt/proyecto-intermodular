@@ -32,7 +32,7 @@ class ProyectoController extends Controller {
             'descripcion' => 'required|string',
             'curso' => 'required|string',
             'alumnos' => 'required|string',
-            'video_url' => 'nullable|url',
+            'video_url' => 'required|file|mimes:mp4,mov,avi|max:30720',
             'checked' => 'boolean',
             'observaciones' => 'nullable|string',
         ]);

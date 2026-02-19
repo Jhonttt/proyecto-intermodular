@@ -2,7 +2,7 @@
 
 <!-- Formulario principal -->
 <!-- (ngSubmit) se ejecuta al hacer submit del formulario -->
-<form (ngSubmit)="enviarProyecto()">
+<form class="upload-form" (ngSubmit)="enviarProyecto()">
 
 
   <div>
@@ -25,7 +25,7 @@
   <div>
     <label for="curso">Curso académico:</label><br>
     <select id="curso" [(ngModel)]="proyecto.curso" name="curso" required>
-      <option value="" disabled>Selecciona curso</option>
+      <option value="" disabled selected hidden>Selecciona curso</option>
       <option value="2022/2023">2022/2023</option>
       <option value="2023/2024">2023/2024</option>
       <option value="2024/2025">2024/2025</option>
@@ -70,23 +70,22 @@
     <!-- Evento onVideoSeleccionado valida tamaño y guarda archivo -->
     <input type="file" (change)="onVideoSeleccionado($event)" required />
     <!-- Mensaje de error para vídeo -->
-    <div *ngIf="errorVideo" style="color:red">{{ errorVideo }}</div>
+    <div *ngIf="errorVideo" class="error">
+      {{ errorVideo }}
+    </div>
+
+
   </div>
 
 
   <!-- Archivo del proyecto -->
-<div>
-  <label for="archivo">Archivo del proyecto (ZIP o RAR):</label><br>
-  <input
-    id="archivo"
-    type="file"
-    accept=".zip,.rar"
-    (change)="onArchivoSeleccionado($event)"
-  />
-  <div *ngIf="errorArchivo" style="color:red">
-    {{ errorArchivo }}
+  <div>
+    <label for="archivo">Archivo del proyecto (ZIP o RAR):</label><br>
+    <input id="archivo" type="file" accept=".zip,.rar" (change)="onArchivoSeleccionado($event)" />
+    <div *ngIf="errorArchivo" class="error">
+      {{ errorArchivo }}
+    </div>
   </div>
-</div>
 
 
   <!-- Botón de envío -->

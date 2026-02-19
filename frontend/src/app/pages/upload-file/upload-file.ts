@@ -32,18 +32,6 @@ export class UploadFileComponent {
 
   MAX_SIZE = 30 * 1024 * 1024; // 30 MB
 
-  onImagenSeleccionada(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      if (file.size > this.MAX_SIZE) {
-        this.errorImagen = 'La imagen no puede superar los 30 MB';
-        this.imagen = null;
-      } else {
-        this.errorImagen = '';
-        this.imagen = file;
-      }
-    }
-  }
 
   onVideoSeleccionado(event: any) {
     const file = event.target.files[0];
@@ -82,10 +70,7 @@ export class UploadFileComponent {
   }
 
   enviarProyecto() {
-    if (!this.imagen) {
-      this.errorImagen = 'Es obligatorio subir una imagen';
-      return;
-    }
+
 
     if (!this.video) {
       this.errorVideo = 'Es obligatorio subir un vídeo';
@@ -93,20 +78,21 @@ export class UploadFileComponent {
     }
 
     const formData = new FormData();
+    formData.append('nombre', this.proyecto.titulo);
+    formData.append('alumnos', this.autoresTexto);
     formData.append('titulo', this.proyecto.titulo);
     formData.append('curso', this.proyecto.curso);
     formData.append('ciclo', this.proyecto.ciclo);
     formData.append('descripcion', this.proyecto.descripcion);
     formData.append('autores', JSON.stringify(this.autoresTexto.split(',').map(a => a.trim())));
-    formData.append('etiquetas', JSON.stringify(this.etiquetasTexto.split(',').map(e => e.trim())));
-    formData.append('imagen', this.imagen);
-    formData.append('video', this.video);
+    formData.append('tags', JSON.stringify(this.etiquetasTexto.split(',').map(e => e.trim())));
+    formData.append('video_url', this.video);
 
     if (this.archivo) {
-      formData.append('archivo', this.archivo);
+      formData.append('documentos', this.archivo);
     }
 
-    console.log('Proyecto listo para enviar a backend:', formData);
+    console.log('Proyecto listo:', formData);
   }
 
 }
