@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Casts\JsonUnicode;
 
 class Proyecto extends Model {
     use HasFactory;
@@ -14,9 +15,9 @@ class Proyecto extends Model {
         "nombre",
         "resumen",
         "descripcion",
-        "curso",
+        "ciclo",
+        "anio",
         "alumnos",
-        "video_url",
         "documentos",
         "tags",
         "checked",
@@ -24,8 +25,9 @@ class Proyecto extends Model {
     ];
 
     protected $casts = [
-        'documentos' => 'array',
-        'tags' => 'array',
+        "alumnos" => JsonUnicode::class,
+        'documentos' => JsonUnicode::class,
+        'tags' => JsonUnicode::class,
         'checked' => 'boolean',
     ];
 }
