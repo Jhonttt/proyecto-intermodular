@@ -1,38 +1,49 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User, ApiResponse, CreateUserRequest, UpdateUserRequest } from '../models/user.model';
+import { User, ApiResponse, CreateUserRequest, UpdateUserRequest, LoginRequest, LoginResponse } from '../models/user.model' ;
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8000/api/admin/users';
+  // Rutas de tu API
+  private adminApiUrl = 'http://localhost:8000/api/admin/users';
+  private authApiUrl = 'http://localhost:8000/api/login';
 
   constructor(private http: HttpClient) {}
 
-  // Listar todos los usuarios (solo admin)
+  // ==========================================
+  // LOGIN (Con cabeceras JSON forzadas)
+  // ==========================================
+  login(credentials: LoginRequest): Observable<LoginResponse> {
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<LoginResponse>(this.authApiUrl, credentials, { headers });
+  }
+
+  // ==========================================
+  // CRUD DE USUARIOS (Admin)
+  // ==========================================
   getAll(): Observable<ApiResponse<User[]>> {
-    return this.http.get<ApiResponse<User[]>>(this.apiUrl);
+    return this.http.get<ApiResponse<User[]>>(this.adminApiUrl);
   }
 
-  // Obtener usuario por ID (solo admin)
   getById(id: number): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/${id}`);
+    return this.http.get<ApiResponse<User>>(`${this.adminApiUrl}/${id}`);
   }
 
-  // Crear usuario (solo admin)
   create(user: CreateUserRequest): Observable<ApiResponse<User>> {
-    return this.http.post<ApiResponse<User>>(this.apiUrl, user);
+    return this.http.post<ApiResponse<User>>(this.adminApiUrl, user);
   }
 
-  // Actualizar usuario (solo admin)
   update(id: number, user: UpdateUserRequest): Observable<ApiResponse<User>> {
-    return this.http.put<ApiResponse<User>>(`${this.apiUrl}/${id}`, user);
+    return this.http.put<ApiResponse<User>>(`${this.adminApiUrl}/${id}`, user);
   }
 
-  // Eliminar usuario (solo admin)
   delete(id: number): Observable<ApiResponse<void>> {
-    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
+    return this.http.delete<ApiResponse<void>>(`${this.adminApiUrl}/${id}`);
   }
 }
