@@ -1,55 +1,79 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Crear usuario</h1>
 
-    <form method="POST" action="{{ route('admin.usuarios.store') }}">
-        @csrf
+<div class="container">
 
-        <div>
-            <label>Nombre</label><br>
-            <input type="text" name="name">
+    <div class="card">
+        <div class="card-body">
+
+            <h2 class="mb-4">Crear usuario</h2>
+
+            {{-- Errores --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('admin.usuarios.store') }}">
+                @csrf
+
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" name="name"
+                           class="form-control"
+                           value="{{ old('name') }}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email"
+                           class="form-control"
+                           value="{{ old('email') }}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" name="password"
+                           class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Rol</label>
+                    <select name="rol" class="form-select">
+                        <option value="admin">Admin</option>
+                        <option value="usu">Usuario</option>
+                    </select>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input type="checkbox" name="activo"
+                           class="form-check-input"
+                           value="1" checked>
+                    <label class="form-check-label">
+                        Usuario activo
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Guardar
+                </button>
+
+                <a href="{{ route('admin.usuarios.index') }}"
+                   class="btn btn-secondary ms-2">
+                    Volver
+                </a>
+
+            </form>
+
         </div>
+    </div>
 
-        <br>
+</div>
 
-        <div>
-            <label>Email</label><br>
-            <input type="email" name="email">
-        </div>
-
-        <br>
-
-        <div>
-            <label>Contraseña</label><br>
-            <input type="password" name="password">
-        </div>
-
-        <br>
-
-        <div>
-            <label>Rol</label><br>
-            <select name="rol">
-                <option value="admin">Admin</option>
-                <option value="usu">Usuario</option>
-            </select>
-        </div>
-
-        <br>
-
-        <div>
-            <label>
-                <input type="checkbox" name="activo" value="1" checked>
-                Usuario activo
-            </label>
-        </div>
-
-        <br>
-
-        <button type="submit">Guardar</button>
-    </form>
-
-    <br>
-
-    <a href="{{ url('/admin/usuarios') }}">Volver al listado</a>
 @endsection
