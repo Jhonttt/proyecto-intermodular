@@ -24,7 +24,8 @@ class ProyectoController extends Controller
             'ciclo' => 'required|string|max:255',
             'tags' => 'nullable|array',
             'tags.*' => 'string|max:50',
-            'alumnos' => 'required|string',
+            'alumnos' => 'required|array',
+            'alumnos.*' => 'string',
             'video' => 'required|file|mimes:mp4|max:30720',//maximo 30MB, tipo mp4
             'archivo' => 'nullable|file|max:30720',
         ]);
@@ -40,7 +41,8 @@ class ProyectoController extends Controller
             'anio' => $request->curso,
             'ciclo' => $request->ciclo,
             'tags' => $request->tags,
-            'alumnos' => $request->alumnos,
+            'alumnos' => 'required|array',
+            'alumnos.*' => 'string',
             'video' => $request->video_url,
             'checked' => false,
             'observaciones' => null,
