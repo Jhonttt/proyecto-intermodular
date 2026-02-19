@@ -144,26 +144,28 @@ export class Home implements OnInit {
     this.selectedTag = tag;
     this.aplicarFiltros();
   }
+aplicarFiltros() {
+  const term = this.searchTerm.toLowerCase();
 
-  aplicarFiltros() {
-    const term = this.searchTerm.toLowerCase();
+  this.proyectos = this.proyectosOriginal.filter(p => {
+ 
+    const matchTexto =
+      p.nombre?.toLowerCase().includes(term) ||
+      p.resumen?.toLowerCase().includes(term) ||
+      p.curso?.toLowerCase().includes(term) ||
+      p.alumnos?.some(alumno =>
+        alumno.toLowerCase().includes(term)
+      ) ||
+      p.tags?.some(tag =>
+        tag.toLowerCase().includes(term)
+      );
 
-    this.proyectos = this.proyectosOriginal.filter(p => {
+    const matchTag =
+      !this.selectedTag ||
+      p.tags?.includes(this.selectedTag);
 
-      const matchTexto =
-        p.nombre?.toLowerCase().includes(term) ||
-        p.resumen?.toLowerCase().includes(term) ||
-        p.curso?.toLowerCase().includes(term) ||
-        p.alumnos?.toLowerCase().includes(term) ||
-        p.tags?.some(tag => tag.toLowerCase().includes(term));
-
-      const matchTag =
-        !this.selectedTag ||
-        p.tags?.includes(this.selectedTag);
-
-      return matchTexto && matchTag;
-    });
-  }
-
+    return matchTexto && matchTag;
+  });
+}
 
 } 
