@@ -1,0 +1,23 @@
+section{
+    text-align: center;
+    margin-top: 2em;
+}
+input{
+    margin-right: 5px;
+    margin-bottom: 2em;
+}
+select{
+    margin-left: 8px;
+}
+
+@media screen and (max-width:422px) {
+    input {
+
+        width: 120px;
+        height: 28px;
+        font-size: 12px;
+        padding: 3px 5px;
+
+
+    }
+}
