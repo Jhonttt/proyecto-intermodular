@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('nombre');
             $table->string('resumen');
             $table->text('descripcion');
+            $table->string('video_url');
             $table->string('ciclo');
             $table->string('anio');
             $table->json('alumnos');

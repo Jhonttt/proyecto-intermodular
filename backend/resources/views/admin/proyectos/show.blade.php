@@ -41,7 +41,7 @@
             <div class="ratio ratio-16x9">
                 <!-- Convertir la URL genérica a formato embed  (Las URLs watch?v= son bloqueadas por YouTube) -->
                 <iframe 
-                    src="{{ str_replace('watch?v=', 'embed/', $proyecto->video_url) }}"
+                    src="{{ str_replace('watch?v=', 'embed/', $proyecto->video_url) }}" 
                     allowfullscreen>
                 </iframe>
             </div>
