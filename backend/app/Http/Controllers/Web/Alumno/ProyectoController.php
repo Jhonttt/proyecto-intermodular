@@ -13,7 +13,7 @@ class ProyectoController extends Controller {
 
     public function store(Request $request) {
         // Validación
-        $request->validate([
+        $proyecto= $request->validate([
             'nombre' => 'required|string|max:255',
             'resumen' => 'required|string',
             'descripcion' => 'required|string',
@@ -28,7 +28,7 @@ class ProyectoController extends Controller {
 
         //Guardar en BD
         $proyecto = Proyecto::create([
-            'nombre' => $request->nombre,
+            'nombre' => $proyecto["nombre"],
             'resumen' => $request->resumen,
             'descripcion' => $request->descripcion,
             'curso' => $request->curso,
