@@ -27,9 +27,13 @@
         <div class="card__header">
           <div>
             <h2 class="card__title">{{ project.nombre }}</h2>
-            <p class="text">{{ project.resumen }}</p>
+            <!-- Descripción -->
+            <p class="text" style="white-space: pre-wrap">
+              {{ project.descripcion }}
+            </p>
           </div>
 
+          <!-- Estado proyecto -->
           <span [class]="getEstadoClass()">
             <span class="material-icons estado__icon" aria-hidden="true"></span>
             {{ getEstadoProyecto() }}
@@ -38,15 +42,15 @@
 
         <!-- Curso -->
         <section class="section section--curso">
-          <p class="text">Curso</p>
-          <p class="text">{{ project.curso }}</p>
+          <p class="text"><b>Ciclo</b> {{ project.ciclo }}</p>
+          <p class="text"><b>Año</b> {{ project.anio }}</p>
         </section>
 
         <hr class="divider" />
 
         <!-- Autores -->
         <section class="section">
-          <h3 class="section__title">Autores</h3>
+          <h3 class="section__title"><b>Autores</b></h3>
           <ul class="list">
             @for (autor of autoresArray; track autor) {
               <li class="list__item">{{ autor }}</li>
@@ -56,62 +60,25 @@
 
         <hr class="divider" />
 
-        <!-- Descripción -->
-        <section class="section">
-          <h3 class="section__title">Descripción del Proyecto</h3>
-          <p class="text" style="white-space: pre-wrap">
-            {{ project.descripcion }}
-          </p>
-        </section>
-
-        <hr class="divider" />
-
-        <!-- Tags -->
-        @if (hasTags()) {
-          <section class="section">
-            <h3 class="section__title">Tecnologías y Etiquetas</h3>
-            <ul class="tag-list">
-              @for (tag of project.tags; track tag) {
-                <li class="tag">{{ tag }}</li>
-              }
-            </ul>
-          </section>
-
-          <hr class="divider" />
-        }
-
         <!-- Video -->
         @if (project.video_url) {
           <section class="section">
-            <h3 class="section__title">Video del Proyecto</h3>
-
-            @if (getYouTubeEmbedUrl()) {
-              <iframe
-                [src]="getYouTubeEmbedUrl()!"
-                title="Video del proyecto"
-                allowfullscreen
-                style="width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 8px"
-              ></iframe>
-            } @else {
-              <a [href]="project.video_url" target="_blank" class="btn btn-secondary">
-                Ver video
-              </a>
-            }
+            <h3 class="section__title"><b>Video del Proyecto</b></h3>
+            <video class="video-player" controls [src]="project.video_url"></video>
           </section>
-
           <hr class="divider" />
         }
 
         <!-- Documentos -->
         @if (hasDocumentos()) {
           <section class="section">
-            <h3 class="section__title">Documentos Adjuntos</h3>
+            <h3 class="section__title"><b>Documentos Adjuntos</b></h3>
             <ul class="list">
               @for (doc of project.documentos; track doc) {
                 <li class="list__item">
                   <a [href]="doc" target="_blank" rel="noopener" class="btn btn-link doc-link">
                     <span class="material-icons doc-link__icon" aria-hidden="true"></span>
-                    Descargar
+                    {{ doc }}
                   </a>
                 </li>
               }
@@ -121,10 +88,23 @@
           <hr class="divider" />
         }
 
+        <!-- Tags -->
+        @if (hasTags()) {
+          <section class="section">
+            <h3 class="section__title"><b>Tecnologías y Etiquetas</b></h3>
+            <ul class="tag-list">
+              @for (tag of project.tags; track tag) {
+                <li class="tag">{{ tag }}</li>
+              }
+            </ul>
+          </section>
+        }
+        <hr class="divider" />
+
         <!-- Observaciones -->
         @if (project.observaciones && project.observaciones !== 'null') {
           <section class="section">
-            <h3 class="section__title section__title--bold">Observaciones</h3>
+            <h3 class="section__title section__title--bold"><b>Observaciones</b></h3>
             <div class="alert alert-info">
               <p class="text" style="white-space: pre-wrap">
                 {{ project.observaciones }}
@@ -133,9 +113,11 @@
           </section>
         }
 
+        <hr class="divider" />
+
         <!-- Metadatos -->
         <section class="section">
-          <h3 class="section__title">Información del Sistema</h3>
+          <h3 class="section__title"><b>Información del Sistema</b></h3>
 
           <dl class="meta">
             <div class="meta__row">
@@ -153,28 +135,6 @@
               <dd>{{ project.updated_at | date: 'short' }}</dd>
             </div>
           </dl>
-        </section>
-
-        <hr class="divider" />
-
-        <!-- Footer -->
-        <section class="section">
-          <button class="btn btn-primary btn--icon" (click)="volverAlHome()">
-            <span class="material-icons" aria-hidden="true"></span>
-            Volver al Inicio
-          </button>
-
-          @if (project.video_url) {
-            <a
-              [href]="project.video_url"
-              target="_blank"
-              rel="noopener"
-              class="btn btn-secondary btn--icon"
-            >
-              <span class="material-icons" aria-hidden="true"></span>
-              Ver Video Original
-            </a>
-          }
         </section>
       </article>
     }
