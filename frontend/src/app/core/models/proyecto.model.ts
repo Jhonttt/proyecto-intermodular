@@ -4,7 +4,7 @@ export interface Proyecto {
   resumen: string;
   descripcion: string;
   curso: string;
-  alumnos: string;
+  alumnos: string[];
   video_url: string;
   documentos: string[] | null;  // Array o null
   tags: string[] | null;        // Array o null
@@ -19,7 +19,7 @@ export interface CreateProyectoRequest {
   resumen: string;
   descripcion: string;
   curso: string;
-  alumnos: string;
+  alumnos: string[];
   video_url: string;
   documentos?: string[];
   tags?: string[];
@@ -32,7 +32,7 @@ export interface UpdateProyectoRequest {
   resumen?: string;
   descripcion?: string;
   curso?: string;
-  alumnos?: string;
+  alumnos?: string[];
   video_url?: string;
   documentos?: string[];
   tags?: string[];

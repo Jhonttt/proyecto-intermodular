@@ -62,7 +62,7 @@ export class DetailsForm implements OnInit {
   // Obtener array de autores desde el string
   get autoresArray(): string[] {
     if (!this.project?.alumnos) return [];
-    return this.project.alumnos.split(',').map(a => a.trim());
+    return this.project.alumnos.map(a => a.trim());
   }
 
   // Obtener año de creación
