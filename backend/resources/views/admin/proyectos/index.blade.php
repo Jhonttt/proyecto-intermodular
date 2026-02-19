@@ -10,13 +10,27 @@
         <button type="submit">Filtrar</button>
     </form>
 
-    <hr>
 
-    @foreach ($proyectos as $proyecto)
-        <p>
-            <a href="{{ route('admin.proyectos.show', ['id'=>$proyecto->id]) }}">{{ $proyecto->nombre }}</a> |
-            {{ $proyecto->curso }} |
-            {{ $proyecto->alumnos }}
-        </p>
-    @endforeach
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Nombre</th>
+                <th>Ciclo</th>
+                <th>Año</th>
+                <th>Alumnos</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($proyectos as $proyecto)
+                <tr>
+                    <td>{{ $proyecto->nombre }}</td>
+                    <td>{{ $proyecto->ciclo }}</td>
+                    <td>{{ $proyecto->anio }}</td>
+                    <!-- añadir alumnos y estado -->
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 @endsection
