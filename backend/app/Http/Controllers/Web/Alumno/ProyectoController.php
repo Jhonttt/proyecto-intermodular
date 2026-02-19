@@ -20,12 +20,12 @@ class ProyectoController extends Controller
             'nombre' => 'required|string|max:255',
             'resumen' => 'required|string',
             'descripcion' => 'required|string',
-            'curso' => 'required|string|max:255',
+            'anio' => 'required|string|max:255',
             'ciclo' => 'required|string|max:255',
             'tags' => 'nullable|array',
             'tags.*' => 'string|max:50',
             'alumnos' => 'required|string',
-            'video_url' => 'required|file|mimes:mp4|max:30720',//maximo 30MB, tipo mp4
+            'video' => 'required|file|mimes:mp4|max:30720',//maximo 30MB, tipo mp4
             'archivo' => 'nullable|file|max:30720',
         ]);
 
@@ -37,11 +37,11 @@ class ProyectoController extends Controller
             'nombre' => $request->nombre,
             'resumen' => $request->resumen,
             'descripcion' => $request->descripcion,
-            'curso' => $request->curso,
+            'anio' => $request->curso,
             'ciclo' => $request->ciclo,
             'tags' => $request->tags,
             'alumnos' => $request->alumnos,
-            'video_url' => $request->video_url,
+            'video' => $request->video_url,
             'checked' => false,
             'observaciones' => null,
         ]);
