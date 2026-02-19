@@ -27,5 +27,9 @@ class User extends Authenticatable {
         'password' => 'hashed',
         'email_verified_at' => 'datetime'
     ];
+
+    public function hasRole(string $rol): bool {
+        return $this->rol === $rol;
+    }
 }
 

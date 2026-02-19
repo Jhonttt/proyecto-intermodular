@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Casts\JsonUnicode;
 
 class Proyecto extends Model {
     use HasFactory;
@@ -12,11 +14,20 @@ class Proyecto extends Model {
     protected $fillable = [
         "nombre",
         "resumen",
-        "descripción",
-        "curso",
+        "descripcion",
+        "ciclo",
+        "anio",
         "alumnos",
-        "video_url",
+        "documentos",
+        "tags",
         "checked",
         "observaciones",
+    ];
+
+    protected $casts = [
+        "alumnos" => JsonUnicode::class,
+        'documentos' => JsonUnicode::class,
+        'tags' => JsonUnicode::class,
+        'checked' => 'boolean',
     ];
 }
