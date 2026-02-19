@@ -16,7 +16,7 @@ class ProyectoController extends Controller
     public function store(Request $request)
     {
         // Validación
-        $proyecto= $request->validate([
+        $request->validate([
             'nombre' => 'required|string|max:255',
             'resumen' => 'required|string',
             'descripcion' => 'required|string',
@@ -25,23 +25,24 @@ class ProyectoController extends Controller
             'tags' => 'nullable|array',
             'tags.*' => 'string|max:50',
             'alumnos' => 'required|string',
-            'video' => 'required|file|mimes:mp4|max:30720',//maximo 30MB, tipo mp4
+            'video_url' => 'required',//maximo 30MB
             'archivo' => 'nullable|file|max:30720',
+            'video' => 'required|file|mimes:mp4,mov,avi,mkv,wmv|max:30720',
         ]);
 
         //Guardar archivo
-        $rutaArchivo = $request->file('archivo')->store('proyectos');
+        $rutaArchivo = $request->file('video')->store('proyectos');
 
         //Guardar en BD
         $proyecto = Proyecto::create([
-            'nombre' => $proyecto["nombre"],
+            'nombre' => $request->nombre,
             'resumen' => $request->resumen,
             'descripcion' => $request->descripcion,
             'anio' => $request->curso,
             'ciclo' => $request->ciclo,
             'tags' => $request->tags,
             'alumnos' => $request->alumnos,
-            'video' => $request->video_url,
+            'video_url' => $request->video_url,
             'checked' => false,
             'observaciones' => null,
         ]);
