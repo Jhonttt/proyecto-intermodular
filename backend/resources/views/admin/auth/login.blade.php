@@ -1,38 +1,65 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Login Admin</h1>
 
-<!-- Mostrar errores si los hubiera -->
-@if (session("error"))
-    <ul>
-        <li>{{ session("error") }}</li>
-    </ul>
-@endif
+    <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+    </head>
+    <div class="main-container" style="display: flex; justify-content: center; padding-top: 60px;">
+        <div style="width: min(480px, 100%);">
 
-@if ($errors->any())
-<div>
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
+            <h1>Login Admin</h1>
 
-<form method="POST" action="{{ route('admin.login.submit') }}">
-    @csrf
+            {{-- Mensajes de error de sesión --}}
+            @if (session('error'))
+                <div class="card"
+                    style="border-color: var(--danger); background-color: #fdf2f2; margin-bottom: var(--block-spacing);">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span class="material-symbols-outlined md-16 icon-danger">error</span>
+                        <small style="color: var(--danger);">{{ session('error') }}</small>
+                    </div>
+                </div>
+            @endif
 
-    <label for="email">Email</label>
-    <input id="email" type="email" name="email" value="{{ old('email') }}" required>
+            {{-- Errores de validación --}}
+            @if ($errors->any())
+                <div class="card"
+                    style="border-color: var(--danger); background-color: #fdf2f2; margin-bottom: var(--block-spacing);">
+                    @foreach ($errors->all() as $error)
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                            <span class="material-symbols-outlined md-16 icon-danger">error</span>
+                            <small style="color: var(--danger);">{{ $error }}</small>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
 
-    <label for="password">Contraseña</label>
-    <input id="password" type="password" name="password" required>
+            <div class="card">
+                <form method="POST" action="{{ route('admin.login.submit') }}">
+                    @csrf
 
-    <button type="submit">Iniciar sesión</button>
-</form>
+                    <div style="margin-bottom: 8px;">
+                        <label for="email"
+                            style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Email</label>
+                        <input id="email" type="email" name="email" value="{{ old('email') }}"
+                            class="{{ $errors->has('email') ? 'input-error' : '' }}" style="width: 95%;" required>
+                    </div>
 
-</body>
+                    <div style="margin-bottom: 16px;">
+                        <label for="password"
+                            style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Contraseña</label>
+                        <input id="password" type="password" name="password"
+                            class="{{ $errors->has('password') ? 'input-error' : '' }}" style="width: 95%;" required >
+                    </div>
 
-</html>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <span class="material-symbols-outlined md-16" style="margin-right: 6px;">login</span>
+                        Iniciar sesión
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
 @endsection
