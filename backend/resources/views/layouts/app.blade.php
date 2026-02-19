@@ -21,7 +21,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
     </style>
-    <link rel="stylesheet" href="{{ asset('backend\resources\css\app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
 <body>
@@ -30,7 +30,7 @@
             <a class="navbar-brand" href="#">IES Lázaro Cárdenas | Repositorio</a>
             <div class="navbar-nav ms-auto">
                 <span class="nav-link text-light">Hola, {{ auth()->user()->name ?? 'Usuario' }}</span>
-                <form action="{{route("admin.logout")}}" method="POST">
+                <form action="{{ route('admin.logout') }}" method="POST">
                     @csrf
                     <button class="nav-link btn btn-danger btn-sm text-white ms-3">Cerrar Sesión</button>
                 </form>
