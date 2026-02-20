@@ -17,30 +17,39 @@ class ProyectoController extends Controller {
             'nombre' => 'required|string|max:255',
             'resumen' => 'required|string',
             'descripcion' => 'required|string',
-            'curso' => 'required|string|max:255',
-            'alumnos' => 'required|string',
-            'video_url' => 'nullable|url',
-            'archivo' => 'required|file|max:30720',
+            'anio' => 'required|string|max:255',
+            'ciclo' => 'required|string|max:255',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string|max:50',
+            'alumnos' => 'required|array',
+            'alumnos.*' => 'string',
+            'archivo' => 'nullable|file|max:30720',
+            'video' => 'required|file|mimes:mp4,mov,avi,mkv,wmv|max:30720',
         ]);
 
         //Guardar archivo
-        $rutaArchivo = $request->file('archivo')->store('proyectos');
+        $rutaArchivo = $request->file('video')->store('proyectos');
+      
+        //Coger el video_url que se genero
+        // $video = x;
 
         //Guardar en BD
         $proyecto = Proyecto::create([
             'nombre' => $request->nombre,
             'resumen' => $request->resumen,
             'descripcion' => $request->descripcion,
-            'curso' => $request->curso,
+            'anio' => $request->anio,
+            'ciclo' => $request->ciclo,
+            'tags' => $request->tags,
             'alumnos' => $request->alumnos,
-            'video_url' => $request->video_url,
+            'video' => $request->video_url,
             'checked' => false,
             'observaciones' => null,
         ]);
 
         return response()->json([
             'message' => 'Proyecto guardado correctamente',
-            'data'    => $proyecto
+            'data' => $proyecto
         ], 201);
-    } 
+    }
 }
