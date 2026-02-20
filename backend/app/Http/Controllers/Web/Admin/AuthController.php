@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,9 +45,17 @@ class AuthController extends Controller {
             return redirect()->route('admin.proyectos.index');
         }
 
-        //En caso de credenciales incorrectas, avisa del error
+        // Distinguir entre correo no encontrado y contraseña incorrecta
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'No existe ninguna cuenta con ese correo.',
+            ]);
+        }
+
         return back()->withErrors([
-            'email' => 'Las credenciales no son correctas.',
+            'password' => 'La contraseña es incorrecta.',
         ]);
     }
 

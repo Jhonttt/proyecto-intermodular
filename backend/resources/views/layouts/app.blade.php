@@ -22,6 +22,7 @@
         }
     </style>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @stack('styles')
 </head>
 
 <body>
@@ -38,7 +39,8 @@
                     <a href="{{ route('admin.usuarios.index') }}" class="btn">Usuarios</a>
                     <form id="form-logout" action="{{ route('admin.logout') }}" method="POST">
                         @csrf
-                        <a href="#" class="btn btn-danger" onclick="document.getElementById('form-logout').submit()">Cerrar Sesión</a>
+                        <a href="#" class="btn btn-danger"
+                            onclick="document.getElementById('form-logout').submit()">Cerrar Sesión</a>
                     </form>
                 </nav>
             @endauth
