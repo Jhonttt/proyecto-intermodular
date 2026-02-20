@@ -12,14 +12,11 @@
 
     <?php $__currentLoopData = $proyectos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proyecto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <p>
-            <?php echo e($proyecto->nombre); ?> |
+            <a href="<?php echo e(route('admin.proyectos.show', ['id'=>$proyecto->id])); ?>"><?php echo e($proyecto->nombre); ?></a> |
             <?php echo e($proyecto->curso); ?> |
             <?php echo e($proyecto->alumnos); ?>
 
         </p>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-<?php $__env->stopSection(); ?>
-<?php $__env->startSection('content-admin'); ?>
-<h1>pito</h1>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\vespertino\Documents\proyecto-intermodular\backend\resources\views/admin/proyectos/index.blade.php ENDPATH**/ ?>

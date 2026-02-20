@@ -1,0 +1,15 @@
+/* separación entre artículos */
+.article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.article-item {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+}
+.article-item span {
+    flex: 1;
+}

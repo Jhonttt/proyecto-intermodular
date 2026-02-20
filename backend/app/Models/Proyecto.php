@@ -15,6 +15,7 @@ class Proyecto extends Model {
         "nombre",
         "resumen",
         "descripcion",
+        "video_url",
         "ciclo",
         "anio",
         "alumnos",
