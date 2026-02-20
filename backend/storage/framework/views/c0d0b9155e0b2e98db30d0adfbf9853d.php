@@ -35,6 +35,7 @@
             </div>
             <?php if(auth()->guard()->check()): ?>
                 <nav class="header-nav" style="display: flex">
+                    <a href="<?php echo e(route('admin.usuarios.index')); ?>" class="btn">Usuarios</a>
                     <form id="form-logout" action="<?php echo e(route('admin.logout')); ?>" method="POST">
                         <?php echo csrf_field(); ?>
                         <a href="#" class="btn btn-danger" onclick="document.getElementById('form-logout').submit()">Cerrar Sesión</a>
