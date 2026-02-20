@@ -183,6 +183,7 @@
   display: flex;
   justify-content: center;
   margin-top: 16px;
+  padding: 33px 0;
 }
 
 .video-player {
