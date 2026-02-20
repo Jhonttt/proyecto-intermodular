@@ -2,14 +2,13 @@
   <div class="container header-content">
 
     <div class="header-left">
-      <strong>IES Lázaro Cárdenas</strong>
+      <a routerLink="/home" class="navbar-brand"><strong>IES Lázaro Cárdenas</strong></a>
     </div>
 
     <nav class="header-nav">
 
       <ng-container *ngIf="!isLoggedIn">
-        <a routerLink="/home">Home</a>
-        <a routerLink="/login">Login</a>
+        <a href="./login" class="btn btn-success">Iniciar Sesión</a>
       </ng-container>
 
       <ng-container *ngIf="isLoggedIn">
