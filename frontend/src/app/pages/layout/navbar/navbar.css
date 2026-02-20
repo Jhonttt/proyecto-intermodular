@@ -1,0 +1,11 @@
+.header-nav a,
+.header-nav a.router-link-active,
+.header-nav a:visited,
+.header-nav a:hover,
+.header-nav a:active,
+.header-nav a:focus {
+  text-decoration: none !important; /* fuerza sin subrayado */
+  color: inherit;                    /* mantiene el color del texto */
+  display: inline-block;             /* evita que inline herede subrayado del navegador */
+  cursor: pointer;                   /* puntero de mano */
+}
