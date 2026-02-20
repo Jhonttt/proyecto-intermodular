@@ -25,18 +25,24 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="#">IES Lázaro Cárdenas | Repositorio</a>
-            <div class="navbar-nav ms-auto">
-                <span class="nav-link text-light">Hola, {{ auth()->user()->name ?? 'Usuario' }}</span>
-                <form action="{{ route('admin.logout') }}" method="POST">
-                    @csrf
-                    <button class="nav-link btn btn-danger btn-sm text-white ms-3">Cerrar Sesión</button>
-                </form>
+    <header class="header">
+        <div class="container header-content">
+            <div class="header-left">
+                <strong>
+                    <a class="navbar-brand" href="{{ route('admin.proyectos.index') }}">IES Lázaro Cárdenas |
+                        Repositorio</a>
+                </strong>
             </div>
+            @auth
+                <nav class="header-nav" style="display: flex">
+                    <form id="form-logout" action="{{ route('admin.logout') }}" method="POST">
+                        @csrf
+                        <a href="#" class="btn btn-danger" onclick="document.getElementById('form-logout').submit()">Cerrar Sesión</a>
+                    </form>
+                </nav>
+            @endauth
         </div>
-    </nav>
+    </header>
 
     <main class="main-container">
         @yield('content')

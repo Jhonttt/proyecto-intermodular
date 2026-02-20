@@ -25,18 +25,24 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="#">IES Lázaro Cárdenas | Repositorio</a>
-            <div class="navbar-nav ms-auto">
-                <span class="nav-link text-light">Hola, <?php echo e(auth()->user()->name ?? 'Usuario'); ?></span>
-                <form action="<?php echo e(route('admin.logout')); ?>" method="POST">
-                    <?php echo csrf_field(); ?>
-                    <button class="nav-link btn btn-danger btn-sm text-white ms-3">Cerrar Sesión</button>
-                </form>
+    <header class="header">
+        <div class="container header-content">
+            <div class="header-left">
+                <strong>
+                    <a class="navbar-brand" href="<?php echo e(route('admin.proyectos.index')); ?>">IES Lázaro Cárdenas |
+                        Repositorio</a>
+                </strong>
             </div>
+            <?php if(auth()->guard()->check()): ?>
+                <nav class="header-nav" style="display: flex">
+                    <form id="form-logout" action="<?php echo e(route('admin.logout')); ?>" method="POST">
+                        <?php echo csrf_field(); ?>
+                        <a href="#" class="btn btn-danger" onclick="document.getElementById('form-logout').submit()">Cerrar Sesión</a>
+                    </form>
+                </nav>
+            <?php endif; ?>
         </div>
-    </nav>
+    </header>
 
     <main class="main-container">
         <?php echo $__env->yieldContent('content'); ?>
