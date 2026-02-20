@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container mt-4">
 
         <h2 class="mb-4">Subir nuevo proyecto</h2>
 
         {{-- Mostrar errores --}}
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
@@ -21,24 +23,28 @@
             @csrf
 
             {{-- Nombre --}}
+
             <div class="mb-3">
                 <label class="form-label">Nombre del proyecto</label>
-                <input type="text" name="nombre" class="form-control" value="{{ old('nombre') }}" required>
+                <input type="text" name="nombre" class="form-control" value="{{ old('nombre') }}" required maxlength="100">
             </div>
 
             {{-- Resumen --}}
+
             <div class="mb-3">
                 <label class="form-label">Resumen</label>
                 <input type="text" name="resumen" class="form-control" value="{{ old('resumen') }}" required>
             </div>
 
             {{-- Descripcion --}}
+
             <div class="mb-3">
                 <label class="form-label">Descripción completa</label>
-                <textarea name="descripcion" class="form-control" rows="5" required minlength="25" maxlength="200">{{ old('descripcion') }}</textarea>
+                <textarea name="descripcion" class="form-control" rows="5" required minlength="25" maxlength="200" style="resize: none;">{{ old('descripcion') }}</textarea>
             </div>
 
             {{-- Curso --}}
+
             <div class="mb-3">
                 <label class="form-label">Curso académico</label>
                 <select name="curso" class="form-select" required>
@@ -50,6 +56,7 @@
             </div>
 
             {{-- Ciclo formativo --}}
+
             <div class="mb-3">
                 <label class="form-label">Ciclo formativo</label>
 
@@ -82,15 +89,16 @@
                 </select>
             </div>
 
-
             {{-- Alumnos --}}
+
             <div class="mb-3">
                 <label class="form-label">Alumnos participantes</label>
                 <textarea name="alumnos" class="form-control" rows="3"
-                    placeholder="Ej: Nombre1 Apellido1, Nombre2 Apellido2..." required>{{ old('alumnos') }}</textarea>
+                    placeholder="Ej: Nombre1 Apellido1, Nombre2 Apellido2..." required style="resize: none;">{{ old('alumnos') }}</textarea>
             </div>
 
             {{-- Tags (opcional) --}}
+
             <div class="mb-3">
                 <label class="form-label">Tags (opcional, máximo 5)</label>
                 <input type="text" name="tags" class="form-control" value="{{ old('tags') }}" placeholder="Laravel, Angular...">
@@ -99,8 +107,8 @@
                 </div>
             </div>
 
-
             {{-- Vídeo --}} 
+
             <div class="mb-3">
                 <label class="form-label">Vídeo del proyecto</label>
                 <input type="file" name="video" class="form-control" accept="video/*" required>
@@ -109,7 +117,6 @@
                 </div>
             </div>
 
-
             <div class="mb-3">
                 <label class="form-label">Archivo del proyecto (opcional)</label>
                 <input type="file" name="archivo" class="form-control">
@@ -117,7 +124,6 @@
                     Máximo 30MB
                 </div>
             </div>
-
 
             <button type="submit" class="btn btn-primary">
                 Enviar proyecto
