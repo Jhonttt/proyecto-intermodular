@@ -14,15 +14,12 @@
             <input type="text" name="alumnos" class="form-control w-auto" placeholder="Juan Pérez"
                 value="{{ request('alumnos') }}">
 
-            <input type="text" name="estado" class="form-control w-auto" placeholder="Pendiente"
-                value="{{ request('checked') }}">
-
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </form>
 
     </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive container-fluid mt-3">
         <table class="table table-hover">
             <thead class="table-light">
                 <tr>
@@ -36,7 +33,7 @@
             <tbody>
                 @foreach ($proyectos as $proyecto)
                     <tr>
-                        <td>{{ $proyecto->nombre }}</td>
+                        <td><a href="{{ route('admin.proyectos.show', $proyecto->id) }}">{{ $proyecto->nombre }}</a></td>
                         <td>{{ $proyecto->ciclo }}</td>
                         <td>{{ $proyecto->anio }}</td>
                         <td>@foreach($proyecto->alumnos as $alumno)

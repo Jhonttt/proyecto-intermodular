@@ -31,7 +31,7 @@
 
     <!-- Alumnos -->
     <div class="mb-3">
-        <strong>Alumnos:</strong> {{ $proyecto->alumnos }}
+        
     </div>
 
     <!-- Video del proyecto -->

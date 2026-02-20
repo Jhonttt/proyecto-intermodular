@@ -26,10 +26,7 @@ class ProyectoControllerAdmin extends Controller
         if ($request->filled('ciclo')) {
             $query->where('ciclo', 'like', '%' . $request->ciclo . '%');
         }
-        //Filtro por alumno
-/*         if ($request->filled('alumnos')) {
-            $query->whereJsonContains('alumnos', $request->alumnos); //busqueda exacta
-        } */
+        //Filtro por alumno/alumnos
         if ($request->filled('alumnos')) {
 
             $buscar = trim($request->alumnos);
