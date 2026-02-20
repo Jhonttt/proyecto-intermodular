@@ -19,18 +19,6 @@
     border-radius: 8px; 
 }
 
-.input, .btn {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.btn-danger {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
 .modal-overlay {
   position: fixed;
   top: 0;
