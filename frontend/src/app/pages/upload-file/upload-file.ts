@@ -48,31 +48,10 @@ export class UploadFileComponent {
     }
   }
 
-  onArchivoSeleccionado(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      if (file.size > this.MAX_SIZE) {
-        this.errorArchivo = 'El archivo no puede superar los 30 MB';
-        this.archivo = null;
-        return;
-      }
 
-      const extensionesPermitidas = ['.zip', '.rar'];
-      const nombre = file.name.toLowerCase();
-      const extension = nombre.substring(nombre.lastIndexOf('.'));
-      if (!extensionesPermitidas.includes(extension)) {
-        this.errorArchivo = 'Solo se permiten archivos ZIP o RAR';
-        this.archivo = null;
-        return;
-      }
-
-      this.errorArchivo = '';
-      this.archivo = file;
-    }
-  }
 
   enviarProyecto(form: any) {
-    // ❌ Si el formulario es inválido
+    // Si el formulario es inválido
     if (form.invalid) {
       alert('Por favor, revisa los campos obligatorios');
       return;
@@ -92,7 +71,7 @@ export class UploadFileComponent {
     formData.append('descripcion', this.proyecto.descripcion);
     formData.append('autores', JSON.stringify(this.autoresTexto.split(',').map(a => a.trim())));
     formData.append('tags', JSON.stringify(this.etiquetasTexto.split(',').map(e => e.trim())));
-    formData.append('video_url', this.video);
+    formData.append('video', this.video);
 
     if (this.archivo) {
       formData.append('documentos', this.archivo);

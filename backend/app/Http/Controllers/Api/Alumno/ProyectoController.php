@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
-class ProyectoController extends Controller {
-    public function index(Request $request) {
+class ProyectoController extends Controller
+{
+    public function index(Request $request)
+    {
         try {
             $proyectos = Proyecto::where('checked', true)
                 ->orderBy('created_at', 'desc')
@@ -26,7 +28,8 @@ class ProyectoController extends Controller {
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $user = $request->user();
         if ($user->rol !== 'admin') {
             return response()->json(['message' => 'No autorizado'], 403);
@@ -44,14 +47,30 @@ class ProyectoController extends Controller {
             'tags' => 'nullable|string',
             'checked' => 'boolean',
             'observaciones' => 'nullable|string',
+            'video' => 'nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:51200', // 50MB
         ]);
 
         $proyecto = Proyecto::create($data);
 
-        return response()->json($proyecto, 201);
+        // Si viene un video físico, guardarlo en storage/app/public/videos
+        $videoPath = null;
+        if ($request->hasFile('video')) {
+            $video = $request->file('video');
+            $nombreVideo = time() . '_' . $video->getClientOriginalName();
+            $video->storeAs('public/videos', $nombreVideo);
+            $videoPath = url('storage/videos/' . $nombreVideo);
+        }
+
+        return response()->json([
+            'proyecto' => $proyecto,
+            'video_path' => $videoPath
+        ], 201);
+
+        
     }
 
-    public function show(Request $request, $id) {
+    public function show(Request $request, $id)
+    {
         // Validar que el ID sea numérico
         if (!is_numeric($id)) {
             return response()->json([
@@ -83,7 +102,7 @@ class ProyectoController extends Controller {
         }
     }
 
-    public function update(Request $request, $id) {
+     public function update(Request $request, $id) {
         $user = $request->user();
         if ($user->rol !== 'admin') {
             return response()->json(['message' => 'No autorizado'], 403);
@@ -106,14 +125,28 @@ class ProyectoController extends Controller {
             'tags' => 'sometimes|string',
             'checked' => 'sometimes|boolean',
             'observaciones' => 'nullable|string',
+            'video' => 'nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:51200',
         ]);
 
         $proyecto->update($data);
 
-        return response()->json($proyecto, 200);
+         // Subida de video físico
+        $videoPath = null;
+        if ($request->hasFile('video')) {
+            $video = $request->file('video');
+            $nombreVideo = time() . '_' . $video->getClientOriginalName();
+            $video->storeAs('public/videos', $nombreVideo);
+            $videoPath = url('storage/videos/' . $nombreVideo);
+        }
+
+        return response()->json([
+            'proyecto' => $proyecto,
+            'video_path' => $videoPath
+        ], 200);
     }
 
-    public function destroy(Request $request, $id) {
+    public function destroy(Request $request, $id)
+    {
         $user = $request->user();
         if ($user->rol !== 'admin') {
             return response()->json(['message' => 'No autorizado'], 403);
