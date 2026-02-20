@@ -47,7 +47,7 @@
                             style="display: block; margin-bottom: 5px; font-weight: var(--font-weight-medium);">Correo
                             Electrónico</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}"
-                            class="{{ $errors->has('email') ? 'input-error' : 'input' }}" placeholder="ejemplo@correo.com"
+                            class="{{ $errors->has('email') ? 'input-error' : '' }} input" placeholder="ejemplo@correo.com"
                             required>
                     </div>
 
@@ -55,7 +55,7 @@
                         <label for="passwd"
                             style="display: block; margin-bottom: 5px; font-weight: var(--font-weight-medium);">Contraseña</label>
                         <input id="password" type="password" name="password"
-                            class="{{ $errors->has('password') ? 'input-error' : 'input' }}" placeholder="********"
+                            class="{{ $errors->has('password') ? 'input-error' : '' }} input" placeholder="********"
                             required>
                     </div>
 
