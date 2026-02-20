@@ -28,7 +28,8 @@ class AuthController extends Controller {
             //Comprobar si es admin
             if (empty($user->rol) || $user->rol !== 'admin') {
                 Auth::logout();
-                return back()->withErrors([
+                $request->session()->flush();
+                return redirect()->route("admin.login.index")->withErrors([
                     'email' => 'No tienes permisos para acceder al panel de administración.',
                 ]);
             }
@@ -36,7 +37,8 @@ class AuthController extends Controller {
             //Comprobar si es un usuario activo
             if (isset($user->is_active) && !$user->is_active) {
                 Auth::logout();
-                return back()->withErrors([
+                $request->session()->flush();
+                return redirect()->route("admin.login.index")->withErrors([
                     'email' => 'Tu cuenta está inactiva. Contacta con un administrador.',
                 ]);
             }
@@ -49,20 +51,19 @@ class AuthController extends Controller {
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            return back()->withErrors([
+            return redirect()->route("admin.login.index")->withInput()->withErrors([
                 'email' => 'No existe ninguna cuenta con ese correo.',
             ]);
         }
 
-        return back()->withErrors([
+        return redirect()->route("admin.login.index")->withInput()->withErrors([
             'password' => 'La contraseña es incorrecta.',
         ]);
     }
 
     public function logout(Request $request) {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->session()->flush();
 
         return redirect()->route('admin.login.index');
     }
