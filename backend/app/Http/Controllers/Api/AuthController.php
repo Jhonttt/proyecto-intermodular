@@ -30,13 +30,6 @@ class AuthController extends Controller {
             ], 403);
         }
 
-        if ($user->rol !== 'admin') {
-            Auth::logout();
-            return response()->json([
-                'message' => 'Acceso denegado'
-            ], 403);
-        }
-
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([

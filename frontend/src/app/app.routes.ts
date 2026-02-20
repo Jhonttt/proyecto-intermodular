@@ -6,6 +6,7 @@ import { DetailsForm } from './pages/details-form/details-form';
 import { Form } from './pages/form/form';
 import { Shared } from './pages/shared/shared';
 import { ForgotPassword } from './pages/forgot-password/forgot-password';
+import { UploadFileComponent } from './pages/upload-file/upload-file';
 
 export const routes: Routes = [
   { path: 'login', component: Form},
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'admin', component: HomeAdmin },
   { path: "details-form/:id", component: DetailsForm },
   { path: 'shared', component: Shared },
-  { path: 'forgot-password', component: ForgotPassword}
+  { path: 'forgot-password', component: ForgotPassword},
+  { path: 'formulario-subida', component: UploadFileComponent}
 ];

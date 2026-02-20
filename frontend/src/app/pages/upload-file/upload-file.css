@@ -1,0 +1,84 @@
+/*=============================
+FORMULARIO SUBIR PROYECTO
+===============================*/
+
+.upload-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+  background-color: var(--color-background-secondary);
+  border: var(--border-default);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.upload-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.upload-form label {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  color: var(--color-text-main);
+}
+
+.upload-form input[type="text"],
+.upload-form input[type="file"],
+.upload-form select,
+.upload-form textarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  border: var(--border-default);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.upload-form input:focus,
+.upload-form select:focus,
+.upload-form textarea:focus {
+  border-color: var(--color-primary);
+}
+
+.upload-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.error {
+  font-size: var(--font-size-small);
+  color: var(--color-danger);
+  margin-top: 4px;
+}
+
+.upload-form button[type="submit"] {
+  padding: 10px 16px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  background-color: var(--color-check);
+  color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+.upload-form button[type="submit"]:hover {
+  background-color: var(--color-check2);
+}
+
+.upload-form input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 640px) {
+  .upload-form {
+    padding: var(--spacing-sm);
+  }
+}
