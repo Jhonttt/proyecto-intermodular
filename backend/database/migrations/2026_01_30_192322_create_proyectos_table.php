@@ -23,9 +23,9 @@ return new class extends Migration {
             $table->json("tags")->nullable();
             $table->boolean('checked')->default(false);
             $table->text('observaciones')->nullable();
+            $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });
-        ;
     }
 
     /**
