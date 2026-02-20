@@ -14,8 +14,7 @@
         <p>
             <a href="<?php echo e(route('admin.proyectos.show', ['id'=>$proyecto->id])); ?>"><?php echo e($proyecto->nombre); ?></a> |
             <?php echo e($proyecto->curso); ?> |
-            <?php echo e($proyecto->alumnos); ?>
-
+            
         </p>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 <?php $__env->stopSection(); ?>
