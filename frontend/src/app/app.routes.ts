@@ -13,7 +13,7 @@ export const routes: Routes = [
   { path: 'home', component: Home },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'admin', component: HomeAdmin },
-  { path: "details-form/:id", component: DetailsForm },
+  { path: "details-form/:id", component: DetailsForm }, //php artisan storage:link → ejecutar en el backend para el video
   { path: 'shared', component: Shared },
   { path: 'forgot-password', component: ForgotPassword},
   { path: 'formulario-subida', component: UploadFileComponent}

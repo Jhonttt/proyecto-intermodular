@@ -8,9 +8,8 @@ describe('DetailsForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetailsForm]
-    })
-    .compileComponents();
+      imports: [DetailsForm],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DetailsForm);
     component = fixture.componentInstance;
@@ -20,4 +19,5 @@ describe('DetailsForm', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });
