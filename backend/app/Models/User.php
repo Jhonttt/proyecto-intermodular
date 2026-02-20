@@ -16,6 +16,7 @@ class User extends Authenticatable {
         'password',
         'rol',
         'activo',
+        "proyecto_subido"
     ];
 
     protected $hidden = [
@@ -25,8 +26,14 @@ class User extends Authenticatable {
 
     protected $casts = [
         'password' => 'hashed',
-        'email_verified_at' => 'datetime'
+        'email_verified_at' => 'datetime',
+        "activo" => "boolean",
+        "proyecto_subido" => "boolean",
     ];
+
+    public function proyecto() {
+        return $this->hasOne(Proyecto::class);
+    }
 
     public function hasRole(string $rol): bool {
         return $this->rol === $rol;

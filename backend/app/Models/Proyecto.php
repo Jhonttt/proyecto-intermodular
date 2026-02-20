@@ -23,6 +23,7 @@ class Proyecto extends Model {
         "tags",
         "checked",
         "observaciones",
+        "user_id",
     ];
 
     protected $casts = [
@@ -31,4 +32,8 @@ class Proyecto extends Model {
         'tags' => JsonUnicode::class,
         'checked' => 'boolean',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
