@@ -30,9 +30,7 @@
           <div>
             <h2 class="card__title">{{ project.nombre }}</h2>
             <!-- Descripción -->
-            <p class="text" style="white-space: pre-wrap">
-              {{ project.descripcion }}
-            </p>
+            <p class="text" style="white-space: pre-wrap">{{ project.descripcion }}</p>
           </div>
 
           <!-- Estado proyecto -->
@@ -65,10 +63,15 @@
         <!-- Video -->
         @if (project.video_url) {
           <section class="section">
-            <h3 class="section__title"><b>Video del Proyecto</b></h3>
-            <video class="video-player" controls [src]="project.video_url"></video>
+            <h3 class="section__title section__title--bold">Video del Proyecto</h3>
+            <div class="video-container">
+              <video
+                class="video-player"
+                controls
+                [src]="'http://localhost:8000/storage/proyectos/' + project.video_url"
+              ></video>
+            </div>
           </section>
-          <hr class="divider" />
         }
 
         <!-- Documentos -->

@@ -17,7 +17,7 @@
 
 /* Extensión de la card global */
 .details-card {
- padding: 12px 14px;
+  padding: 12px 14px;
 }
 
 /* Header de la card */
@@ -179,8 +179,17 @@
 }
 
 /*Video*/
+.video-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
 .video-player {
-  display: block;
-  margin: 0 auto;
-  max-width: 100%;
+  width: 100%;
+  max-width: 560px; 
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  background: #000;
+  
 }
