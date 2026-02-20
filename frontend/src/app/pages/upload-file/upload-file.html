@@ -1,8 +1,10 @@
-<h2>Subir proyecto</h2>
+<h2 style="text-align:center; margin-top:20px;">
+  Subir proyecto
+</h2>
 
 <!-- Formulario principal -->
 <!-- (ngSubmit) se ejecuta al hacer submit del formulario -->
-<form class="upload-form" (ngSubmit)="enviarProyecto()">
+<form #formProyecto="ngForm" (ngSubmit)="enviarProyecto(formProyecto)" class="upload-form">
 
 
   <div>
@@ -10,7 +12,8 @@
     <!-- [(ngModel)] enlaza el input con proyecto.titulo en TS -->
     <!-- name es obligatorio para ngModel en formularios template-driven -->
     <!-- required indica que este campo es obligatorio -->
-    <input id="titulo" type="text" [(ngModel)]="proyecto.titulo" name="titulo" required />
+    <input id="titulo" type="text" [(ngModel)]="proyecto.titulo" name="titulo" required #titulo="ngModel" />
+    <div *ngIf="titulo.invalid && titulo.touched" class="error">El título es obligatorio</div>
   </div>
 
   <!-- Campo para autores -->
@@ -57,7 +60,7 @@
 
  
     <!-- textarea enlaza con proyecto.descripcion -->
-    <textarea [(ngModel)]="proyecto.descripcion" name="descripcion" required maxlength="200" minlength="25"></textarea>
+    <textarea [(ngModel)]="proyecto.descripcion" name="descripcion" required maxlength="200" minlength="25"   style="resize: none;"></textarea>
   </div>
 
 
@@ -84,7 +87,7 @@
   <!-- Archivo del proyecto -->
   <div>
     <label for="archivo">Archivo del proyecto (ZIP o RAR):</label><br>
-    <input id="archivo" type="file" accept=".zip,.rar" (change)="onArchivoSeleccionado($event)" />
+    <input id="archivo" type="file" accept=".zip,.rar" (change)="onDocumentacionSeleccionada($event)" />
     <div *ngIf="errorArchivo" class="error">
       {{ errorArchivo }}
     </div>
@@ -94,3 +97,4 @@
   <!-- Botón de envío -->
   <button type="submit">Enviar</button>
 </form>
+<br><br>

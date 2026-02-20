@@ -1,4 +1,5 @@
 
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -10,8 +11,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './upload-file.html',
   styleUrls: ['./upload-file.css']
 })
-export class UploadFileComponent {
 
+export class UploadFileComponent {
+  constructor(private http: HttpClient) {}
   proyecto: any = {
     titulo: '',
     curso: '',
@@ -69,8 +71,12 @@ export class UploadFileComponent {
     }
   }
 
-  enviarProyecto() {
-
+  enviarProyecto(form: any) {
+    // ❌ Si el formulario es inválido
+    if (form.invalid) {
+      alert('Por favor, revisa los campos obligatorios');
+      return;
+    }
 
     if (!this.video) {
       this.errorVideo = 'Es obligatorio subir un vídeo';
@@ -92,8 +98,36 @@ export class UploadFileComponent {
       formData.append('documentos', this.archivo);
     }
 
-    console.log('Proyecto listo:', formData);
+    this.http.post('http://127.0.0.1:8000/api/proyectos', formData)
+  .subscribe({
+    next: (res) => {
+      alert('Proyecto creado correctamente');
+      console.log(res);
+    },
+    error: (err) => {
+      alert('Error al crear el proyecto');
+      console.error(err);
+    }
+  });
   }
 
+  // Tamaño máximo permitido para documentación (10 MB)
+  MAX_DOC_SIZE = 10 * 1024 * 1024;
+
+  // Método que se ejecuta cuando el usuario selecciona la documentación
+  onDocumentacionSeleccionada(event: any): void {
+
+    const file = event.target.files[0]; // Obtenemos el archivo seleccionado
+
+    if (file) {
+
+      // 1️⃣ Validar tamaño máximo (10MB)
+      if (file.size > this.MAX_DOC_SIZE) {
+        this.errorArchivo = 'La documentación no puede superar los 10 MB';
+        this.archivo = null;
+        return;
+      }
+    }
+  }
 }
 
