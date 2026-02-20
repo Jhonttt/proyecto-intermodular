@@ -3,7 +3,8 @@ export interface Proyecto {
   nombre: string;
   resumen: string;
   descripcion: string;
-  curso: string;
+  ciclo: string;
+  anio: Date;
   alumnos: string[];
   video_url: string;
   documentos: string[] | null;  // Array o null
@@ -18,7 +19,7 @@ export interface CreateProyectoRequest {
   nombre: string;
   resumen: string;
   descripcion: string;
-  curso: string;
+  ciclo: string;
   alumnos: string[];
   video_url: string;
   documentos?: string[];
@@ -31,7 +32,7 @@ export interface UpdateProyectoRequest {
   nombre?: string;
   resumen?: string;
   descripcion?: string;
-  curso?: string;
+  ciclo?: string;
   alumnos?: string[];
   video_url?: string;
   documentos?: string[];

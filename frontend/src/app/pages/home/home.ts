@@ -152,7 +152,7 @@ aplicarFiltros() {
     const matchTexto =
       p.nombre?.toLowerCase().includes(term) ||
       p.resumen?.toLowerCase().includes(term) ||
-      p.curso?.toLowerCase().includes(term) ||
+      p.ciclo?.toLowerCase().includes(term) ||
       p.alumnos?.some(alumno =>
         alumno.toLowerCase().includes(term)
       ) ||
