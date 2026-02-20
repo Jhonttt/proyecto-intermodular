@@ -6,4 +6,6 @@
 
 a{
   font-size: var(--font-size-small);
+  text-decoration: none;
+  color:rgb(106, 115, 123);
 }
