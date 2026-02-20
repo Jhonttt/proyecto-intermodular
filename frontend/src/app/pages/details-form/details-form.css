@@ -1,7 +1,7 @@
 /* Espaciado vertical propio de esta página */
 .details {
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 .page__header {
   display: flex;
@@ -17,8 +17,7 @@
 
 /* Extensión de la card global */
 .details-card {
-  padding: 16px;
-  border-radius: 14px;
+ padding: 12px 14px;
 }
 
 /* Header de la card */
@@ -29,14 +28,19 @@
   align-items: flex-start;
 }
 
+.card__header > div {
+  flex: 1;
+  min-width: 0;
+}
+
 .card__title {
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
   font-size: 1.25rem;
 }
 
 /* Secciones */
 .section {
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .section__title {
@@ -69,6 +73,10 @@
   line-height: 1.5;
 }
 
+.card__header .text {
+  margin: 0 0 12px 0;
+}
+
 /* Listas */
 .list {
   margin: 0;
@@ -89,12 +97,32 @@
   gap: 8px;
 }
 
+/*Efectos de tags*/
+.tech-tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 50px;
+  background-color: #f1f3f5;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  transition: all 0.2s ease-in-out;
+  cursor: default;
+}
+
+.tech-tag:hover {
+  background-color: #198754;
+  color: white;
+  border-color: #198754;
+  transform: translateY(-2px);
+}
+
 .tag {
-  background: #f8f9fa; /* Background secondary */
-  border: 1px solid #ced4da; /* Border / Light Gray */
+  background: #f8f9fa;
+  border: 1px solid #ced4da;
   border-radius: 999px;
   padding: 6px 10px;
-  font-size: 14px; /* Small */
+  font-size: 14px;
   line-height: 1;
 }
 
@@ -120,7 +148,7 @@
 
 /* Separadores */
 .divider {
-  margin: 16px 0;
+  margin: 12px 0;
   border: 0;
   border-top: 1px solid #615e5e;
 }
@@ -147,5 +175,12 @@
 }
 
 .btn--icon .material-icons {
-  font-size: 16px; /* “como el 11” */
+  font-size: 16px;
+}
+
+/*Video*/
+.video-player {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
 }

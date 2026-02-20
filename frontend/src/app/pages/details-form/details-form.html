@@ -6,6 +6,8 @@
       <h1 class="page__title">Detalle del Proyecto</h1>
     </header>
 
+    <hr class="divider" />
+
     <!-- Loading -->
     @if (loading) {
       <p class="alert">Cargando información del proyecto...</p>
@@ -72,7 +74,7 @@
         <!-- Documentos -->
         @if (hasDocumentos()) {
           <section class="section">
-            <h3 class="section__title"><b>Documentos Adjuntos</b></h3>
+            <h3 class="section__title"><b>Documentos adjuntos</b></h3>
             <ul class="list">
               @for (doc of project.documentos; track doc) {
                 <li class="list__item">
@@ -94,7 +96,7 @@
             <h3 class="section__title"><b>Tecnologías y Etiquetas</b></h3>
             <ul class="tag-list">
               @for (tag of project.tags; track tag) {
-                <li class="tag">{{ tag }}</li>
+                <li class="tech-tag">{{ tag }}</li>
               }
             </ul>
           </section>
