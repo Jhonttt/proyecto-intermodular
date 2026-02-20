@@ -1,24 +1,89 @@
+/* Sección centrada */
 section {
-    text-align: center;
-    margin-top: 2em;
+  text-align: center;
+  margin-top: 2em;
+  font-family: Arial, sans-serif;
 }
 
-input {
-    margin-right: 5px;
+/* Controles alineados */
+.controls {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  align-items: center;     /* alinea verticalmente */
+  gap: 10px;               /* espacio entre input y select */
+  margin-top: 1.5em;
+  flex-wrap: wrap;         /* opcional: apilar en móviles */
 }
 
-select {
-    margin-left: 8px;
+/* Input de búsqueda */
+.search-container {
+  position: relative;
 }
 
-@media screen and (max-width:422px) {
-    input {
+.search-container input {
+  padding-left: 35px;   /* espacio para icono */
+  height: 40px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 250px;          /* ancho fijo para consistencia */
+}
 
-        width: 120px;
-        height: 28px;
-        font-size: 12px;
-        padding: 3px 5px;
+.search-container .search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 18px;
+  color: #888;
+}
 
+/* Select */
+.select-wrapper {
+  position: relative;
+}
 
-    }
+.select-wrapper select {
+  height: 40px;          /* misma altura que input */
+  width: 180px;           /* ancho consistente */
+  font-size: 14px;
+  padding: 10px 35px 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select-wrapper::after {
+  content: '▼';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+  font-size: 12px;
+}
+
+/* Focus states */
+.search-container input:focus,
+.select-wrapper select:focus {
+  border-color: #3f51b5;
+  outline: none;
+}
+
+/* Responsive móvil */
+@media screen and (max-width: 422px) {
+  .controls {
+    flex-direction: column; /* apila input y select */
+    gap: 8px;
+  }
+
+  .search-container input,
+  .select-wrapper select {
+    width: 100%;
+    height: 35px;
+    font-size: 13px;
+  }
 }

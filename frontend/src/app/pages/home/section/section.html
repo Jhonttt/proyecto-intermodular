@@ -1,18 +1,21 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <section>
   <h1 class="display-2">Repositorios de Proyectos</h1>
-  <p>Explota y descubre proyectos innovadores desarrollados por estudiantes</p>
+  <p>Explora y descubre proyectos innovadores desarrollados por estudiantes</p>
 
-  <input type="search" 
-  placeholder="Buscar proyectos..." 
-  [(ngModel)]="searchTerm" 
-  (input)="onSearchChange()" />
+  <div class="controls">
+    <div class="search-container">
+      <span class="material-icons-outlined search-icon">search</span>
+      <input type="search" placeholder="Buscar proyectos..." [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+    </div>
 
-  <select [(ngModel)]="selectedTag" (change)="onTagChange()">
-    <option value="">Todos los tags</option>
-    <option *ngFor="let tag of tagsUnicos" [value]="tag">
-      {{ tag }}
-    </option>
-  </select>
-
-
+    <div class="select-wrapper">
+      <select [(ngModel)]="selectedTag" (change)="onTagChange()">
+        <option value="">Todos</option>
+        <option *ngFor="let tag of tagsUnicos" [value]="tag">
+          {{ tag }}
+        </option>
+      </select>
+    </div>
+  </div>
 </section>
