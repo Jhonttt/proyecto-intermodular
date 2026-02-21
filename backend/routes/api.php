@@ -49,6 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
+Route::post('/proyectos', [ProyectoController::class, 'store']);
+
 
 
 // Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");
