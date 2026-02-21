@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Proyecto;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProyectoSeeder extends Seeder {
@@ -46,5 +45,24 @@ class ProyectoSeeder extends Seeder {
             "observaciones" => null
         ]);
         $luis->update(["proyecto_subido" => true]);
+
+        // 15 proyectos verificados para alumnos con proyecto_subido = true (los primeros 15)
+        User::where('proyecto_subido', true)
+            ->whereNotIn('email', ['juan@test.com', 'luis@test.com'])
+            ->take(15)
+            ->get()
+            ->each(function ($user) {
+                Proyecto::factory()->verificado()->create(['user_id' => $user->id]);
+            });
+
+        // 10 proyectos pendientes para el resto
+        User::where('proyecto_subido', true)
+            ->whereNotIn('email', ['juan@test.com', 'luis@test.com'])
+            ->skip(15)
+            ->take(10)
+            ->get()
+            ->each(function ($user) {
+                Proyecto::factory()->create(['user_id' => $user->id]);
+            });
     }
 }

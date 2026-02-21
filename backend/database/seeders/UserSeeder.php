@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -40,5 +39,17 @@ class UserSeeder extends Seeder {
             "rol" => "admin",
             "activo" => false,
         ]);
+
+        // 5 admins aleatorios
+        User::factory()->admin()->count(5)->create();
+
+        // 20 alumnos sin proyecto
+        User::factory()->count(20)->create();
+
+        // 15 alumnos con proyecto (se marcan aquí, el proyecto lo crea ProyectoSeeder)
+        User::factory()->conProyecto()->count(15)->create();
+
+        // 10 alumnos con proyecto pendiente
+        User::factory()->conProyecto()->count(10)->create();
     }
 }
