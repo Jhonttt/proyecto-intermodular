@@ -7,6 +7,7 @@ import { Form } from './pages/form/form';
 import { Shared } from './pages/shared/shared';
 import { ForgotPassword } from './pages/forgot-password/forgot-password';
 import { UploadFileComponent } from './pages/upload-file/upload-file';
+import { sinProyectoGuard } from './core/guards/sin-proyecto.guard';
 
 export const routes: Routes = [
   { path: 'login', component: Form},
@@ -16,5 +17,5 @@ export const routes: Routes = [
   { path: "details-form/:id", component: DetailsForm }, //php artisan storage:link → ejecutar en el backend para el video
   { path: 'shared', component: Shared },
   { path: 'forgot-password', component: ForgotPassword},
-  { path: 'formulario-subida', component: UploadFileComponent}
+  { path: 'formulario-subida', component: UploadFileComponent, canActivate: [sinProyectoGuard]}
 ];
