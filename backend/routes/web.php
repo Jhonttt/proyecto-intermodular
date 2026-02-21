@@ -5,6 +5,9 @@ use App\Http\Controllers\Web\Admin\AuthController;
 use App\Http\Controllers\Web\Admin\UserController;
 use App\Http\Controllers\Web\Alumno\ProyectoController as AlumnoProyectoController;
 
+
+
+
 Route::get('/login', [AuthController::class, 'showLogin'])->name('admin.login.index');
 Route::post('/login', [AuthController::class, 'login'])->name('admin.login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
@@ -20,7 +23,7 @@ Route::middleware(["auth:sanctum", "admin"])->group(function () {
         Route::patch('/proyectos/{id}/uncheck', [ProyectoControllerAdmin::class, 'uncheck'])->name('admin.proyectos.uncheck');
         // Route::get('/proyectos/{id}/edit', [ProyectoControllerAdmin::class, 'edit'])->name('admin.proyectos.edit');
         Route::delete('/proyectos/{id}/destroy', [ProyectoControllerAdmin::class, 'destroy'])->name('admin.proyectos.destroy');
-        
+
         Route::get('/usuarios', [UserController::class, 'index'])->name('admin.usuarios.index');
         Route::get('/usuarios/create', [UserController::class, 'create'])->name('admin.usuarios.create');
         Route::post('/usuarios', [UserController::class, 'store'])->name('admin.usuarios.store');
