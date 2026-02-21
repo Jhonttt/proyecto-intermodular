@@ -39,66 +39,80 @@ class ProyectoController extends Controller {
             'ciclo' => 'required|string',
             'anio' => 'required|string',
             'alumnos' => 'required|string',
-            'video_url' => 'required|string',
+            'video_url' => 'nullable|string',
             'documentos' => 'required|string',
             'tags' => 'nullable|string',
             'checked' => 'boolean',
             'observaciones' => 'nullable|string',
-            'video' => 'nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:51200', // 50MB
+            'video' => 'nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:51200',
         ]);
 
         $proyecto = Proyecto::create($data);
 
-        // Si viene un video físico, guardarlo en storage/app/public/videos
-        $videoPath = null;
+        // Si viene un video físico, guardarlo y generar thumbnail
         if ($request->hasFile('video')) {
             $video = $request->file('video');
             $nombreVideo = time() . '_' . $video->getClientOriginalName();
-            $video->storeAs('public/videos', $nombreVideo);
-            $videoPath = url('storage/videos/' . $nombreVideo);
+            $video->storeAs('public/proyectos', $nombreVideo);
+
+            // Actualizar video_url en el proyecto
+            $proyecto->video_url = $nombreVideo;
+
+            // Generar thumbnail con FFmpeg
+            $videoPath = storage_path('app/public/proyectos/' . $nombreVideo);
+            $thumbnailName = pathinfo($nombreVideo, PATHINFO_FILENAME) . '_thumb.jpg';
+            $thumbnailPath = storage_path('app/public/proyectos/thumbnails/' . $thumbnailName);
+
+            if (!file_exists(dirname($thumbnailPath))) {
+                mkdir(dirname($thumbnailPath), 0755, true);
+            }
+
+            exec("ffmpeg -i {$videoPath} -ss 00:00:01 -vframes 1 {$thumbnailPath} 2>&1");
+
+            $proyecto->video_thumbnail = 'proyectos/thumbnails/' . $thumbnailName;
+            $proyecto->save();
         }
 
         return response()->json([
             'proyecto' => $proyecto,
-            'video_path' => $videoPath
         ], 201);
     }
 
-    public function show(Request $request, $id)
-{
-    if (!is_numeric($id)) {
-        return response()->json(['success' => false, 'message' => 'ID inválido'], 400);
-    }
-
-    try {
-        $proyecto = Proyecto::find($id);
-
-        if (!$proyecto) {
-            return response()->json(['success' => false, 'message' => 'Proyecto no encontrado'], 404);
+    public function show(Request $request, $id) {
+        if (!is_numeric($id)) {
+            return response()->json(['success' => false, 'message' => 'ID inválido'], 400);
         }
 
-        if (!$proyecto->checked) {
-            // Intentar autenticar manualmente aunque la ruta sea pública
-            $user = null;
-            try {
-                $user = \Laravel\Sanctum\PersonalAccessToken::findToken(
-                    $request->bearerToken()
-                )?->tokenable;
-            } catch (\Exception $e) {}
+        try {
+            $proyecto = Proyecto::find($id);
 
-            if (!$user || $user->id !== $proyecto->user_id) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Este proyecto aún no está disponible'
-                ], 403);
+            if (!$proyecto) {
+                return response()->json(['success' => false, 'message' => 'Proyecto no encontrado'], 404);
             }
-        }
 
-        return response()->json(['success' => true, 'data' => $proyecto], 200);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => 'Error al obtener el proyecto'], 500);
+            if (!$proyecto->checked) {
+                // Intentar autenticar manualmente aunque la ruta sea pública
+                $user = null;
+                try {
+                    $user = \Laravel\Sanctum\PersonalAccessToken::findToken(
+                        $request->bearerToken()
+                    )?->tokenable;
+                } catch (\Exception $e) {
+                }
+
+                if (!$user || $user->id !== $proyecto->user_id) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Este proyecto aún no está disponible'
+                    ], 403);
+                }
+            }
+
+            return response()->json(['success' => true, 'data' => $proyecto], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al obtener el proyecto'], 500);
+        }
     }
-}
 
     public function update(Request $request, $id) {
         $user = $request->user();

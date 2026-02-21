@@ -49,6 +49,19 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
+Route::get('/video/{filename}', function ($filename) {
+    $path = storage_path('app/public/proyectos/' . $filename);
+
+    if (!file_exists($path)) {
+        return response()->json(['message' => 'Video no encontrado'], 404);
+    }
+
+    return response()->file($path, [
+        'Access-Control-Allow-Origin' => 'http://localhost:4200',
+        'Content-Type' => 'video/mp4',
+    ]);
+});
+
 Route::get('/proyectos/{id}', [ProyectoController::class, 'show'])->name('api.proyectos.show.public');
 Route::post('/proyectos', [ProyectoController::class, 'store']);
                 
