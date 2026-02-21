@@ -9,7 +9,7 @@ import { ProyectoService } from '../../../core/services/proyecto.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css']
+  styleUrls: ['./navbar.css'],
 })
 export class Navbar implements OnInit {
   projectId: number | null = null;
@@ -18,7 +18,7 @@ export class Navbar implements OnInit {
   constructor(
     private authService: AuthService,
     private proyectoService: ProyectoService,
-    private router: Router
+    private router: Router,
   ) {}
 
   get isLoggedIn(): boolean {
@@ -31,34 +31,45 @@ export class Navbar implements OnInit {
   }
 
   logout() {
+    this.tieneProyecto = false;
+    this.projectId = null;
     this.authService.logout();
   }
 
   ngOnInit() {
-  if (this.isLoggedIn) {
-    console.log('Token:', localStorage.getItem('token'));
-    console.log('User:', this.user);
-    
-    this.proyectoService.getMiProyecto().subscribe({
-      next: (res) => {
-        console.log('Mi proyecto:', res);
-        this.tieneProyecto = true;
-        this.projectId = res.data?.id ?? null;
-      },
-      error: (err) => {
-        console.log('Error mi proyecto:', err);
+    this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
+      if (loggedIn && !this.isAdmin) {
+        this.cargarMiProyecto();
+      } else {
         this.tieneProyecto = false;
         this.projectId = null;
       }
     });
   }
-}
+
+  cargarMiProyecto() {
+    console.log('cargarMiProyecto() llamado');
+    this.proyectoService.getMiProyecto().subscribe({
+      next: (res: any) => {
+        console.log('getMiProyecto respuesta:', res);
+        this.tieneProyecto = true;
+        this.projectId = res.data?.id ?? null;
+      },
+      error: (err) => {
+        console.log('getMiProyecto error:', err.status);
+        this.tieneProyecto = false;
+        this.projectId = null;
+      },
+    });
+  }
 
   verProyecto() {
-  console.log('tieneProyecto:', this.tieneProyecto);
-  console.log('projectId:', this.projectId);
-  if (this.projectId) {
-    this.router.navigate(['/details-form', this.projectId]);
+    if (this.projectId) {
+      this.router.navigate(['/details-form', this.projectId]);
+    }
   }
-}
+
+  get isAdmin(): boolean {
+    return this.user?.rol === 'admin';
+  }
 }

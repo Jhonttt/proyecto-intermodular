@@ -8,22 +8,30 @@ export const sinProyectoGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   const token = localStorage.getItem('token');
-
-  // Si no está logueado, redirigir al login
   if (!token) {
     router.navigate(['/login']);
     return of(false);
   }
 
+  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
+
+  // Si es admin, no puede subir proyectos
+  if (user && user.rol === 'admin') {
+    router.navigate(['/home']);
+    return of(false);
+  }
+
+  // Si el alumno no tiene proyecto_subido, dejamos pasar sin llamar al backend
+  if (user && !user.proyecto_subido) {
+    return of(true);
+  }
+
+  // Si tiene proyecto_subido, verificamos en backend
   return proyectoService.getMiProyecto().pipe(
     map(() => {
-      // Si tiene proyecto, redirigir a su proyecto
       router.navigate(['/home']);
       return false;
     }),
-    catchError(() => {
-      // Si no tiene proyecto (404), dejar pasar
-      return of(true);
-    })
+    catchError(() => of(true))
   );
 };
