@@ -102,9 +102,10 @@ export class Home implements OnInit {
   }
 
   async generarThumbnails(): Promise<void> {
-    for (const proyecto of this.proyectosOriginal) {
-      if (!proyecto.video_url) continue;
+    // Procesar máximo 5 en paralelo para no saturar
+    const conVideo = this.proyectosOriginal.filter((p) => p.video_url);
 
+    for (const proyecto of conVideo) {
       const cacheKey = 'thumb_' + proyecto.id;
       const cached = localStorage.getItem(cacheKey);
 
@@ -114,20 +115,20 @@ export class Home implements OnInit {
         continue;
       }
 
-      // Verificar que el video existe antes de intentar capturar
-      const videoUrl = 'http://localhost:8000/api/video/' + proyecto.video_url;
-      const existe = await fetch(videoUrl, { method: 'HEAD' })
-        .then((r) => r.ok)
-        .catch(() => false);
-
-      if (!existe) continue; // si no existe, skip directo
+      // Si ya falló antes, no reintentar
+      const fallido = localStorage.getItem('thumb_fail_' + proyecto.id);
+      if (fallido) continue;
 
       try {
-        const thumb = await this.capturarFrame(videoUrl);
+        const thumb = await this.capturarFrame(
+          'http://localhost:8000/api/video/' + proyecto.video_url,
+        );
         proyecto.video_thumbnail = thumb;
         localStorage.setItem(cacheKey, thumb);
         this.cdr.detectChanges();
       } catch {
+        // Marcar como fallido para no reintentar en próximas cargas
+        localStorage.setItem('thumb_fail_' + proyecto.id, '1');
         proyecto.video_thumbnail = null;
       }
     }
