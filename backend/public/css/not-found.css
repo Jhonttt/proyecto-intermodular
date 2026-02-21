@@ -1,0 +1,38 @@
+/* ================================
+   404 - ESTILOS
+   ================================ */
+
+.not-found-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.not-found-icon {
+    font-size: 64px;
+    color: var(--color-border);
+    margin-bottom: var(--spacing-md);
+}
+
+.not-found-code {
+    font-size: 120px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-border);
+    margin: 0;
+    line-height: 1;
+    font-family: var(--font-heading);
+}
+
+.not-found-title {
+    margin: var(--spacing-sm) 0 var(--spacing-xs);
+}
+
+.not-found-text {
+    color: var(--color-text-secondary);
+    max-width: 400px;
+    margin-bottom: var(--spacing-lg);
+}

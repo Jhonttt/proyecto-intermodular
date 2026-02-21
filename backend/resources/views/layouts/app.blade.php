@@ -20,16 +20,16 @@
                 </strong>
             </div>
             @auth
-                @if (!request()->routeIs('admin.login.index'))
-                    <nav class="header-nav" style="display: flex">
-                        <a href="{{ route('admin.usuarios.index') }}" class="btn btn-primary">Usuarios</a>
-                        <form id="form-logout" action="{{ route('admin.logout') }}" method="POST">
-                            @csrf
-                            <a href="#" class="btn btn-danger"
-                                onclick="document.getElementById('form-logout').submit()">Cerrar Sesión</a>
-                        </form>
-                    </nav>
-                @endif
+            @if (!request()->routeIs('admin.login.index'))
+            <nav class="header-nav" style="display: flex">
+                <a href="{{ route('admin.usuarios.index') }}" class="btn btn-primary">Usuarios</a>
+                <form id="form-logout" action="{{ route('admin.logout') }}" method="POST">
+                    @csrf
+                    <a href="#" class="btn btn-danger" onclick="document.getElementById('form-logout').submit()">Cerrar
+                        Sesión</a>
+                </form>
+            </nav>
+            @endif
             @endauth
         </div>
     </header>
@@ -38,8 +38,41 @@
         @yield('content')
     </main>
 
-    <footer class="text-center py-4 mt-5 text-muted">
-        &copy; {{ date('Y') }} IES Lázaro Cárdenas - Proyecto Intermodular
+    <footer class="footer">
+        <div class="container footer-top">
+
+            <div class="footer-column">
+                <b class="footer-title">Repositorios de Proyectos</b>
+                <p class="footer-text">
+                    Plataforma académica para compartir y descubrir proyectos estudiantiles innovadores
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <b class="footer-title">Enlaces</b>
+                <ul class="footer-links">
+                    <li><a href="#">Acerca de</a></li>
+                    <li><a href="#">Ayuda</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <b class="footer-title">Legal</b>
+                <ul class="footer-links">
+                    <li><a href="#">Términos de uso</a></li>
+                    <li><a href="#">Privacidad</a></li>
+                    <li><a href="#">Cookies</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                &copy; Proyecto Intermodular - 2 DAW. Todos los derechos reservados
+            </div>
+        </div>
     </footer>
 </body>
 

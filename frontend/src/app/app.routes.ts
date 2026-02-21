@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home'; 
 import { HomeAdmin } from './pages/home-admin/home-admin';
+import { NotFound } from './pages/not-found/not-found';
 
 import { DetailsForm } from './pages/details-form/details-form';
 import { Form } from './pages/form/form';
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: "details-form/:id", component: DetailsForm }, //php artisan storage:link → ejecutar en el backend para el video
   { path: 'shared', component: Shared },
   { path: 'forgot-password', component: ForgotPassword},
-  { path: 'formulario-subida', component: UploadFileComponent, canActivate: [sinProyectoGuard]}
+  { path: 'formulario-subida', component: UploadFileComponent, canActivate: [sinProyectoGuard]},
+  { path: "**", component: NotFound},
 ];
