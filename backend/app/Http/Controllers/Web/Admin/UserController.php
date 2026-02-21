@@ -16,27 +16,26 @@ class UserController extends Controller {
         return view('admin.usuarios.create');
     }
 
-    public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:6',
-        'rol' => 'required|in:admin,usu',
-    ]);
+    public function store(Request $request) {
+        $validator = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'rol' => 'required|in:admin,usu',
+        ]);
 
-    User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => bcrypt($request->password),
-        'rol' => $request->rol,
-        'activo' => $request->has('activo') ? 1 : 0,
-    ]);
+        User::create([
+            'name' => $validator["name"],
+            'email' => $validator["email"],
+            'password' => bcrypt($validator["password"]),
+            'rol' => $validator["rol"],
+            'activo' => $request->has('activo') ? 1 : 0,
+        ]);
 
-    return redirect()
-        ->route('admin.usuarios.index')
-        ->with('success', 'Usuario creado correctamente.');
-}
+        return redirect()
+            ->route('admin.usuarios.index')
+            ->with('success', 'Usuario creado correctamente.');
+    }
 
 
     public function edit($id) {
@@ -44,23 +43,28 @@ class UserController extends Controller {
         return view('admin.usuarios.edit', compact('usuario'));
     }
 
-    public function update(Request $request, $id)
-{
-    $request->validate([
-        'rol' => 'required|in:admin,usu',
-        'activo' => 'required|boolean',
-    ]);
+    public function update(Request $request, $id) {
+        $usuario = User::findOrFail($id);
 
-    $usuario = User::findOrFail($id);
+        $data = $request->validate([
+            'name'     => 'required|string',
+            'password' => 'nullable|min:6',
+            'rol'      => 'required|in:admin,usu',
+            'activo'   => 'nullable|boolean',
+        ]);
 
-    $usuario->update([
-        'rol' => $request->rol,
-        'activo' => $request->activo,
-    ]);
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
 
-    return redirect()
-        ->route('admin.usuarios.index')
-        ->with('success', 'Usuario actualizado correctamente.');
-}
+        $data['activo'] = $request->has('activo') ? 1 : 0;
 
+        $usuario->update($data);
+
+        return redirect()
+            ->route('admin.usuarios.index')
+            ->with('success', 'Usuario actualizado correctamente');
+    }
 }

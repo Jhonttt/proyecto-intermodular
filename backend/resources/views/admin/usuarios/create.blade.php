@@ -1,77 +1,93 @@
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+<link rel="stylesheet" href="{{ asset('css/users.css') }}">
+@endpush
+
 @section('content')
 
-<div class="container">
+<div class="usuarios-form-page">
 
-    <div class="card">
-        <div class="card-body">
-
-            <h2 class="mb-4">Crear usuario</h2>
-
-            {{-- Errores --}}
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('admin.usuarios.store') }}">
-                @csrf
-
-                <div class="mb-3">
-                    <label class="form-label">Nombre</label>
-                    <input type="text" name="name"
-                           class="form-control"
-                           value="{{ old('name') }}">
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" name="email"
-                           class="form-control"
-                           value="{{ old('email') }}">
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Contraseña</label>
-                    <input type="password" name="password"
-                           class="form-control">
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Rol</label>
-                    <select name="rol" class="form-select">
-                        <option value="admin">Admin</option>
-                        <option value="usu">Usuario</option>
-                    </select>
-                </div>
-
-                <div class="form-check mb-3">
-                    <input type="checkbox" name="activo"
-                           class="form-check-input"
-                           value="1" checked>
-                    <label class="form-check-label">
-                        Usuario activo
-                    </label>
-                </div>
-
-                <button type="submit" class="btn btn-success">
-                    Guardar
-                </button>
-
-                <a href="{{ route('admin.usuarios.index') }}"
-                   class="btn btn-secondary ms-2">
-                    Volver
-                </a>
-
-            </form>
-
+    {{-- Cabecera --}}
+    <div class="usuarios-header">
+        <div class="usuarios-header-text">
+            <h1 style="margin-bottom: 4px;">Crear usuario</h1>
+            <p>Rellena los datos para registrar un nuevo usuario</p>
         </div>
+        <a href="{{ route('admin.usuarios.index') }}" class="btn btn-secondary">
+            ← Volver
+        </a>
+    </div>
+
+    {{-- Errores --}}
+    @if ($errors->any())
+        <div class="alert-danger">
+            <div class="alert-danger-header">
+                <span class="material-icons" style="font-size: 18px; color: var(--color-danger);">error_outline</span>
+                <strong>Corrige los siguientes errores:</strong>
+            </div>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- Formulario --}}
+    <div class="usuarios-form-panel">
+
+        <div class="usuarios-form-panel-bar">
+            Información del usuario
+        </div>
+
+        <form method="POST" action="{{ route('admin.usuarios.store') }}" class="usuarios-form">
+            @csrf
+
+            {{-- Nombre --}}
+            <div class="form-field">
+                <label>Nombre</label>
+                <input type="text" name="name" class="input" value="{{ old('name') }}" placeholder="Nombre completo">
+            </div>
+
+            {{-- Email --}}
+            <div class="form-field">
+                <label>Email</label>
+                <input type="email" name="email" class="input" value="{{ old('email') }}" placeholder="correo@ejemplo.com">
+            </div>
+
+            {{-- Contraseña --}}
+            <div class="form-field">
+                <label>Contraseña</label>
+                <input type="password" name="password" class="input" placeholder="Mínimo 8 caracteres">
+            </div>
+
+            {{-- Rol --}}
+            <div class="form-field">
+                <label>Rol</label>
+                <select name="rol" class="input" style="cursor: pointer; background-color: #fff;">
+                    <option value="usu" {{ old('rol') === 'usu' ? 'selected' : '' }}>Usuario</option>
+                    <option value="admin" {{ old('rol') === 'admin' ? 'selected' : '' }}>Admin</option>
+                </select>
+            </div>
+
+            {{-- Activo --}}
+            <div class="form-checkbox">
+                <input type="checkbox" name="activo" value="1" checked>
+                <div class="form-checkbox-label">
+                    <p>Usuario activo</p>
+                    <p>El usuario podrá iniciar sesión en el sistema</p>
+                </div>
+            </div>
+
+            {{-- Acciones --}}
+            <div class="form-actions">
+                <a href="{{ route('admin.usuarios.index') }}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-submit">Guardar usuario</button>
+            </div>
+
+        </form>
     </div>
 
 </div>
