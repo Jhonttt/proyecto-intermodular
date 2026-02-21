@@ -16,7 +16,7 @@
         <p>
             <a href="{{ route('admin.proyectos.show', ['id'=>$proyecto->id]) }}">{{ $proyecto->nombre }}</a> |
             {{ $proyecto->curso }} |
-            {{ $proyecto->alumnos }}
+           
         </p>
     @endforeach
 @endsection

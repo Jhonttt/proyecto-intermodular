@@ -163,4 +163,8 @@ export class DetailsForm implements OnInit {
   getEstadoClass(): string {
     return this.project?.checked ? 'badge bg-success' : 'badge bg-warning';
   }
+
+  getFileName(path: string): string {
+  return path.split('/').pop() || path;
+}
 }

@@ -1,7 +1,7 @@
-<head>
+<?php $__env->startPush('styles'); ?>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
     <link rel="stylesheet" href="<?php echo e(asset('css/login.css')); ?>">
-</head>
+<?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
 
@@ -45,7 +45,7 @@
                             style="display: block; margin-bottom: 5px; font-weight: var(--font-weight-medium);">Correo
                             Electrónico</label>
                         <input id="email" type="email" name="email" value="<?php echo e(old('email')); ?>"
-                            class="<?php echo e($errors->has('email') ? 'input-error' : ''); ?> input" placeholder="ejemplo@correo.com"
+                            class="input <?php echo e($errors->has('email') ? 'input-error' : ''); ?>" placeholder="ejemplo@correo.com"
                             required>
                     </div>
 
@@ -53,7 +53,7 @@
                         <label for="passwd"
                             style="display: block; margin-bottom: 5px; font-weight: var(--font-weight-medium);">Contraseña</label>
                         <input id="password" type="password" name="password"
-                            class="<?php echo e($errors->has('password') ? 'input-error' : ''); ?> input" placeholder="********"
+                            class="input <?php echo e($errors->has('password') ? 'input-error' : ''); ?>" placeholder="********"
                             required>
                     </div>
 
