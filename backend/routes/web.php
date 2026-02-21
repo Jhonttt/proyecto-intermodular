@@ -31,4 +31,7 @@ Route::middleware(["auth:sanctum", "admin"])->group(function () {
 });
 
 Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");
+Route::get('/prueba', function(){
+    return view("layouts.admin");
+}); //temporal
 Route::post('/store', [AlumnoProyectoController::class, 'store'])->name('alumno.proyectos.store');

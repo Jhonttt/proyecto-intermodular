@@ -6,40 +6,85 @@ use App\Http\Controllers\Controller;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
-class ProyectoControllerAdmin extends Controller {
+class ProyectoControllerAdmin extends Controller
+{
     /**
      * Mostrar el listado de proyectos y los filtros por:
-     * -curso
      * -nombre
+     * -ciclo
      * -alumno
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $query = Proyecto::query();
-        //Filtro por curso
-        if ($request->filled('curso')) {
-            $query->where('curso', 'like', '%' . $request->curso . '%');
-        }
+
         //Filtro por nombre
         if ($request->filled('nombre')) {
             $query->where('nombre', 'like', '%' . $request->nombre . '%');
         }
-        //Filtro por alumno
+        //Filtro por ciclo
+        if ($request->filled('ciclo')) {
+            $query->where('ciclo', 'like', '%' . $request->ciclo . '%');
+        }
+        //Filtro por alumno/alumnos
         if ($request->filled('alumnos')) {
-            $query->where('alumnos', 'like', '%' . $request->alumnos . '%');
+
+            $buscar = trim($request->alumnos);
+
+            // Quitar acentos y pasar a minúsculas
+            $buscar = mb_strtolower($buscar);
+            $buscar = strtr($buscar, [
+                'á' => 'a',
+                'é' => 'e',
+                'í' => 'i',
+                'ó' => 'o',
+                'ú' => 'u',
+                'Á' => 'a',
+                'É' => 'e',
+                'Í' => 'i',
+                'Ó' => 'o',
+                'Ú' => 'u'
+            ]);
+
+            $query->whereRaw("
+                JSON_SEARCH(
+                    LOWER(
+                        REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                            alumnos,
+                            'á','a'),
+                            'é','e'),
+                            'í','i'),
+                            'ó','o'),
+                            'ú','u'
+                        )
+                    ),
+                    'all',
+                    ?,
+                    NULL,
+                    '$[*]'
+                ) IS NOT NULL",
+                ["%{$buscar}%"]
+            );
+                        /*             $query->whereRaw(
+                            "JSON_SEARCH(alumnos COLLATE utf8mb4_0900_ai_ci, 'one', ?, NULL, '$[*]') IS NOT NULL",
+                            ["%{$buscar}%"] 
+                        ); SOLO COMPATIBLE CON MYSQL 8+*/
         }
 
-        $proyectos = $query->paginate(10)->withQueryString();
+        $proyectos = $query->paginate(10)->withQueryString(); //Paginado de 10
 
         return view('admin.proyectos.index', compact('proyectos'));
     }
-    
-    public function show($id) {
+
+    public function show($id)
+    {
         $proyecto = Proyecto::findOrFail($id);
 
         return view('admin.proyectos.show', compact('proyecto'));
     }
 
-    public function check($id) {
+    public function check($id)
+    {
         $proyecto = Proyecto::findOrFail($id);
         $proyecto->checked = true;
         $proyecto->save();
@@ -49,7 +94,8 @@ class ProyectoControllerAdmin extends Controller {
             ->with('success', 'Proyecto validado correctamente');
     }
 
-    public function uncheck($id) {
+    public function uncheck($id)
+    {
         $proyecto = Proyecto::findOrFail($id);
         $proyecto->checked = false;
         $proyecto->save();
