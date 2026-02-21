@@ -14,10 +14,7 @@
     <header class="header">
         <div class="container header-content">
             <div class="header-left">
-                <strong>
-                    <a class="navbar-brand" href="{{ route('admin.proyectos.index') }}">IES Lázaro Cárdenas |
-                        Repositorio</a>
-                </strong>
+                <a class="navbar-brand" href="{{ route('admin.proyectos.index') }}"><strong>IES Lázaro Cárdenas</strong></a>
             </div>
             @auth
             @if (!request()->routeIs('admin.login.index'))

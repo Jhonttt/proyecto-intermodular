@@ -1,24 +1,22 @@
-<header class="header">
-  <div class="container header-content">
-    <div class="header-left">
-      <a routerLink="/home" class="navbar-brand"><strong>IES Lázaro Cárdenas</strong></a>
-    </div>
-
-    <nav class="header-nav">
-      <ng-container *ngIf="!isLoggedIn">
-        <a href="./login" class="btn btn-success">Iniciar Sesión</a>
-      </ng-container>
-
-      <ng-container *ngIf="isLoggedIn">
-        @if (!isAdmin) {
-          @if (tieneProyecto) {
-            <button (click)="verProyecto()" class="btn btn-primary">Mi proyecto</button>
-          } @else {
-            <button routerLink="/formulario-subida" class="btn btn-primary">Subir proyecto</button>
-          }
-        }
-        <a (click)="logout()" style="cursor: pointer" class="btn btn-danger">Cerrar sesión</a>
-      </ng-container>
-    </nav>
+<div class="container header-content">
+  <div class="header-left">
+    <a routerLink="/home" class="navbar-brand"><strong>IES Lázaro Cárdenas</strong></a>
   </div>
-</header>
+
+  <nav class="header-nav">
+    <ng-container *ngIf="!isLoggedIn">
+      <a href="./login" class="btn btn-success">Iniciar Sesión</a>
+    </ng-container>
+
+    <ng-container *ngIf="isLoggedIn">
+      @if (!isAdmin) {
+        @if (tieneProyecto) {
+          <button (click)="verProyecto()" class="btn btn-primary">Mi proyecto</button>
+        } @else {
+          <button routerLink="/formulario-subida" class="btn btn-primary">Subir proyecto</button>
+        }
+      }
+      <a (click)="logout()" style="cursor: pointer" class="btn btn-danger">Cerrar sesión</a>
+    </ng-container>
+  </nav>
+</div>
