@@ -77,10 +77,6 @@
   font-size: var(--font-size-small);
 }
 
-.header-nav a:hover {
-  text-decoration: underline;
-}
-
 
 /*GRID*/
 
@@ -131,9 +127,6 @@
   color: var(--color-text-secondary);
 }
 
-.footer-links a:hover {
-  text-decoration: underline;
-}
 
 /*Parte inferior*/
 

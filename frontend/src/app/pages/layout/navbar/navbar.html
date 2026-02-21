@@ -1,18 +1,21 @@
- <!-- ================= HEADER ================= -->
-  <header class="header">
-    <div class="container header-content">
+<header class="header">
+  <div class="container header-content">
 
-      <!-- Zona izquierda: logo / nombre -->
-      <div class="header-left">
-        <strong>IES Lázaro Cárdenas</strong>
-      </div>
-
-      <!-- Zona derecha: navegación -->
-      <nav class="header-nav">
-        <!-- Enlaces de ejemplo -->
-        <a href="#">Proyectos</a>
-        <a href="./login">Login</a>
-      </nav>
-
+    <div class="header-left">
+      <a routerLink="/home" class="navbar-brand"><strong>IES Lázaro Cárdenas</strong></a>
     </div>
-  </header>
+
+    <nav class="header-nav">
+
+      <ng-container *ngIf="!isLoggedIn">
+        <a href="./login" class="btn btn-success">Iniciar Sesión</a>
+      </ng-container>
+
+      <ng-container *ngIf="isLoggedIn">
+        <a routerLink="/formulario-subida">Subir proyecto</a>
+        <a (click)="logout()" style="cursor:pointer;" class="btn btn-danger">Cerrar sesión</a>
+      </ng-container>
+
+    </nav>
+  </div>
+</header>
