@@ -11,7 +11,7 @@
 
       <ng-container *ngIf="isLoggedIn">
         @if (hasProject) {
-          <button [routerLink]="['/details-form', ]" class="btn btn-primary">Ver proyecto</button>
+          <button (click)="verProyecto()" class="btn btn-primary">Ver proyecto</button>
         } @else {
           <button routerLink="/formulario-subida" class="btn btn-primary">Subir proyecto</button>
         }

@@ -1,5 +1,6 @@
 export interface Proyecto {
   id: number;
+  user_id: number;
   nombre: string;
   resumen: string;
   descripcion: string;

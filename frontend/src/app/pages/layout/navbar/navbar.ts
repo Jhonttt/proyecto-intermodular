@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { ProyectoService } from '../../../core/services/proyecto.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,11 +11,15 @@ import { AuthService } from '../../../core/services/auth.service';
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css']
 })
-export class Navbar {
+export class Navbar implements OnInit {
+  projectId: number | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private proyectoService: ProyectoService,
+    private router: Router
+  ) {}
 
-  // 🔹 Getter directo desde localStorage
   get isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
@@ -30,5 +35,24 @@ export class Navbar {
 
   get hasProject(): boolean {
     return this.user?.proyecto_subido === true;
+  }
+
+  ngOnInit() {
+    if (this.isLoggedIn && this.hasProject) {
+      this.proyectoService.getAll().subscribe({
+        next: (res) => {
+          const datos = Array.isArray(res) ? res : (res as any).data;
+          const miProyecto = datos.find((p: any) => p.user_id === this.user.id);
+          this.projectId = miProyecto?.id ?? null;
+        },
+        error: () => this.projectId = null
+      });
+    }
+  }
+
+  verProyecto() {
+    if (this.projectId) {
+      this.router.navigate(['/details-form', this.projectId]);
+    }
   }
 }
