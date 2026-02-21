@@ -27,4 +27,8 @@ export class Navbar {
   logout() {
     this.authService.logout();
   }
+
+  get hasProject(): boolean {
+    return this.user?.proyecto_subido === true;
+  }
 }
