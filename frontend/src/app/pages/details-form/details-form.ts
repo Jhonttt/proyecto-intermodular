@@ -27,16 +27,20 @@ export class DetailsForm implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.projectId = Number(this.route.snapshot.paramMap.get('id'));
+  this.route.paramMap.subscribe(params => {
+    this.projectId = Number(params.get('id'));
     
     if (isNaN(this.projectId) || this.projectId <= 0) {
       this.error = 'ID de proyecto inválido';
       this.loading = false;
       return;
     }
-    
+
+    this.project = null;
+    this.error = '';
     this.loadProject();
-  }
+  });
+}
 
   loadProject(): void {
     this.loading = true;

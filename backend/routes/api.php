@@ -13,7 +13,6 @@ Route::post("/login", [AuthController::class, "login"])->name("api.login");
 
 // GET proyectos público (para el home)
 Route::get('/proyectos', [ProyectoController::class, 'index'])->name('api.proyectos.index.public');
-Route::get('/proyectos/{id}', [ProyectoController::class, 'show'])->name('api.proyectos.show.public');
 
 // ============================================
 // RUTAS PROTEGIDAS (requieren autenticación)
@@ -30,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Crear, editar, eliminar proyectos (solo autenticados)
     Route::prefix("proyectos")->group(function () {
+        Route::get('/mi-proyecto', [ProyectoController::class, 'miProyecto'])->name('api.proyectos.mio'); // ← AÑADIR ANTES de las otras
         Route::post('/', [ProyectoController::class, 'store'])->name('api.proyectos.store');
         Route::put('/{id}', [ProyectoController::class, 'update'])->name('api.proyectos.update');
         Route::patch('/{id}', [ProyectoController::class, 'update'])->name('api.proyectos.patch');
@@ -49,8 +49,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
+Route::get('/proyectos/{id}', [ProyectoController::class, 'show'])->name('api.proyectos.show.public');
 Route::post('/proyectos', [ProyectoController::class, 'store']);
-
+                
 
 
 // Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");

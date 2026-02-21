@@ -13,6 +13,7 @@ import { ProyectoService } from '../../../core/services/proyecto.service';
 })
 export class Navbar implements OnInit {
   projectId: number | null = null;
+  tieneProyecto: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -33,26 +34,31 @@ export class Navbar implements OnInit {
     this.authService.logout();
   }
 
-  get hasProject(): boolean {
-    return this.user?.proyecto_subido === true;
-  }
-
   ngOnInit() {
-    if (this.isLoggedIn && this.hasProject) {
-      this.proyectoService.getAll().subscribe({
-        next: (res) => {
-          const datos = Array.isArray(res) ? res : (res as any).data;
-          const miProyecto = datos.find((p: any) => p.user_id === this.user.id);
-          this.projectId = miProyecto?.id ?? null;
-        },
-        error: () => this.projectId = null
-      });
-    }
+  if (this.isLoggedIn) {
+    console.log('Token:', localStorage.getItem('token'));
+    console.log('User:', this.user);
+    
+    this.proyectoService.getMiProyecto().subscribe({
+      next: (res) => {
+        console.log('Mi proyecto:', res);
+        this.tieneProyecto = true;
+        this.projectId = res.data?.id ?? null;
+      },
+      error: (err) => {
+        console.log('Error mi proyecto:', err);
+        this.tieneProyecto = false;
+        this.projectId = null;
+      }
+    });
   }
+}
 
   verProyecto() {
-    if (this.projectId) {
-      this.router.navigate(['/details-form', this.projectId]);
-    }
+  console.log('tieneProyecto:', this.tieneProyecto);
+  console.log('projectId:', this.projectId);
+  if (this.projectId) {
+    this.router.navigate(['/details-form', this.projectId]);
   }
+}
 }

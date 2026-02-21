@@ -10,8 +10,8 @@
       </ng-container>
 
       <ng-container *ngIf="isLoggedIn">
-        @if (hasProject) {
-          <button (click)="verProyecto()" class="btn btn-primary">Ver proyecto</button>
+        @if (tieneProyecto) {
+          <button (click)="verProyecto()" class="btn btn-primary">Mi proyecto</button>
         } @else {
           <button routerLink="/formulario-subida" class="btn btn-primary">Subir proyecto</button>
         }

@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
-class ProyectoController extends Controller
-{
-    public function index(Request $request)
-    {
+class ProyectoController extends Controller {
+    public function index(Request $request) {
         try {
             $proyectos = Proyecto::where('checked', true)
                 ->orderBy('created_at', 'desc')
@@ -28,8 +26,7 @@ class ProyectoController extends Controller
         }
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $user = $request->user();
         if ($user->rol !== 'admin') {
             return response()->json(['message' => 'No autorizado'], 403);
@@ -65,44 +62,45 @@ class ProyectoController extends Controller
             'proyecto' => $proyecto,
             'video_path' => $videoPath
         ], 201);
-
-        
     }
 
     public function show(Request $request, $id)
-    {
-        // Validar que el ID sea numérico
-        if (!is_numeric($id)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'ID de proyecto inválido'
-            ], 400);
-        }
-
-        try {
-            $proyecto = Proyecto::find($id);
-
-            if (!$proyecto) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Proyecto no encontrado'
-                ], 404);
-            }
-
-            return response()->json([
-                'success' => true,
-                'data' => $proyecto
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al obtener el proyecto',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+{
+    if (!is_numeric($id)) {
+        return response()->json(['success' => false, 'message' => 'ID inválido'], 400);
     }
 
-     public function update(Request $request, $id) {
+    try {
+        $proyecto = Proyecto::find($id);
+
+        if (!$proyecto) {
+            return response()->json(['success' => false, 'message' => 'Proyecto no encontrado'], 404);
+        }
+
+        if (!$proyecto->checked) {
+            // Intentar autenticar manualmente aunque la ruta sea pública
+            $user = null;
+            try {
+                $user = \Laravel\Sanctum\PersonalAccessToken::findToken(
+                    $request->bearerToken()
+                )?->tokenable;
+            } catch (\Exception $e) {}
+
+            if (!$user || $user->id !== $proyecto->user_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Este proyecto aún no está disponible'
+                ], 403);
+            }
+        }
+
+        return response()->json(['success' => true, 'data' => $proyecto], 200);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Error al obtener el proyecto'], 500);
+    }
+}
+
+    public function update(Request $request, $id) {
         $user = $request->user();
         if ($user->rol !== 'admin') {
             return response()->json(['message' => 'No autorizado'], 403);
@@ -130,7 +128,7 @@ class ProyectoController extends Controller
 
         $proyecto->update($data);
 
-         // Subida de video físico
+        // Subida de video físico
         $videoPath = null;
         if ($request->hasFile('video')) {
             $video = $request->file('video');
@@ -145,8 +143,7 @@ class ProyectoController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, $id)
-    {
+    public function destroy(Request $request, $id) {
         $user = $request->user();
         if ($user->rol !== 'admin') {
             return response()->json(['message' => 'No autorizado'], 403);
@@ -160,5 +157,22 @@ class ProyectoController extends Controller
         $proyecto->delete();
 
         return response()->json(['message' => 'Proyecto eliminado'], 200);
+    }
+
+    // Devuelve el proyecto del alumno autenticado (checked o no)
+    public function miProyecto(Request $request) {
+        $proyecto = Proyecto::where('user_id', $request->user()->id)->first();
+
+        if (!$proyecto) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tienes ningún proyecto subido'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $proyecto
+        ], 200);
     }
 }
