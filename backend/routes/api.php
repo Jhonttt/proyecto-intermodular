@@ -3,8 +3,10 @@
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Alumno\ProyectoController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Admin\ProyectoControllerAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 // ============================================
 // RUTAS PÚBLICAS (sin autenticación)

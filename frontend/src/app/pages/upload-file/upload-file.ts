@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
@@ -25,7 +25,6 @@ export class UploadFileComponent {
     ciclo: '',
     descripcion: '',
   };
-
   autoresTexto = '';
   etiquetasTexto = '';
 
@@ -140,6 +139,54 @@ export class UploadFileComponent {
       return;
     }
 
+    this.errorDoc = '';
+    this.docFile = file;
+  }
+
+  enviarProyecto(form: NgForm) {
+    // Reset errores individuales
+    this.errorTitulo = '';
+    this.errorAutores = '';
+    this.errorCurso = '';
+    this.errorCiclo = '';
+    this.errorDescripcion = '';
+    this.errorVideo = '';
+    this.errorDoc = '';
+
+    // Validaciones manuales
+    let valid = true;
+
+    if (!this.proyecto.titulo.trim()) {
+      this.errorTitulo = 'El título es obligatorio';
+      valid = false;
+    }
+    if (!this.autoresTexto.trim()) {
+      this.errorAutores = 'Debes indicar al menos un autor';
+      valid = false;
+    }
+    if (!this.proyecto.curso) {
+      this.errorCurso = 'Debes seleccionar un curso';
+      valid = false;
+    }
+    if (!this.proyecto.ciclo) {
+      this.errorCiclo = 'Debes seleccionar un ciclo';
+      valid = false;
+    }
+    if (!this.proyecto.descripcion.trim()) {
+      this.errorDescripcion = 'La descripción es obligatoria';
+      valid = false;
+    } else if (this.proyecto.descripcion.length < 25) {
+      this.errorDescripcion = 'La descripción debe tener al menos 25 caracteres';
+      valid = false;
+    }
+    if (!this.videoFile) {
+      this.errorVideo = 'Es obligatorio subir un vídeo';
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    // Preparar FormData
     const formData = new FormData();
     formData.append('nombre', this.proyecto.titulo);
     formData.append('resumen', this.proyecto.titulo);
