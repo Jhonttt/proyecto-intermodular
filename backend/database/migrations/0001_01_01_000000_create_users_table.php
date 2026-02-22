@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->rememberToken();
             $table->enum('rol', ['admin', 'usu']);
             $table->boolean('activo')->default(true);
+            $table->boolean("proyecto_subido")->default(false);
             $table->timestamps();
         });
 

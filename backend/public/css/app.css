@@ -128,10 +128,6 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
 /*-----------reset-------------*/
 
 * {
@@ -429,11 +425,6 @@ COMPONENTES GLOBALES:
     font-size: var(--font-size-small);
 }
 
-.header-nav a:hover {
-    text-decoration: underline;
-}
-
-
 /*GRID*/
 
 .projects-grid {
@@ -481,10 +472,6 @@ COMPONENTES GLOBALES:
 .footer-links a {
     font-size: var(--font-size-small);
     color: var(--color-text-secondary);
-}
-
-.footer-links a:hover {
-    text-decoration: underline;
 }
 
 /*Parte inferior*/

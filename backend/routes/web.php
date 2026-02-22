@@ -5,9 +5,7 @@ use App\Http\Controllers\Web\Admin\AuthController;
 use App\Http\Controllers\Web\Admin\UserController;
 use App\Http\Controllers\Web\Alumno\ProyectoController as AlumnoProyectoController;
 
-
-
-
+Route::redirect('/', destination: '/login');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('admin.login.index');
 Route::post('/login', [AuthController::class, 'login'])->name('admin.login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
@@ -33,6 +31,9 @@ Route::middleware(["auth:sanctum", "admin"])->group(function () {
 });
 
 Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");
+Route::get('/prueba', function(){
+    return view("layouts.admin");
+}); //temporal
 Route::post('/store', [AlumnoProyectoController::class, 'store'])->name('alumno.proyectos.store');
 
 Route::get("prueba", function () {

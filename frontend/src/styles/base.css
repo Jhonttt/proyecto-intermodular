@@ -51,17 +51,6 @@ small {
   color: var(--color-text-secondary);
 }
 
-/*Links:*/
-
-a {
-  color: var(--color-link);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
 /*-----------reset-------------*/
 
 * {
