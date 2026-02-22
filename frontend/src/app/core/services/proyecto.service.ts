@@ -9,12 +9,18 @@ import { ApiResponse } from '../models/user.model';
 })
 export class ProyectoService {
   private apiUrl = 'http://localhost:8000/api/proyectos';
+  private apiAdminUrl = 'http://localhost:8000/api/admin/proyectos';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Listar todos los proyectos
   getAll(): Observable<ApiResponse<Proyecto[]>> {
     return this.http.get<ApiResponse<Proyecto[]>>(this.apiUrl);
+  }
+
+  //Listar todos los proyectos panel admin
+  getAllAdmin(): Observable<ApiResponse<Proyecto[]>> {
+    return this.http.get<ApiResponse<Proyecto[]>>(this.apiAdminUrl);
   }
 
   // Obtener un proyecto específico

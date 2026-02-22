@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SectionAdmin } from './section-admin/section-admin';
 import { ArticleAdmin } from './article-admin/article-admin';
+import { ProyectoService } from '../../core/services/proyecto.service';
+import { Proyecto } from '../../core/models/proyecto.model';
+
 @Component({
   selector: 'app-home-admin',
   standalone: true,
@@ -10,8 +13,28 @@ import { ArticleAdmin } from './article-admin/article-admin';
   template: `
     <app-section-admin></app-section-admin>
 
-    <div class="container-fluid text-center mb-4">
-      <table class="table">
+    <div class="container py-5">
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-3 text-muted">Cargando proyectos...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="alert alert-danger">
+    <strong>Error:</strong> {{ error }}
+    <button class="btn btn-sm btn-outline-danger ms-3" (click)="loadProyectos()">
+      Reintentar
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <div *ngIf="!loading && !error">
+
+    <table class="table">
+
+      <thead>
         <tr>
           <th>Título</th>
           <th>Año</th>
@@ -19,90 +42,32 @@ import { ArticleAdmin } from './article-admin/article-admin';
           <th>Descripción</th>
           <th>Estado</th>
         </tr>
+      </thead>
 
-        <!-- ===== PÁGINA 1 ===== -->
-        <tr *ngIf="paginaActual === 1">
-          <app-article-admin
-            titulo="Sistema de Biblioteca Escolar"
-            anio="2024"
-            curso="DAW 2º"
-            descripcion=""
-            estado="Pendiente">
-          </app-article-admin>
-        </tr>
+      <tbody>
+        <ng-container *ngFor="let proyecto of proyectos">
+          <tr>
+            <app-article-admin
+              [titulo]="proyecto.nombre"
+              [anio]="getYear(proyecto.created_at)"
+              [ciclo]="proyecto.ciclo"
+              [estado]="proyecto.checked ? 'Validado' : 'Pendiente'">
+            </app-article-admin>
+          </tr>
+        </ng-container>
+      </tbody>
 
-        <tr *ngIf="paginaActual === 1">
-          <app-article-admin
-            titulo="Sistema de Biblioteca Escolar"
-            [anio]="2024"
-            curso="DAW 2º"
-            descripcion=""
-            estado="Pendiente">
-          </app-article-admin>
-        </tr>
+    </table>
 
-        <tr *ngIf="paginaActual === 1">
-          <app-article-admin
-            titulo="Sistema de Biblioteca Escolar"
-            [anio]="2024"
-            curso="DAW 2º"
-            descripcion=""
-            estado="Pendiente">
-          </app-article-admin>
-        </tr>
+  </div>
 
-        <!-- ===== PÁGINA 2 ===== -->
-        <tr *ngIf="paginaActual === 2">
-          <app-article-admin
-            titulo="Sistema de Biblioteca Escolar"
-            [anio]="2024"
-            curso="DAW 2º"
-            descripcion=""
-            estado="Pendiente">
-          </app-article-admin>
-        </tr>
+  <!-- Empty -->
+  <div *ngIf="!loading && !error && proyectos.length === 0"
+       class="text-center py-5">
+    <h5 class="text-muted">No hay proyectos disponibles</h5>
+  </div>
 
-        <tr *ngIf="paginaActual === 2">
-          <app-article-admin
-            titulo="Sistema de Biblioteca Escolar"
-            [anio]="2024"
-            curso="DAW 2º"
-            descripcion=""
-            estado="Pendiente">
-          </app-article-admin>
-        </tr>
-
-        <tr *ngIf="paginaActual === 2">
-          <app-article-admin
-            titulo="Sistema de Biblioteca Escolar"
-            [anio]="2024"
-            curso="DAW 2º"
-            descripcion=""
-            estado="Pendiente">
-          </app-article-admin>
-        </tr>
-
-        <!-- ===== PÁGINA 3 ===== -->
-        <tr *ngIf="paginaActual === 3">
-          <app-article-admin
-            titulo="Sistema de Biblioteca Escolar"
-            [anio]="2024"
-            curso="DAW 2º"
-            descripcion=""
-            estado="Pendiente">
-          </app-article-admin>
-        </tr>
-
-        <tr *ngIf="paginaActual === 3">
-          <app-article-admin
-            titulo="Sistema de Biblioteca Escolar"
-            [anio]="2024"
-            curso="DAW 2º"
-            descripcion=""
-            estado="Pendiente">
-          </app-article-admin>
-        </tr>
-      </table>
+</div>
 
       <!-- CONTROLES DE PAGINACIÓN -->
       <div class="paginacion d-flex justify-content-center align-items-center gap-3">
@@ -131,12 +96,16 @@ import { ArticleAdmin } from './article-admin/article-admin';
           ›
         </button>
       </div>
-    </div>
   `,
 })
-export class HomeAdmin {
+export class HomeAdmin implements OnInit {
+  proyectos: Proyecto[] = [];
+  proyectosOriginal: Proyecto[] = [];
   paginaActual = 1;
   totalPaginas = 3;
+
+  loading = false;
+  error = '';
 
   paginaSiguiente() {
     if (this.paginaActual < this.totalPaginas) {
@@ -155,5 +124,39 @@ export class HomeAdmin {
     if (valor >= 1 && valor <= this.totalPaginas) {
       this.paginaActual = valor;
     }
+  }
+
+  constructor(
+    private proyectoService: ProyectoService,
+    /* private cdr: ChangeDetectorRef */
+  ) { }
+
+  ngOnInit(): void {
+    this.loadProyectos();
+  }
+
+  loadProyectos(): void {
+    this.loading = true;
+    this.error = '';
+   /*  this.cdr.detectChanges(); */
+
+    this.proyectoService.getAllAdmin().subscribe({
+      next: (response) => {
+        this.proyectosOriginal = response.data || []; // guardamos lista original
+        this.proyectos = [...this.proyectosOriginal]; // lista que se filtra
+        /* this.obtenerTagsUnicos(); */
+        this.loading = false;
+        /* this.cdr.detectChanges(); */
+      },
+      error: (err) => {
+        this.error = err.error?.message || 'Error al cargar los proyectos';
+        this.loading = false;
+        /* this.cdr.detectChanges(); */
+      }
+    });
+  }
+
+  getYear(dateString: string): string {
+    return new Date(dateString).getFullYear().toString();
   }
 }
