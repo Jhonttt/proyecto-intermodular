@@ -7,40 +7,34 @@
   <!-- Título -->
   <div>
     <label for="titulo">Título del proyecto:</label><br>
-    <input id="titulo" type="text" [(ngModel)]="proyecto.titulo" name="titulo" required #titulo="ngModel" />
-    <div *ngIf="titulo.invalid && (titulo.touched || formProyecto.submitted)" class="error">
-      El título es obligatorio
-    </div>
+    <input id="titulo" type="text" [(ngModel)]="proyecto.titulo" name="titulo" />
+    <div *ngIf="errorTitulo" class="error">{{ errorTitulo }}</div>
   </div>
 
   <!-- Autores -->
   <div>
     <label for="autores">Autor/autores:</label><br>
-    <input id="autores" type="text" [(ngModel)]="autoresTexto" name="autores" placeholder="Ej: Nombre1, Nombre2" required #autores="ngModel" />
-    <div *ngIf="autores.invalid && (autores.touched || formProyecto.submitted)" class="error">
-      Debes indicar al menos un autor
-    </div>
+    <input id="autores" type="text" [(ngModel)]="autoresTexto" name="autores" placeholder="Ej: Nombre1, Nombre2" />
+    <div *ngIf="errorAutores" class="error">{{ errorAutores }}</div>
   </div>
 
   <!-- Curso -->
   <div>
     <label for="curso">Curso académico:</label><br>
-    <select id="curso" [(ngModel)]="proyecto.curso" name="curso" required #curso="ngModel">
+    <select id="curso" [(ngModel)]="proyecto.curso" name="curso">
       <option value="" disabled selected hidden>Selecciona curso</option>
       <option value="2022/2023">2022/2023</option>
       <option value="2023/2024">2023/2024</option>
       <option value="2024/2025">2024/2025</option>
       <option value="2025/2026">2025/2026</option>
     </select>
-    <div *ngIf="curso.invalid && (curso.touched || formProyecto.submitted)" class="error">
-      Debes seleccionar un curso
-    </div>
+    <div *ngIf="errorCurso" class="error">{{ errorCurso }}</div>
   </div>
 
   <!-- Ciclo -->
   <div>
     <label for="ciclo">Ciclo:</label><br>
-    <select id="ciclo" [(ngModel)]="proyecto.ciclo" name="ciclo" required #ciclo="ngModel">
+    <select id="ciclo" [(ngModel)]="proyecto.ciclo" name="ciclo">
       <option value="" disabled selected hidden>Selecciona ciclo</option>
       <option value="DAW">Desarrollo de Aplicaciones Web</option>
       <option value="DAM">Desarrollo de Aplicaciones Multiplataforma</option>
@@ -49,21 +43,14 @@
       <option value="AD">Asistencia a la Dirección</option>
       <option value="AUT">Automoción</option>
     </select>
-    <div *ngIf="ciclo.invalid && (ciclo.touched || formProyecto.submitted)" class="error">
-      Debes seleccionar un ciclo
-    </div>
+    <div *ngIf="errorCiclo" class="error">{{ errorCiclo }}</div>
   </div>
 
   <!-- Descripción -->
   <div>
     <label>Descripción:</label><br>
-    <textarea [(ngModel)]="proyecto.descripcion" name="descripcion" required minlength="25" maxlength="200"
-      #descripcion="ngModel" style="resize: none;"></textarea>
-    <div *ngIf="descripcion.invalid && (descripcion.touched || formProyecto.submitted)" class="error">
-      <div *ngIf="descripcion.errors?.required">La descripción es obligatoria</div>
-      <div *ngIf="descripcion.errors?.minlength">Mínimo 25 caracteres</div>
-      <div *ngIf="descripcion.errors?.maxlength">Máximo 200 caracteres</div>
-    </div>
+    <textarea [(ngModel)]="proyecto.descripcion" name="descripcion" style="resize: none;"></textarea>
+    <div *ngIf="errorDescripcion" class="error">{{ errorDescripcion }}</div>
   </div>
 
   <!-- Etiquetas -->
@@ -75,16 +62,31 @@
   <!-- Video obligatorio -->
   <div>
     <label>Vídeo del proyecto (obligatorio, max 30 MB):</label><br>
-    <input type="file" (change)="onVideoSeleccionado($event)" required />
+    <input type="file" (change)="onVideoSeleccionado($event)" accept="video/*" />
     <div *ngIf="errorVideo" class="error">{{ errorVideo }}</div>
   </div>
 
-  <!-- ZIP opcional -->
+  <!-- ZIP/RAR opcional -->
   <div>
-    <label for="archivo">Archivo del proyecto (ZIP o RAR):</label><br>
-    <input id="archivo" type="file" accept=".zip,.rar" (change)="onDocumentacionSeleccionada($event)" />
-    <div *ngIf="errorArchivo" class="error">{{ errorArchivo }}</div>
+    <label>Archivo del proyecto (ZIP o RAR, opcional, max 10 MB):</label><br>
+    <input type="file" (change)="onDocumentacionSeleccionada($event)" accept=".zip,.rar" />
+    <div *ngIf="errorDoc" class="error">{{ errorDoc }}</div>
   </div>
 
   <button type="submit">Enviar</button>
 </form>
+
+<style>
+  .error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 2px;
+  }
+  .upload-form div {
+    margin-bottom: 15px;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+</style>
