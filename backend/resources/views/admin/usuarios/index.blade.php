@@ -117,7 +117,7 @@
                             Editar
                         </a>
                         <button type="button" class="btn btn-danger" style="font-size: 12px; padding: 6px 14px;"
-                            onclick="abrirModal({{ $usuario->id }}, '{{ $usuario->name }}')">
+                            onclick="abrirModal('{{ $usuario->id }}', '{{ $usuario->name }}')">
                             Eliminar
                         </button>
                     </td>

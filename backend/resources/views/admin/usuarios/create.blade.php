@@ -60,7 +60,7 @@
             {{-- Contraseña --}}
             <div class="form-field">
                 <label>Contraseña</label>
-                <input type="password" name="password" class="input" placeholder="Mínimo 8 caracteres">
+                <input type="password" name="password" class="input" placeholder="Mínimo 6 caracteres">
             </div>
 
             {{-- Rol --}}

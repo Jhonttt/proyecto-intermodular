@@ -173,13 +173,14 @@ export class Home implements OnInit {
   }
 
   async generarThumbnails(): Promise<void> {
-    // Procesar máximo 5 en paralelo para no saturar
-    const conVideo = this.proyectosOriginal.filter((p) => p.video_url);
+    const sinThumb = this.proyectosOriginal.filter((p) => p.video_url && !p.video_thumbnail);
 
-    for (const proyecto of conVideo) {
+    for (const proyecto of sinThumb) {
       const cacheKey = 'thumb_' + proyecto.id;
-      const cached = localStorage.getItem(cacheKey);
+      const failKey = 'thumb_fail_' + proyecto.id;
 
+      // Si ya está en caché, usarlo
+      const cached = localStorage.getItem(cacheKey);
       if (cached) {
         proyecto.video_thumbnail = cached;
         this.cdr.detectChanges();
@@ -187,8 +188,7 @@ export class Home implements OnInit {
       }
 
       // Si ya falló antes, no reintentar
-      const fallido = localStorage.getItem('thumb_fail_' + proyecto.id);
-      if (fallido) continue;
+      if (localStorage.getItem(failKey)) continue;
 
       try {
         const thumb = await this.capturarFrame(
@@ -197,10 +197,9 @@ export class Home implements OnInit {
         proyecto.video_thumbnail = thumb;
         localStorage.setItem(cacheKey, thumb);
         this.cdr.detectChanges();
-      } catch {
-        // Marcar como fallido para no reintentar en próximas cargas
-        localStorage.setItem('thumb_fail_' + proyecto.id, '1');
-        proyecto.video_thumbnail = null;
+      } catch (e) {
+        // Marcar como fallido para no reintentar
+        localStorage.setItem(failKey, '1');
       }
     }
   }
@@ -208,23 +207,30 @@ export class Home implements OnInit {
   capturarFrame(videoUrl: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const video = document.createElement('video');
-      video.crossOrigin = 'anonymous';
+      // Sin crossOrigin para evitar CORS con archivos estáticos
+      video.preload = 'metadata';
       video.src = videoUrl;
-      video.currentTime = 1;
+      video.muted = true;
+      video.crossOrigin = 'anonymous';
 
-      // Timeout de 5 segundos por video
       const timeout = setTimeout(() => {
         video.src = '';
         reject(new Error('Timeout'));
-      }, 5000);
+      }, 15000);
+
+      video.addEventListener('loadedmetadata', () => {
+        video.currentTime = Math.min(1, video.duration * 0.1);
+      });
 
       video.addEventListener('seeked', () => {
         clearTimeout(timeout);
         const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        canvas.getContext('2d')!.drawImage(video, 0, 0);
-        resolve(canvas.toDataURL('image/jpeg'));
+        canvas.width = video.videoWidth || 640;
+        canvas.height = video.videoHeight || 360;
+        canvas.getContext('2d')?.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        video.src = '';
+        resolve(dataUrl);
       });
 
       video.addEventListener('error', () => {
@@ -238,7 +244,15 @@ export class Home implements OnInit {
 
   getImagenUrl(proyecto: Proyecto): string {
     if (proyecto.video_thumbnail) {
-      return proyecto.video_thumbnail;
+      // Si ya es una URL completa (data: o http), devolverla tal cual
+      if (
+        proyecto.video_thumbnail.startsWith('http') ||
+        proyecto.video_thumbnail.startsWith('data:')
+      ) {
+        return proyecto.video_thumbnail;
+      }
+      // Si es una ruta relativa de la BD, construir la URL completa
+      return 'http://localhost:8000/storage/' + proyecto.video_thumbnail;
     }
     return 'images/prueba.webp';
   }

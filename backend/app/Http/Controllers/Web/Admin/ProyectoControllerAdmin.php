@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProyectoControllerAdmin extends Controller {
     /**
@@ -109,6 +110,24 @@ class ProyectoControllerAdmin extends Controller {
 
     public function destroy($id) {
         $proyecto = Proyecto::findOrFail($id);
+
+        // Eliminar video
+        if ($proyecto->video_url) {
+            Storage::disk('public')->delete('proyectos/' . $proyecto->video_url);
+        }
+
+        // Eliminar thumbnail
+        if ($proyecto->video_thumbnail) {
+            Storage::disk('public')->delete($proyecto->video_thumbnail);
+        }
+
+        // Eliminar documentos
+        if ($proyecto->documentos) {
+            foreach ($proyecto->documentos as $doc) {
+                Storage::disk('public')->delete($doc);
+            }
+        }
+
         $proyecto->delete();
 
         return redirect()

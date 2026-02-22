@@ -7,27 +7,23 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const token = localStorage.getItem('token');
 
-  // No añadir token para rutas públicas (login y GET de proyectos)
-  // DESPUÉS - excluye GET de /proyectos pero NO /mi-proyecto
-  const isPublicRoute = req.url.includes('/login') || 
-                      (req.url.includes('/proyectos') && 
-                       req.method === 'GET' && 
-                       !req.url.includes('/mi-proyecto') &&
-                       !token); // ← Si hay token, siempre lo enviamos
+  const isPublicRoute =
+    req.url.includes('/login') ||
+    (req.url.includes('/proyectos') &&
+      req.method === 'GET' &&
+      !req.url.includes('/mi-proyecto') &&
+      !token);
 
-  let authReq = req.clone({
-    setHeaders: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-  });
+  // Si es FormData NO tocar Content-Type, el navegador lo gestiona solo
+  const isFormData = req.body instanceof FormData;
 
-  // Añadir token solo si existe y no es ruta pública
+  let authReq = isFormData
+    ? req.clone({ setHeaders: { Accept: 'application/json' } })
+    : req.clone({ setHeaders: { 'Content-Type': 'application/json', Accept: 'application/json' } });
+
   if (token && !isPublicRoute) {
     authReq = authReq.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
+      setHeaders: { Authorization: `Bearer ${token}` },
     });
   }
 
@@ -35,7 +31,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error) => {
       console.error('HTTP Error:', error);
 
-      // Si es 401 y no es ruta pública, redirigir a login
       if (error.status === 401 && !isPublicRoute) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');

@@ -15,7 +15,8 @@ class ProyectoFactory extends Factory {
             'nombre'       => fake()->sentence(3),
             'resumen'      => fake()->sentence(10),
             'descripcion'  => fake()->paragraph(3),
-            'video_url'    => fake()->randomElement(['hola.mp4', 'demo.mp4', 'presentacion.mp4']),
+            'video_url' => $video = fake()->randomElement(['hola.mp4', 'demo.mp4', 'presentacion.mp4']),
+            'video_thumbnail' => 'proyectos/thumbnails/' . str_replace('.mp4', '_thumb.jpg', $video),
             'ciclo'        => fake()->randomElement(['DAW 1º', 'DAW 2º', 'DAM 1º', 'DAM 2º', 'ASIR 1º', 'ASIR 2º']),
             'anio'         => fake()->randomElement(['2022/2023', '2023/2024', '2024/2025']),
             'alumnos'      => fake()->randomElements([

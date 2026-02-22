@@ -7,6 +7,7 @@ use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller {
+
     public function index(Request $request) {
         try {
             $proyectos = Proyecto::where('checked', true)
@@ -28,54 +29,65 @@ class ProyectoController extends Controller {
 
     public function store(Request $request) {
         $user = $request->user();
-        if ($user->rol !== 'admin') {
-            return response()->json(['message' => 'No autorizado'], 403);
-        }
 
         $data = $request->validate([
-            'nombre' => 'required|string',
-            'resumen' => 'required|string',
-            'descripcion' => 'required|string',
-            'ciclo' => 'required|string',
-            'anio' => 'required|string',
-            'alumnos' => 'required|string',
-            'video_url' => 'nullable|string',
-            'documentos' => 'required|string',
-            'tags' => 'nullable|string',
-            'checked' => 'boolean',
+            'nombre'        => 'required|string',
+            'resumen'       => 'required|string',
+            'descripcion'   => 'required|string',
+            'ciclo'         => 'required|string',
+            'anio'          => 'required|string',
+            'alumnos'       => 'required|string',
+            'video_url'     => 'nullable|string',
+            'thumbnail' => 'nullable|file|mimes:jpg,jpeg|max:5120',
+            'tags'          => 'nullable|string',
+            'checked'       => 'boolean',
             'observaciones' => 'nullable|string',
-            'video' => 'nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:51200',
+            'video'         => 'nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:51200',
+            'documentos'    => 'nullable|array',
+            'documentos.*'  => 'file|mimes:pdf|max:10240',
         ]);
 
-        $proyecto = Proyecto::create($data);
+        unset($data['documentos']);
 
-        // Si viene un video físico, guardarlo y generar thumbnail
+        if (isset($data['alumnos'])) {
+            $data['alumnos'] = array_map('trim', explode(',', $data['alumnos']));
+        }
+
+        if (isset($data['tags']) && $data['tags']) {
+            $data['tags'] = array_map('trim', explode(',', $data['tags']));
+        }
+
+        $proyecto = Proyecto::create(array_merge($data, ['user_id' => $user->id]));
+
         if ($request->hasFile('video')) {
             $video = $request->file('video');
             $nombreVideo = time() . '_' . $video->getClientOriginalName();
-            $video->storeAs('public/proyectos', $nombreVideo);
-
-            // Actualizar video_url en el proyecto
+            $video->storeAs('proyectos', $nombreVideo, 'public');
             $proyecto->video_url = $nombreVideo;
 
-            // Generar thumbnail con FFmpeg
-            $videoPath = storage_path('app/public/proyectos/' . $nombreVideo);
-            $thumbnailName = pathinfo($nombreVideo, PATHINFO_FILENAME) . '_thumb.jpg';
-            $thumbnailPath = storage_path('app/public/proyectos/thumbnails/' . $thumbnailName);
-
-            if (!file_exists(dirname($thumbnailPath))) {
-                mkdir(dirname($thumbnailPath), 0755, true);
+            // Thumbnail generado desde Angular
+            if ($request->hasFile('thumbnail')) {
+                $thumb = $request->file('thumbnail');
+                $thumbnailName = pathinfo($nombreVideo, PATHINFO_FILENAME) . '_thumb.jpg';
+                $thumb->storeAs('proyectos/thumbnails', $thumbnailName, 'public');
+                $proyecto->video_thumbnail = 'proyectos/thumbnails/' . $thumbnailName;
             }
 
-            exec("ffmpeg -i {$videoPath} -ss 00:00:01 -vframes 1 {$thumbnailPath} 2>&1");
-
-            $proyecto->video_thumbnail = 'proyectos/thumbnails/' . $thumbnailName;
             $proyecto->save();
         }
 
-        return response()->json([
-            'proyecto' => $proyecto,
-        ], 201);
+        if ($request->hasFile('documentos')) {
+            $rutas = [];
+            foreach ($request->file('documentos') as $doc) {
+                $nombre = time() . '_' . $doc->getClientOriginalName();
+                $doc->storeAs('proyectos/documentos', $nombre, 'public');
+                $rutas[] = 'proyectos/documentos/' . $nombre;
+            }
+            $proyecto->documentos = $rutas;
+            $proyecto->save();
+        }
+
+        return response()->json(['proyecto' => $proyecto], 201);
     }
 
     public function show(Request $request, $id) {
@@ -91,7 +103,6 @@ class ProyectoController extends Controller {
             }
 
             if (!$proyecto->checked) {
-                // Intentar autenticar manualmente aunque la ruta sea pública
                 $user = null;
                 try {
                     $user = \Laravel\Sanctum\PersonalAccessToken::findToken(
@@ -126,35 +137,53 @@ class ProyectoController extends Controller {
         }
 
         $data = $request->validate([
-            'nombre' => 'sometimes|string',
-            'resumen' => 'sometimes|string',
-            'descripcion' => 'sometimes|string',
-            'ciclo' => 'sometimes|string',
-            'anio' => 'required|string',
-            'alumnos' => 'sometimes|string',
-            'video_url' => 'sometimes|string',
-            'documentos' => 'sometimes|string',
-            'tags' => 'sometimes|string',
-            'checked' => 'sometimes|boolean',
+            'nombre'        => 'sometimes|string',
+            'resumen'       => 'sometimes|string',
+            'descripcion'   => 'sometimes|string',
+            'ciclo'         => 'sometimes|string',
+            'anio'          => 'required|string',
+            'alumnos'       => 'sometimes|string',
+            'video_url'     => 'sometimes|string',
+            'tags'          => 'sometimes|string',
+            'checked'       => 'sometimes|boolean',
             'observaciones' => 'nullable|string',
-            'video' => 'nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:51200',
+            'video'         => 'nullable|file|mimetypes:video/mp4,video/avi,video/mpeg|max:51200',
+            'documentos'    => 'nullable|array',
+            'documentos.*'  => 'file|mimes:pdf|max:10240',
         ]);
+
+        unset($data['documentos']);
+
+        if (isset($data['alumnos'])) {
+            $data['alumnos'] = array_map('trim', explode(',', $data['alumnos']));
+        }
+
+        if (isset($data['tags']) && $data['tags']) {
+            $data['tags'] = array_map('trim', explode(',', $data['tags']));
+        }
 
         $proyecto->update($data);
 
-        // Subida de video físico
-        $videoPath = null;
         if ($request->hasFile('video')) {
             $video = $request->file('video');
             $nombreVideo = time() . '_' . $video->getClientOriginalName();
-            $video->storeAs('public/videos', $nombreVideo);
-            $videoPath = url('storage/videos/' . $nombreVideo);
+            $video->storeAs('proyectos', $nombreVideo, 'public');
+            $proyecto->video_url = $nombreVideo;
+            $proyecto->save();
         }
 
-        return response()->json([
-            'proyecto' => $proyecto,
-            'video_path' => $videoPath
-        ], 200);
+        if ($request->hasFile('documentos')) {
+            $rutas = [];
+            foreach ($request->file('documentos') as $doc) {
+                $nombre = time() . '_' . $doc->getClientOriginalName();
+                $doc->storeAs('proyectos/documentos', $nombre, 'public');
+                $rutas[] = 'proyectos/documentos/' . $nombre;
+            }
+            $proyecto->documentos = $rutas;
+            $proyecto->save();
+        }
+
+        return response()->json(['proyecto' => $proyecto], 200);
     }
 
     public function destroy(Request $request, $id) {
@@ -173,7 +202,6 @@ class ProyectoController extends Controller {
         return response()->json(['message' => 'Proyecto eliminado'], 200);
     }
 
-    // Devuelve el proyecto del alumno autenticado (checked o no)
     public function miProyecto(Request $request) {
         $proyecto = Proyecto::where('user_id', $request->user()->id)->first();
 
@@ -184,9 +212,6 @@ class ProyectoController extends Controller {
             ], 404);
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => $proyecto
-        ], 200);
+        return response()->json(['success' => true, 'data' => $proyecto], 200);
     }
 }

@@ -1,112 +1,151 @@
-
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload-file',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './upload-file.html',
-  styleUrls: ['./upload-file.css']
+  styleUrls: ['./upload-file.css'],
 })
-
 export class UploadFileComponent {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
+
   proyecto: any = {
     titulo: '',
     curso: '',
     ciclo: '',
-    descripcion: ''
+    descripcion: '',
   };
 
   autoresTexto = '';
   etiquetasTexto = '';
 
-  imagen: File | null = null;
   video: File | null = null;
-  archivo: File | null = null;
+  videoPreviewUrl: string | null = null;
+  documentos: File[] = [];
 
-  errorImagen: string = '';
   errorVideo: string = '';
   errorArchivo: string = '';
+  errorFormulario: string = '';
+  mensajeExito: string = '';
+  enviando: boolean = false;
 
-  MAX_SIZE = 30 * 1024 * 1024; // 30 MB
-
+  MAX_VIDEO_SIZE = 30 * 1024 * 1024;
+  MAX_DOC_SIZE = 10 * 1024 * 1024;
 
   onVideoSeleccionado(event: any) {
     const file = event.target.files[0];
     if (file) {
-      if (file.size > this.MAX_SIZE) {
+      if (file.size > this.MAX_VIDEO_SIZE) {
         this.errorVideo = 'El vídeo no puede superar los 30 MB';
         this.video = null;
+        this.videoPreviewUrl = null;
       } else {
         this.errorVideo = '';
         this.video = file;
+        this.generarThumbnail(file);
       }
     }
   }
 
+  generarThumbnail(file: File): void {
+    const url = URL.createObjectURL(file);
+    const videoEl = document.createElement('video');
+    videoEl.src = url;
+    videoEl.currentTime = 1;
+    videoEl.muted = true;
 
+    videoEl.addEventListener('seeked', () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = videoEl.videoWidth;
+      canvas.height = videoEl.videoHeight;
+      canvas.getContext('2d')?.drawImage(videoEl, 0, 0);
+      this.videoPreviewUrl = canvas.toDataURL('image/jpeg');
+      URL.revokeObjectURL(url);
+    });
+
+    videoEl.load();
+  }
+
+  dataURLtoBlob(dataURL: string): Blob {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) u8arr[n] = bstr.charCodeAt(n);
+    return new Blob([u8arr], { type: mime });
+  }
+
+  onDocumentacionSeleccionada(event: any): void {
+    const files: FileList = event.target.files;
+    this.errorArchivo = '';
+    this.documentos = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.size > this.MAX_DOC_SIZE) {
+        this.errorArchivo = `"${file.name}" supera los 10 MB`;
+        this.documentos = [];
+        return;
+      }
+      this.documentos.push(file);
+    }
+  }
 
   enviarProyecto(form: any) {
-    // Si el formulario es inválido
+    this.errorFormulario = '';
+    this.mensajeExito = '';
+
     if (form.invalid) {
-      alert('Por favor, revisa los campos obligatorios');
+      form.control.markAllAsTouched();
+      this.errorFormulario = 'Por favor, revisa los campos obligatorios.';
       return;
     }
 
     if (!this.video) {
-      this.errorVideo = 'Es obligatorio subir un vídeo';
+      this.errorVideo = 'Es obligatorio subir un vídeo.';
       return;
     }
 
     const formData = new FormData();
-    formData.append('nombre', this.proyecto.titulo);
-    formData.append('alumnos', this.autoresTexto);
-    formData.append('titulo', this.proyecto.titulo);
-    formData.append('curso', this.proyecto.curso);
-    formData.append('ciclo', this.proyecto.ciclo);
+    formData.append('nombre',      this.proyecto.titulo);
+    formData.append('resumen',     this.proyecto.titulo);
+    formData.append('alumnos',     this.autoresTexto);
+    formData.append('ciclo',       this.proyecto.ciclo);
+    formData.append('anio',        this.proyecto.curso);
     formData.append('descripcion', this.proyecto.descripcion);
-    formData.append('autores', JSON.stringify(this.autoresTexto.split(',').map(a => a.trim())));
-    formData.append('tags', JSON.stringify(this.etiquetasTexto.split(',').map(e => e.trim())));
-    formData.append('video', this.video);
+    formData.append('tags',        this.etiquetasTexto);
+    formData.append('video',       this.video);
 
-    if (this.archivo) {
-      formData.append('documentos', this.archivo);
+    // Añadir thumbnail generado en el navegador
+    if (this.videoPreviewUrl) {
+      const blob = this.dataURLtoBlob(this.videoPreviewUrl);
+      const thumbnailFile = new File([blob], 'thumbnail.jpg', { type: 'image/jpeg' });
+      formData.append('thumbnail', thumbnailFile);
     }
 
-    this.http.post('http://127.0.0.1:8000/api/proyectos', formData)
-  .subscribe({
-    next: (res) => {
-      alert('Proyecto creado correctamente');
-      console.log(res);
-    },
-    error: (err) => {
-      alert('Error al crear el proyecto');
-      console.error(err);
-    }
-  });
-  }
+    this.documentos.forEach((doc) => {
+      formData.append('documentos[]', doc);
+    });
 
-  // Tamaño máximo permitido para documentación (10 MB)
-  MAX_DOC_SIZE = 10 * 1024 * 1024;
+    this.enviando = true;
 
-  // Método que se ejecuta cuando el usuario selecciona la documentación
-  onDocumentacionSeleccionada(event: any): void {
-
-    const file = event.target.files[0]; // Obtenemos el archivo seleccionado
-
-    if (file) {
-
-      // 1️⃣ Validar tamaño máximo (10MB)
-      if (file.size > this.MAX_DOC_SIZE) {
-        this.errorArchivo = 'La documentación no puede superar los 10 MB';
-        this.archivo = null;
-        return;
-      }
-    }
+    this.http.post('http://127.0.0.1:8000/api/proyectos', formData).subscribe({
+      next: (res) => {
+        this.enviando = false;
+        this.mensajeExito = 'Proyecto creado correctamente.';
+        setTimeout(() => this.router.navigate(['/mi-proyecto']), 1500);
+      },
+      error: (err) => {
+        this.enviando = false;
+        console.error('Errores de validación:', err.error?.errors);
+        this.errorFormulario = err.error?.message || 'Error al crear el proyecto.';
+      },
+    });
   }
 }
-
