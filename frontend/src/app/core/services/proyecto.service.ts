@@ -18,7 +18,7 @@ export class ProyectoService {
     return this.http.get<ApiResponse<Proyecto[]>>(this.apiUrl);
   }
 
-  //Listar todos los proyectos admin
+  //Listar todos los proyectos panel admin
   getAllAdmin(): Observable<ApiResponse<Proyecto[]>> {
     return this.http.get<ApiResponse<Proyecto[]>>(this.apiAdminUrl);
   }

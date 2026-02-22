@@ -45,14 +45,16 @@ import { Proyecto } from '../../core/models/proyecto.model';
       </thead>
 
       <tbody>
-        <tr *ngFor="let proyecto of proyectos">
-          <app-article-admin
-            [titulo]="proyecto.nombre"
-            [anio]="getYear(proyecto.created_at)"
-            [ciclo]="proyecto.ciclo"
-            [estado]="proyecto.checked ? 'Verificado' : 'Pendiente'">
-          </app-article-admin>
-        </tr>
+        <ng-container *ngFor="let proyecto of proyectos">
+          <tr>
+            <app-article-admin
+              [titulo]="proyecto.nombre"
+              [anio]="getYear(proyecto.created_at)"
+              [ciclo]="proyecto.ciclo"
+              [estado]="proyecto.checked ? 'Validado' : 'Pendiente'">
+            </app-article-admin>
+          </tr>
+        </ng-container>
       </tbody>
 
     </table>

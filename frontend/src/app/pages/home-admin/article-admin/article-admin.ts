@@ -15,7 +15,7 @@ export class ArticleAdmin {
   @Input() titulo!: string;
   @Input() anio!: string | number;
   @Input() tecnologias: string[] = [];
-  @Input() curso!: string;
+  @Input() ciclo!: string;
   @Input() descripcion!: string;
   @Input() estado!: 'Validado' | 'Pendiente';
 }
