@@ -45,6 +45,13 @@ export class Navbar implements OnInit {
         this.projectId = null;
       }
     });
+
+    // 👇 Esto detecta cuando se sube un proyecto sin recargar
+    this.authService.tieneProyecto$.subscribe((tiene: boolean) => {
+      if (tiene) {
+        this.cargarMiProyecto();
+      }
+    });
   }
 
   cargarMiProyecto() {

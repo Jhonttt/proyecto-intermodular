@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-upload-file',
@@ -12,7 +13,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./upload-file.css'],
 })
 export class UploadFileComponent {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService,
+  ) {}
 
   proyecto: any = {
     titulo: '',
@@ -55,16 +60,26 @@ export class UploadFileComponent {
   generarThumbnail(file: File): void {
     const url = URL.createObjectURL(file);
     const videoEl = document.createElement('video');
-    videoEl.src = url;
-    videoEl.currentTime = 1;
+    videoEl.preload = 'metadata';
     videoEl.muted = true;
+    videoEl.src = url;
+
+    const timeout = setTimeout(() => {
+      this.videoPreviewUrl = null;
+      URL.revokeObjectURL(url);
+    }, 5000);
+
+    videoEl.addEventListener('loadedmetadata', () => {
+      videoEl.currentTime = Math.min(1, videoEl.duration * 0.1);
+    });
 
     videoEl.addEventListener('seeked', () => {
+      clearTimeout(timeout);
       const canvas = document.createElement('canvas');
       canvas.width = videoEl.videoWidth;
       canvas.height = videoEl.videoHeight;
       canvas.getContext('2d')?.drawImage(videoEl, 0, 0);
-      this.videoPreviewUrl = canvas.toDataURL('image/jpeg');
+      this.videoPreviewUrl = canvas.toDataURL('image/jpeg', 0.7);
       URL.revokeObjectURL(url);
     });
 
@@ -113,14 +128,14 @@ export class UploadFileComponent {
     }
 
     const formData = new FormData();
-    formData.append('nombre',      this.proyecto.titulo);
-    formData.append('resumen',     this.proyecto.titulo);
-    formData.append('alumnos',     this.autoresTexto);
-    formData.append('ciclo',       this.proyecto.ciclo);
-    formData.append('anio',        this.proyecto.curso);
+    formData.append('nombre', this.proyecto.titulo);
+    formData.append('resumen', this.proyecto.titulo);
+    formData.append('alumnos', this.autoresTexto);
+    formData.append('ciclo', this.proyecto.ciclo);
+    formData.append('anio', this.proyecto.curso);
     formData.append('descripcion', this.proyecto.descripcion);
-    formData.append('tags',        this.etiquetasTexto);
-    formData.append('video',       this.video);
+    formData.append('tags', this.etiquetasTexto);
+    formData.append('video', this.video);
 
     // Añadir thumbnail generado en el navegador
     if (this.videoPreviewUrl) {
@@ -135,11 +150,15 @@ export class UploadFileComponent {
 
     this.enviando = true;
 
-    this.http.post('http://127.0.0.1:8000/api/proyectos', formData).subscribe({
-      next: (res) => {
+    this.http.post('http://localhost:8000/api/proyectos', formData).subscribe({
+      next: (res: any) => {
         this.enviando = false;
         this.mensajeExito = 'Proyecto creado correctamente.';
-        setTimeout(() => this.router.navigate(['/mi-proyecto']), 1500);
+        this.authService.notificarProyectoSubido();
+        const id = (res as any).data?.id ?? (res as any).proyecto?.id;
+        console.log('Respuesta completa:', res); // 👈 para ver qué devuelve exactamente
+        console.log('ID obtenido:', id);
+        setTimeout(() => this.router.navigate(['/details-form', id]), 1500);
       },
       error: (err) => {
         this.enviando = false;

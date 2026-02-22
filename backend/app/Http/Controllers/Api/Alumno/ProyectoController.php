@@ -87,7 +87,14 @@ class ProyectoController extends Controller {
             $proyecto->save();
         }
 
-        return response()->json(['proyecto' => $proyecto], 201);
+        $user->update(['proyecto_subido' => true]);
+
+        // En store(), cambia la última línea:
+        return response()->json([
+            'success' => true,
+            'message' => 'Proyecto creado correctamente',
+            'data' => $proyecto
+        ], 201);
     }
 
     public function show(Request $request, $id) {

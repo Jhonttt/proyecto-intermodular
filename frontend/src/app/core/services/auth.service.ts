@@ -4,15 +4,16 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
+  private tieneProyectoSubject = new BehaviorSubject<boolean>(false);
+  public tieneProyecto$ = this.tieneProyectoSubject.asObservable();
   private isLoggedInSubject = new BehaviorSubject<boolean>(!!localStorage.getItem('token'));
   public isLoggedIn$: Observable<boolean> = this.isLoggedInSubject.asObservable();
 
   private userSubject = new BehaviorSubject<any>(
-    localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null
+    localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null,
   );
   public user$: Observable<any> = this.userSubject.asObservable();
 
@@ -21,7 +22,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
   ) {}
 
   login(credentials: { email: string; password: string }, onError?: (err: any) => void) {
@@ -42,7 +43,7 @@ export class AuthService {
         } else {
           alert(err.error?.message || 'Error en login');
         }
-      }
+      },
     });
   }
 
@@ -55,5 +56,13 @@ export class AuthService {
       this.userSubject.next(null);
       this.router.navigate(['/login']);
     });
+  }
+
+  notificarProyectoSubido() {
+    this.tieneProyectoSubject.next(true);
+  }
+
+  notificarProyectoEliminado() {
+    this.tieneProyectoSubject.next(false);
   }
 }
