@@ -16,7 +16,7 @@ export class UploadFileComponent {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   proyecto: any = {
@@ -38,25 +38,27 @@ export class UploadFileComponent {
   mensajeExito: string = '';
   enviando: boolean = false;
 
-  MAX_VIDEO_SIZE = 30 * 1024 * 1024;
-  MAX_DOC_SIZE = 10 * 1024 * 1024;
-  MAX_TOTAL_DOCS_SIZE = 10 * 1024 * 1024;
+  MAX_VIDEO_SIZE = 30 * 1024 * 1024; // 30 MB
+  MAX_DOC_SIZE = 10 * 1024 * 1024;   // 10 MB
+  MAX_TOTAL_DOCS_SIZE = 10 * 1024 * 1024; // límite total documentos
 
+  // Selección de vídeo
   onVideoSeleccionado(event: any) {
     const file = event.target.files[0];
-    if (file) {
-      if (file.size > this.MAX_VIDEO_SIZE) {
-        this.errorVideo = 'El vídeo no puede superar los 30 MB';
-        this.video = null;
-        this.videoPreviewUrl = null;
-      } else {
-        this.errorVideo = '';
-        this.video = file;
-        this.generarThumbnail(file);
-      }
+    if (!file) return;
+
+    if (file.size > this.MAX_VIDEO_SIZE) {
+      this.errorVideo = 'El vídeo no puede superar los 30 MB';
+      this.video = null;
+      this.videoPreviewUrl = null;
+    } else {
+      this.errorVideo = '';
+      this.video = file;
+      this.generarThumbnail(file);
     }
   }
 
+  // Genera miniatura del vídeo
   generarThumbnail(file: File): void {
     const url = URL.createObjectURL(file);
     const videoEl = document.createElement('video');
@@ -86,6 +88,7 @@ export class UploadFileComponent {
     videoEl.load();
   }
 
+  // Convierte dataURL a Blob
   dataURLtoBlob(dataURL: string): Blob {
     const arr = dataURL.split(',');
     const mime = arr[0].match(/:(.*?);/)![1];
@@ -96,21 +99,20 @@ export class UploadFileComponent {
     return new Blob([u8arr], { type: mime });
   }
 
+  // Selección de documentos PDF
   onDocumentacionSeleccionada(event: any): void {
     const files: FileList = event.target.files;
-    this.errorArchivo = '';
+    if (!files) return;
 
-    // Calcular el tamaño que ya llevas acumulado
+    this.errorArchivo = '';
     let totalSize = this.documentos.reduce((acc, doc) => acc + doc.size, 0);
-    const nuevosDocumentos = [...this.documentos]; // 👈 parte de los que ya tienes
+    const nuevosDocumentos = [...this.documentos];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
       // Evitar duplicados por nombre
-      if (nuevosDocumentos.some((d) => d.name === file.name)) {
-        continue;
-      }
+      if (nuevosDocumentos.some((d) => d.name === file.name)) continue;
 
       if (totalSize + file.size > this.MAX_TOTAL_DOCS_SIZE) {
         this.errorArchivo = `"${file.name}" no se puede añadir: superaría el límite de 10 MB en total (llevas ${(totalSize / 1024 / 1024).toFixed(1)} MB)`;
@@ -124,10 +126,18 @@ export class UploadFileComponent {
     this.documentos = nuevosDocumentos;
   }
 
-  enviarProyecto(form: any) {
+  // Elimina un documento de la lista
+  eliminarDocumento(doc: File): void {
+    this.documentos = this.documentos.filter((d) => d.name !== doc.name);
+    this.errorArchivo = '';
+  }
+
+  // Envío del proyecto
+  enviarProyecto(form: NgForm) {
     this.errorFormulario = '';
     this.mensajeExito = '';
 
+    // Validación del formulario
     if (form.invalid) {
       form.control.markAllAsTouched();
       this.errorFormulario = 'Por favor, revisa los campos obligatorios.';
@@ -139,53 +149,6 @@ export class UploadFileComponent {
       return;
     }
 
-    this.errorDoc = '';
-    this.docFile = file;
-  }
-
-  enviarProyecto(form: NgForm) {
-    // Reset errores individuales
-    this.errorTitulo = '';
-    this.errorAutores = '';
-    this.errorCurso = '';
-    this.errorCiclo = '';
-    this.errorDescripcion = '';
-    this.errorVideo = '';
-    this.errorDoc = '';
-
-    // Validaciones manuales
-    let valid = true;
-
-    if (!this.proyecto.titulo.trim()) {
-      this.errorTitulo = 'El título es obligatorio';
-      valid = false;
-    }
-    if (!this.autoresTexto.trim()) {
-      this.errorAutores = 'Debes indicar al menos un autor';
-      valid = false;
-    }
-    if (!this.proyecto.curso) {
-      this.errorCurso = 'Debes seleccionar un curso';
-      valid = false;
-    }
-    if (!this.proyecto.ciclo) {
-      this.errorCiclo = 'Debes seleccionar un ciclo';
-      valid = false;
-    }
-    if (!this.proyecto.descripcion.trim()) {
-      this.errorDescripcion = 'La descripción es obligatoria';
-      valid = false;
-    } else if (this.proyecto.descripcion.length < 25) {
-      this.errorDescripcion = 'La descripción debe tener al menos 25 caracteres';
-      valid = false;
-    }
-    if (!this.videoFile) {
-      this.errorVideo = 'Es obligatorio subir un vídeo';
-      valid = false;
-    }
-
-    if (!valid) return;
-
     // Preparar FormData
     const formData = new FormData();
     formData.append('nombre', this.proyecto.titulo);
@@ -195,9 +158,12 @@ export class UploadFileComponent {
     formData.append('anio', this.proyecto.curso);
     formData.append('descripcion', this.proyecto.descripcion);
     formData.append('tags', this.etiquetasTexto);
-    formData.append('video', this.video);
 
-    // Añadir thumbnail generado en el navegador
+    if (this.video) {
+      formData.append('video', this.video);
+    }
+
+    // Añadir thumbnail generado
     if (this.videoPreviewUrl) {
       const blob = this.dataURLtoBlob(this.videoPreviewUrl);
       const thumbnailFile = new File([blob], 'thumbnail.jpg', { type: 'image/jpeg' });
@@ -215,21 +181,13 @@ export class UploadFileComponent {
         this.enviando = false;
         this.mensajeExito = 'Proyecto creado correctamente.';
         this.authService.notificarProyectoSubido();
-        const id = (res as any).data?.id ?? (res as any).proyecto?.id;
-        console.log('Respuesta completa:', res); // 👈 para ver qué devuelve exactamente
-        console.log('ID obtenido:', id);
+        const id = res?.data?.id ?? res?.proyecto?.id;
         setTimeout(() => this.router.navigate(['/details-form', id]), 1500);
       },
       error: (err) => {
         this.enviando = false;
-        console.error('Errores de validación:', err.error?.errors);
         this.errorFormulario = err.error?.message || 'Error al crear el proyecto.';
       },
     });
-  }
-  
-  eliminarDocumento(doc: File): void {
-    this.documentos = this.documentos.filter((d) => d.name !== doc.name);
-    this.errorArchivo = '';
   }
 }
