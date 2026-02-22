@@ -2,48 +2,46 @@
   Subir proyecto
 </h2>
 
-<!-- Formulario principal -->
-<!-- (ngSubmit) se ejecuta al hacer submit del formulario -->
 <form #formProyecto="ngForm" (ngSubmit)="enviarProyecto(formProyecto)" class="upload-form">
 
-
+  <!-- Título -->
   <div>
     <label for="titulo">Título del proyecto:</label><br>
-    <!-- [(ngModel)] enlaza el input con proyecto.titulo en TS -->
-    <!-- name es obligatorio para ngModel en formularios template-driven -->
-    <!-- required indica que este campo es obligatorio -->
     <input id="titulo" type="text" [(ngModel)]="proyecto.titulo" name="titulo" required #titulo="ngModel" />
-    <div *ngIf="titulo.invalid && titulo.touched" class="error">El título es obligatorio</div>
+    <div *ngIf="titulo.invalid && (titulo.touched || formProyecto.submitted)" class="error">
+      El título es obligatorio
+    </div>
   </div>
 
-  <!-- Campo para autores -->
+  <!-- Autores -->
   <div>
-    <label for="autores">Autor/autores: </label><br>
-    <!-- Aquí el usuario puede ingresar varios autores separados por comas -->
-    <input id="autores" type="text" [(ngModel)]="autoresTexto" name="autores" placeholder="Ej: Nombre1, Nombre2"
-      required />
+    <label for="autores">Autor/autores:</label><br>
+    <input id="autores" type="text" [(ngModel)]="autoresTexto" name="autores" placeholder="Ej: Nombre1, Nombre2" required #autores="ngModel" />
+    <div *ngIf="autores.invalid && (autores.touched || formProyecto.submitted)" class="error">
+      Debes indicar al menos un autor
+    </div>
   </div>
 
-  <!--Curso académico-->
+  <!-- Curso -->
   <div>
     <label for="curso">Curso académico:</label><br>
-    <select id="curso" [(ngModel)]="proyecto.curso" name="curso" required>
+    <select id="curso" [(ngModel)]="proyecto.curso" name="curso" required #curso="ngModel">
       <option value="" disabled selected hidden>Selecciona curso</option>
       <option value="2022/2023">2022/2023</option>
       <option value="2023/2024">2023/2024</option>
       <option value="2024/2025">2024/2025</option>
       <option value="2025/2026">2025/2026</option>
     </select>
+    <div *ngIf="curso.invalid && (curso.touched || formProyecto.submitted)" class="error">
+      Debes seleccionar un curso
+    </div>
   </div>
 
-
-  <!-- Campo para seleccionar ciclo -->
+  <!-- Ciclo -->
   <div>
     <label for="ciclo">Ciclo:</label><br>
-    <!-- ngModel enlaza con proyecto.ciclo --> <!--VER EL COMPONENTE CICLO/CURSO-->
-    <select id="ciclo" [(ngModel)]="proyecto.ciclo" name="ciclo" required>
-      <option value="">Selecciona ciclo</option>
-
+    <select id="ciclo" [(ngModel)]="proyecto.ciclo" name="ciclo" required #ciclo="ngModel">
+      <option value="" disabled selected hidden>Selecciona ciclo</option>
       <option value="DAW">Desarrollo de Aplicaciones Web</option>
       <option value="DAM">Desarrollo de Aplicaciones Multiplataforma</option>
       <option value="ASIR">Administración de Sistemas Informáticos en Red</option>
@@ -51,50 +49,42 @@
       <option value="AD">Asistencia a la Dirección</option>
       <option value="AUT">Automoción</option>
     </select>
+    <div *ngIf="ciclo.invalid && (ciclo.touched || formProyecto.submitted)" class="error">
+      Debes seleccionar un ciclo
+    </div>
   </div>
 
-
+  <!-- Descripción -->
   <div>
-
     <label>Descripción:</label><br>
-
- 
-    <!-- textarea enlaza con proyecto.descripcion -->
-    <textarea [(ngModel)]="proyecto.descripcion" name="descripcion" required maxlength="200" minlength="25"   style="resize: none;"></textarea>
+    <textarea [(ngModel)]="proyecto.descripcion" name="descripcion" required minlength="25" maxlength="200"
+      #descripcion="ngModel" style="resize: none;"></textarea>
+    <div *ngIf="descripcion.invalid && (descripcion.touched || formProyecto.submitted)" class="error">
+      <div *ngIf="descripcion.errors?.required">La descripción es obligatoria</div>
+      <div *ngIf="descripcion.errors?.minlength">Mínimo 25 caracteres</div>
+      <div *ngIf="descripcion.errors?.maxlength">Máximo 200 caracteres</div>
+    </div>
   </div>
 
-
+  <!-- Etiquetas -->
   <div>
-    <label>Etiquetas: </label><br>
-    <!-- El usuario puede ingresar etiquetas separadas por comas -->
+    <label>Etiquetas:</label><br>
     <input type="text" [(ngModel)]="etiquetasTexto" name="etiquetas" placeholder="Angular, Laravel..." />
   </div>
 
-
+  <!-- Video obligatorio -->
   <div>
-    <label>Vídeo del proyecto (obligatorio, max 30 MB)</label><br />
-    <!-- Evento onVideoSeleccionado valida tamaño y guarda archivo -->
+    <label>Vídeo del proyecto (obligatorio, max 30 MB):</label><br>
     <input type="file" (change)="onVideoSeleccionado($event)" required />
-    <!-- Mensaje de error para vídeo -->
-    <div *ngIf="errorVideo" class="error">
-      {{ errorVideo }}
-    </div>
-
-
+    <div *ngIf="errorVideo" class="error">{{ errorVideo }}</div>
   </div>
 
-
-  <!-- Archivo del proyecto -->
+  <!-- ZIP opcional -->
   <div>
     <label for="archivo">Archivo del proyecto (ZIP o RAR):</label><br>
     <input id="archivo" type="file" accept=".zip,.rar" (change)="onDocumentacionSeleccionada($event)" />
-    <div *ngIf="errorArchivo" class="error">
-      {{ errorArchivo }}
-    </div>
+    <div *ngIf="errorArchivo" class="error">{{ errorArchivo }}</div>
   </div>
 
-
-  <!-- Botón de envío -->
   <button type="submit">Enviar</button>
 </form>
-<br><br>
