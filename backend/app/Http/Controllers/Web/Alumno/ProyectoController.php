@@ -5,13 +5,19 @@ namespace App\Http\Controllers\Web\Alumno;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Proyecto;
+use Illuminate\Support\Facades\Storage;
 
-class ProyectoController extends Controller {
-    public function index() {
+class ProyectoController extends Controller
+{
+    // Mostrar formulario de creación
+    public function index()
+    {
         return view("alumno.proyectos.create");
     }
 
-    public function store(Request $request) {
+    // Guardar proyecto
+    public function store(Request $request)
+    {
         // Validación
         $request->validate([
             'nombre' => 'required|string|max:255',
@@ -23,17 +29,29 @@ class ProyectoController extends Controller {
             'tags.*' => 'string|max:50',
             'alumnos' => 'required|array',
             'alumnos.*' => 'string',
-            'archivo' => 'nullable|file|max:30720',
-            'video' => 'required|file|mimes:mp4,mov,avi,mkv,wmv|max:30720',
+            'archivo' => 'nullable|file|max:10240|mimes:zip,rar', // 10MB
+            'video' => 'required|file|mimes:mp4,mov,avi,mkv,wmv|max:30720', // 30MB
         ]);
 
-        //Guardar archivo
-        $rutaArchivo = $request->file('video')->store('proyectos');
-      
-        //Coger el video_url que se genero
-        // $video = x;
+        // Subida del video
+        $videoPath = null;
+        if ($request->hasFile('video')) {
+            $video = $request->file('video');
+            $nombreVideo = time() . '_' . $video->getClientOriginalName();
+            $video->storeAs('public/videos', $nombreVideo);
+            $videoPath = 'storage/videos/' . $nombreVideo;
+        }
 
-        //Guardar en BD
+        // Subida del archivo ZIP/RAR opcional
+        $archivoPath = null;
+        if ($request->hasFile('archivo')) {
+            $archivo = $request->file('archivo');
+            $nombreArchivo = time() . '_' . $archivo->getClientOriginalName();
+            $archivo->storeAs('public/documentos', $nombreArchivo);
+            $archivoPath = 'storage/documentos/' . $nombreArchivo;
+        }
+
+        // Guardar proyecto en la base de datos
         $proyecto = Proyecto::create([
             'nombre' => $request->nombre,
             'resumen' => $request->resumen,
@@ -42,7 +60,8 @@ class ProyectoController extends Controller {
             'ciclo' => $request->ciclo,
             'tags' => $request->tags,
             'alumnos' => $request->alumnos,
-            'video' => $request->video_url,
+            'video' => $videoPath,
+            'archivo' => $archivoPath,
             'checked' => false,
             'observaciones' => null,
         ]);
