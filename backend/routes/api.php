@@ -3,8 +3,10 @@
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Alumno\ProyectoController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Admin\ProyectoControllerAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 // ============================================
 // RUTAS PÚBLICAS (sin autenticación)
@@ -19,6 +21,7 @@ Route::get('/proyectos/{id}', [ProyectoController::class, 'show'])->name('api.pr
 // RUTAS PROTEGIDAS (requieren autenticación)
 // ============================================
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/admin/proyectos', [ProyectoControllerAdmin::class, 'index']);
     Route::post("/logout", [AuthController::class, "logout"])->name("api.logout");
 
     Route::get('/user', function (Request $request) {
@@ -50,8 +53,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/proyectos', [ProyectoController::class, 'store']);
-
-
 
 // Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");
 // Route::post('/store', [AlumnoProyectoController::class, 'store'])->name('alumno.proyectos.store');
