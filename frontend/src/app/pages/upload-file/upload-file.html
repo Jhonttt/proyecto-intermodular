@@ -2,33 +2,40 @@
   <h2>Subir proyecto</h2>
 
   <!-- Mensaje de éxito -->
-  <div *ngIf="mensajeExito" class="alert alert-success">
-    ✓ {{ mensajeExito }}
-  </div>
+  <div *ngIf="mensajeExito" class="alert alert-success">✓ {{ mensajeExito }}</div>
 
   <!-- Error general -->
-  <div *ngIf="errorFormulario" class="alert alert-error">
-    ✕ {{ errorFormulario }}
-  </div>
+  <div *ngIf="errorFormulario" class="alert alert-error">✕ {{ errorFormulario }}</div>
 
   <form #formProyecto="ngForm" (ngSubmit)="enviarProyecto(formProyecto)" class="upload-form">
-
     <!-- SECCIÓN: Información básica -->
     <p class="form-section-title">Información del proyecto</p>
 
     <div class="form-group">
       <label for="titulo">Título del proyecto</label>
-      <input id="titulo" type="text" [(ngModel)]="proyecto.titulo" name="titulo"
-        required #titulo="ngModel" placeholder="Ej: Gestor de Tareas Web" />
-      <div *ngIf="titulo.invalid && titulo.touched" class="error">
-        El título es obligatorio.
-      </div>
+      <input
+        id="titulo"
+        type="text"
+        [(ngModel)]="proyecto.titulo"
+        name="titulo"
+        required
+        #titulo="ngModel"
+        placeholder="Ej: Gestor de Tareas Web"
+      />
+      <div *ngIf="titulo.invalid && titulo.touched" class="error">El título es obligatorio.</div>
     </div>
 
     <div class="form-group">
       <label for="autores">Autor/autores</label>
-      <input id="autores" type="text" [(ngModel)]="autoresTexto" name="autores"
-        placeholder="Ej: Juan Pérez, Ana López" required #autores="ngModel" />
+      <input
+        id="autores"
+        type="text"
+        [(ngModel)]="autoresTexto"
+        name="autores"
+        placeholder="Ej: Juan Pérez, Ana López"
+        required
+        #autores="ngModel"
+      />
       <div *ngIf="autores.invalid && autores.touched" class="error">
         El campo autores es obligatorio.
       </div>
@@ -65,9 +72,15 @@
 
     <div class="form-group">
       <label>Descripción</label>
-      <textarea [(ngModel)]="proyecto.descripcion" name="descripcion"
-        required maxlength="200" minlength="25" #descripcion="ngModel"
-        placeholder="Describe brevemente el proyecto (25-200 caracteres)..."></textarea>
+      <textarea
+        [(ngModel)]="proyecto.descripcion"
+        name="descripcion"
+        required
+        maxlength="200"
+        minlength="25"
+        #descripcion="ngModel"
+        placeholder="Describe brevemente el proyecto (25-200 caracteres)..."
+      ></textarea>
       <div *ngIf="descripcion.invalid && descripcion.touched" class="error">
         La descripción es obligatoria (entre 25 y 200 caracteres).
       </div>
@@ -75,8 +88,12 @@
 
     <div class="form-group">
       <label>Etiquetas <small>(opcional)</small></label>
-      <input type="text" [(ngModel)]="etiquetasTexto" name="etiquetas"
-        placeholder="Angular, Laravel, MySQL..." />
+      <input
+        type="text"
+        [(ngModel)]="etiquetasTexto"
+        name="etiquetas"
+        placeholder="Angular, Laravel, MySQL..."
+      />
     </div>
 
     <!-- SECCIÓN: Archivos -->
@@ -88,39 +105,48 @@
       <div class="file-upload-zone">
         <label class="file-upload-label" for="inputVideo">
           <span class="icon">🎬</span>
-          <span>
-            <strong>Selecciona un vídeo</strong> o arrástralo aquí
-          </span>
+          <span> <strong>Selecciona un vídeo</strong> o arrástralo aquí </span>
           <span *ngIf="video">{{ video.name }}</span>
         </label>
-        <input id="inputVideo" type="file" accept="video/mp4,video/avi,video/mpeg"
-          (change)="onVideoSeleccionado($event)" />
+        <input
+          id="inputVideo"
+          type="file"
+          accept="video/mp4,video/avi,video/mpeg"
+          (change)="onVideoSeleccionado($event)"
+        />
       </div>
       <div *ngIf="errorVideo" class="error">{{ errorVideo }}</div>
     </div>
 
     <!-- Documentos PDF -->
     <div class="form-group">
-      <label for="archivo">Documentación PDF <small>(opcional, máx. 10 MB por archivo)</small></label>
+      <label for="archivo"
+        >Documentación PDF <small>(opcional, máx. 10 MB por archivo)</small></label
+      >
       <div class="file-upload-zone">
         <label class="file-upload-label" for="archivo">
           <span class="icon">📎</span>
-          <span>
-            <strong>Selecciona los PDFs</strong> o arrástralos aquí
-          </span>
+          <span> <strong>Selecciona los PDFs</strong> o arrástralos aquí </span>
         </label>
-        <input id="archivo" type="file" accept=".pdf" multiple
-          (change)="onDocumentacionSeleccionada($event)" />
+        <input
+          id="archivo"
+          type="file"
+          accept=".pdf"
+          multiple
+          (change)="onDocumentacionSeleccionada($event)"
+        />
       </div>
       <div *ngIf="errorArchivo" class="error">{{ errorArchivo }}</div>
       <ul *ngIf="documentos.length > 0" class="file-list">
-        <li *ngFor="let doc of documentos">{{ doc.name }}</li>
+        <li *ngFor="let doc of documentos">
+          {{ doc.name }} ({{ (doc.size / 1024 / 1024).toFixed(1) }} MB)
+          <button type="button" (click)="eliminarDocumento(doc)">✕</button>
+        </li>
       </ul>
     </div>
 
     <button type="submit" class="btn-submit" [disabled]="enviando">
       {{ enviando ? 'Enviando...' : 'Enviar proyecto' }}
     </button>
-
   </form>
 </div>

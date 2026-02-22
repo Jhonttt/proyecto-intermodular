@@ -41,6 +41,7 @@ export class UploadFileComponent {
 
   MAX_VIDEO_SIZE = 30 * 1024 * 1024;
   MAX_DOC_SIZE = 10 * 1024 * 1024;
+  MAX_TOTAL_DOCS_SIZE = 10 * 1024 * 1024;
 
   onVideoSeleccionado(event: any) {
     const file = event.target.files[0];
@@ -99,17 +100,29 @@ export class UploadFileComponent {
   onDocumentacionSeleccionada(event: any): void {
     const files: FileList = event.target.files;
     this.errorArchivo = '';
-    this.documentos = [];
+
+    // Calcular el tamaño que ya llevas acumulado
+    let totalSize = this.documentos.reduce((acc, doc) => acc + doc.size, 0);
+    const nuevosDocumentos = [...this.documentos]; // 👈 parte de los que ya tienes
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      if (file.size > this.MAX_DOC_SIZE) {
-        this.errorArchivo = `"${file.name}" supera los 10 MB`;
-        this.documentos = [];
-        return;
+
+      // Evitar duplicados por nombre
+      if (nuevosDocumentos.some((d) => d.name === file.name)) {
+        continue;
       }
-      this.documentos.push(file);
+
+      if (totalSize + file.size > this.MAX_TOTAL_DOCS_SIZE) {
+        this.errorArchivo = `"${file.name}" no se puede añadir: superaría el límite de 10 MB en total (llevas ${(totalSize / 1024 / 1024).toFixed(1)} MB)`;
+        break;
+      }
+
+      totalSize += file.size;
+      nuevosDocumentos.push(file);
     }
+
+    this.documentos = nuevosDocumentos;
   }
 
   enviarProyecto(form: any) {
@@ -166,5 +179,10 @@ export class UploadFileComponent {
         this.errorFormulario = err.error?.message || 'Error al crear el proyecto.';
       },
     });
+  }
+  
+  eliminarDocumento(doc: File): void {
+    this.documentos = this.documentos.filter((d) => d.name !== doc.name);
+    this.errorArchivo = '';
   }
 }

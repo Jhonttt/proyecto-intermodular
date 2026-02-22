@@ -1,6 +1,5 @@
 <section class="page">
   <div class="container details">
-
     @if (loading) {
       <p class="alert">Cargando información del proyecto...</p>
     }
@@ -15,7 +14,6 @@
 
     @if (project && !loading && !error) {
       <article class="card details-card" id="details-form-container">
-
         <!-- Header: Título + Descripción + Ciclo/Año + Estado -->
         <div class="card__header">
           <div>
@@ -65,8 +63,11 @@
             <ul class="list">
               @for (doc of project.documentos; track doc) {
                 <li class="list__item">
-                  <a [href]="'http://localhost:8000/storage/' + doc" target="_blank" rel="noopener">
-                    {{ getFileName(doc) }}
+                  <a
+                    [href]="'http://localhost:8000/api/documento/' + getFileName(doc)"
+                    (click)="$event.stopPropagation()"
+                  >
+                    {{ getFileIcon(doc) }} {{ getFileName(doc) }}
                   </a>
                 </li>
               }
@@ -123,7 +124,6 @@
         <footer>
           <button class="btn btn-secondary" (click)="volverAlHome()">← Volver al inicio</button>
         </footer>
-
       </article>
     }
   </div>
