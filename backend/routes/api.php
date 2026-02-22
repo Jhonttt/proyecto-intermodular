@@ -21,7 +21,6 @@ Route::get('/proyectos/{id}', [ProyectoController::class, 'show'])->name('api.pr
 // RUTAS PROTEGIDAS (requieren autenticación)
 // ============================================
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/admin/proyectos', [ProyectoControllerAdmin::class, 'index']);
     Route::post("/logout", [AuthController::class, "logout"])->name("api.logout");
 
     Route::get('/user', function (Request $request) {
@@ -41,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin - Usuarios
     Route::prefix('admin')->group(function () {
+        Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index']);
         Route::prefix("users")->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('api.admin.users.index');
             Route::post('/', [UserController::class, 'store'])->name('api.admin.users.store');
