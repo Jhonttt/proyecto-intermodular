@@ -116,14 +116,10 @@
                             style="font-size: 12px; padding: 6px 14px;">
                             Editar
                         </a>
-                        <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}" method="POST"
-                            onsubmit="return confirm('¿Seguro que quieres eliminar este usuario?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" style="font-size: 12px; padding: 6px 14px;">
-                                Eliminar
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-danger" style="font-size: 12px; padding: 6px 14px;"
+                            onclick="abrirModal({{ $usuario->id }}, '{{ $usuario->name }}')">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
                 @endforeach
@@ -157,4 +153,40 @@
 
     @endif
 </div>
+
+{{-- Modal confirmación --}}
+<div id="modal-eliminar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:8px; padding:24px; max-width:400px; width:90%; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+        <h3 style="margin-bottom:8px;">Eliminar usuario</h3>
+        <p style="color:#6A737B; margin-bottom:24px;">
+            ¿Seguro que quieres eliminar a <strong id="modal-nombre"></strong>? Esta acción no se puede deshacer.
+        </p>
+        <div style="display:flex; justify-content:flex-end; gap:8px;">
+            <button class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+            <form id="modal-form" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModal(id, nombre) {
+        document.getElementById('modal-nombre').textContent = nombre;
+        document.getElementById('modal-form').action = '/admin/usuarios/' + id + '/destroy';
+        const modal = document.getElementById('modal-eliminar');
+        modal.style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modal-eliminar').style.display = 'none';
+    }
+
+    // Cerrar al hacer click fuera
+    document.getElementById('modal-eliminar').addEventListener('click', function(e) {
+        if (e.target === this) cerrarModal();
+    });
+</script>
 @endsection
