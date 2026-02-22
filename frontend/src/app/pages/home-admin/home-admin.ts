@@ -142,6 +142,7 @@ export class HomeAdmin implements OnInit {
 
     this.proyectoService.getAllAdmin().subscribe({
       next: (response) => {
+        console.log("RESPUESTA BACKEND:", response);
         this.proyectosOriginal = response.data || []; // guardamos lista original
         this.proyectos = [...this.proyectosOriginal]; // lista que se filtra
         /* this.obtenerTagsUnicos(); */

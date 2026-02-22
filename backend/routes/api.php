@@ -3,8 +3,10 @@
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Alumno\ProyectoController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Admin\ProyectoControllerAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 // ============================================
 // RUTAS PÚBLICAS (sin autenticación)
@@ -38,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin - Usuarios
     Route::prefix('admin')->group(function () {
+        Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index']);
         Route::prefix("users")->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('api.admin.users.index');
             Route::post('/', [UserController::class, 'store'])->name('api.admin.users.store');
@@ -50,8 +53,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/proyectos', [ProyectoController::class, 'store']);
-
-
 
 // Route::get('/create', [AlumnoProyectoController::class, "index"])->name("alumno.proyectos.index");
 // Route::post('/store', [AlumnoProyectoController::class, 'store'])->name('alumno.proyectos.store');
