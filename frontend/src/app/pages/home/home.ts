@@ -33,17 +33,56 @@ import { Proyecto } from '../../core/models/proyecto.model';
       </div>
 
       <div *ngIf="!loading && !error" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        <div class="col" *ngFor="let proyecto of proyectos">
+        <div class="col" *ngFor="let proyecto of proyectosPaginados">
           <app-article
             [id]="proyecto.id"
             [imagen]="getImagenUrl(proyecto)"
             [titulo]="proyecto.nombre"
-            [anio]="getYear(proyecto.created_at)"
+            [anio]="proyecto.anio"
             [descripcion]="proyecto.resumen"
             [tecnologias]="proyecto.tags || []"
           ></app-article>
         </div>
       </div>
+
+      <!-- Paginación -->
+      <div *ngIf="totalPaginas > 1" class="d-flex justify-content-between align-items-center mt-4">
+        <small class="text-muted">
+          Mostrando {{ (paginaActual - 1) * proyectosPorPagina + 1 }} -
+          {{ Math.min(paginaActual * proyectosPorPagina, proyectos.length) }} de
+          {{ proyectos.length }} proyectos
+        </small>
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="paginaActual === 1">
+              <a class="page-link" (click)="cambiarPagina(paginaActual - 1)">«</a>
+            </li>
+            <li class="page-item" *ngFor="let p of paginas" [class.active]="p === paginaActual">
+              <a class="page-link" (click)="cambiarPagina(p)">{{ p }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="paginaActual === totalPaginas">
+              <a class="page-link" (click)="cambiarPagina(paginaActual + 1)">»</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <button class="btn-scroll-top" (click)="scrollTop()" title="Volver arriba">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 19V5" />
+          <path d="M5 12l7-7 7 7" />
+        </svg>
+      </button>
 
       <div *ngIf="!loading && !error && proyectos.length === 0" class="text-center py-5">
         <h5 class="text-muted">No hay proyectos disponibles</h5>
@@ -57,6 +96,31 @@ import { Proyecto } from '../../core/models/proyecto.model';
         width: 3rem;
         height: 3rem;
       }
+
+      .page-link {
+        cursor: pointer;
+      }
+
+      .btn-scroll-top {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background-color: #0d77d1;
+        color: white;
+        font-size: 20px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.2s ease;
+        z-index: 999;
+      }
+
+      .btn-scroll-top:hover {
+        background-color: #0c589c;
+      }
     `,
   ],
 })
@@ -68,6 +132,11 @@ export class Home implements OnInit {
   searchTerm: string = '';
   loading = false;
   error = '';
+  // Variables de paginación
+  paginaActual = 1;
+  proyectosPorPagina = 12;
+  proyectosPaginados: Proyecto[] = [];
+  Math = Math;
 
   constructor(
     private proyectoService: ProyectoService,
@@ -88,6 +157,8 @@ export class Home implements OnInit {
         this.proyectosOriginal = response.data || [];
         this.proyectos = [...this.proyectosOriginal];
         this.obtenerTagsUnicos();
+        this.paginaActual = 1;
+        this.paginar(); // ← debe ir aquí, antes de loading = false
         this.loading = false;
         this.cdr.detectChanges();
         // Generar thumbnails después de mostrar la página (no bloquea la carga)
@@ -205,5 +276,35 @@ export class Home implements OnInit {
 
       return matchTexto && matchTag;
     });
+
+    // ← AÑADE ESTO
+    this.paginaActual = 1;
+    this.paginar();
+    this.cdr.detectChanges();
+  }
+
+  paginar(): void {
+    const inicio = (this.paginaActual - 1) * this.proyectosPorPagina;
+    const fin = inicio + this.proyectosPorPagina;
+    this.proyectosPaginados = this.proyectos.slice(inicio, fin);
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.proyectos.length / this.proyectosPorPagina);
+  }
+
+  get paginas(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
+  cambiarPagina(pagina: number): void {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.paginar();
+    this.cdr.detectChanges();
+  }
+
+  scrollTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

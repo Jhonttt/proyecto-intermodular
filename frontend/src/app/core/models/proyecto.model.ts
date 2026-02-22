@@ -5,7 +5,7 @@ export interface Proyecto {
   resumen: string;
   descripcion: string;
   ciclo: string;
-  anio: Date;
+  anio: string;
   alumnos: string[];
   video_url: string;
   video_thumbnail: string | null;

@@ -61,5 +61,37 @@
             @endforeach
         </tbody>
     </table>
+
+    {{-- Paginación --}}
+    <div class="d-flex justify-content-between align-items-center mt-3 px-2 mb-3">
+        <small class="text-muted">
+            Mostrando {{ $proyectos->firstItem() }}–{{ $proyectos->lastItem() }} de {{ $proyectos->total() }} proyectos
+        </small>
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                {{-- Anterior --}}
+                @if ($proyectos->onFirstPage())
+                <li class="page-item disabled"><span class="page-link">«</span></li>
+                @else
+                <li class="page-item"><a class="page-link" href="{{ $proyectos->previousPageUrl() }}">«</a></li>
+                @endif
+
+                {{-- Números --}}
+                @foreach ($proyectos->getUrlRange(1, $proyectos->lastPage()) as $page => $url)
+                <li class="page-item {{ $page == $proyectos->currentPage() ? 'active' : '' }}">
+                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                </li>
+                @endforeach
+
+                {{-- Siguiente --}}
+                @if ($proyectos->hasMorePages())
+                <li class="page-item"><a class="page-link" href="{{ $proyectos->nextPageUrl() }}">»</a></li>
+                @else
+                <li class="page-item disabled"><span class="page-link">»</span></li>
+                @endif
+            </ul>
+        </nav>
+    </div>  
+
 </div>
 @endsection

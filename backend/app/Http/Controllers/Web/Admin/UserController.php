@@ -7,8 +7,26 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller {
-    public function index() {
-        $usuarios = User::all();
+    public function index(Request $request) {
+        $query = User::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('rol')) {
+            $query->where('rol', $request->rol);
+        }
+
+        if ($request->filled('activo')) {
+            $query->where('activo', $request->activo);
+        }
+
+        $usuarios = $query->paginate(10)->withQueryString();
         return view('admin.usuarios.index', compact('usuarios'));
     }
 
@@ -66,5 +84,21 @@ class UserController extends Controller {
         return redirect()
             ->route('admin.usuarios.index')
             ->with('success', 'Usuario actualizado correctamente');
+    }
+
+    public function destroy($id) {
+        $usuario = User::findOrFail($id);
+
+        if ($usuario->id === auth('sanctum')->user()->id) {
+            return redirect()
+                ->route('admin.usuarios.index')
+                ->with('error', 'No puedes eliminar tu propio usuario.');
+        }
+
+        $usuario->delete();
+
+        return redirect()
+            ->route('admin.usuarios.index')
+            ->with('success', 'Usuario eliminado correctamente.');
     }
 }
