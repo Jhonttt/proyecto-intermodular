@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Casts\JsonUnicode;
 
-class Proyecto extends Model
-{
+class Proyecto extends Model {
     use HasFactory;
 
     protected $table = 'proyectos';
@@ -17,6 +16,7 @@ class Proyecto extends Model
         "resumen",
         "descripcion",
         "video_url",
+        "video_thumbnail",
         "ciclo",
         "anio",
         "alumnos",
@@ -39,10 +39,9 @@ class Proyecto extends Model
     }
 
     //Para enlaces en JSON como "video_public_url"
-     protected $appends = ['video_public_url'];
+    protected $appends = ['video_public_url'];
 
-    public function getVideoPublicUrlAttribute(): ?string
-    {
+    public function getVideoPublicUrlAttribute(): ?string {
         if (!$this->video_url) return null;
 
         if (preg_match('#^https?://#', $this->video_url)) {

@@ -31,8 +31,7 @@
 
     <!-- Alumnos -->
     <div class="mb-3">
-        <strong>Alumnos:</strong> <?php echo e($proyecto->alumnos); ?>
-
+        <strong>Alumnos:</strong>
     </div>
 
     <!-- Video del proyecto -->

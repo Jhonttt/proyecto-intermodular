@@ -2,31 +2,33 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
-class UserFactory extends Factory
-{
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
+class UserFactory extends Factory {
+    protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'password' => static::$password ??= Hash::make('password'),
+            'name'            => fake()->name(),
+            'email'           => fake()->unique()->safeEmail(),
+            'password'        => Hash::make('1234'),
+            'rol'             => 'usu',
+            'activo'          => true,
+            'proyecto_subido' => false,
         ];
+    }
+
+    public function admin(): static {
+        return $this->state(['rol' => 'admin']);
+    }
+
+    public function inactivo(): static {
+        return $this->state(['activo' => false]);
+    }
+
+    public function conProyecto(): static {
+        return $this->state(['proyecto_subido' => true]);
     }
 }

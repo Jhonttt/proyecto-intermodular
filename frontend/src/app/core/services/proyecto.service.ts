@@ -5,7 +5,7 @@ import { Proyecto, CreateProyectoRequest, UpdateProyectoRequest } from '../model
 import { ApiResponse } from '../models/user.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProyectoService {
   private apiUrl = 'http://localhost:8000/api/proyectos';
@@ -41,5 +41,9 @@ export class ProyectoService {
   // Eliminar proyecto (solo admin)
   delete(id: number): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
+  }
+
+  getMiProyecto(): Observable<ApiResponse<Proyecto>> {
+    return this.http.get<ApiResponse<Proyecto>>(`${this.apiUrl}/mi-proyecto`);
   }
 }

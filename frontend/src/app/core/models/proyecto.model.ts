@@ -1,12 +1,14 @@
 export interface Proyecto {
   id: number;
+  user_id: number;
   nombre: string;
   resumen: string;
   descripcion: string;
   ciclo: string;
-  anio: Date;
+  anio: string;
   alumnos: string[];
   video_url: string;
+  video_thumbnail: string | null;
   documentos: string[] | null;  // Array o null
   tags: string[] | null;        // Array o null
   checked: boolean;

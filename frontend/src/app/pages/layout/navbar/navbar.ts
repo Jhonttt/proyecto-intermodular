@@ -1,20 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { ProyectoService } from '../../../core/services/proyecto.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css']
+  styleUrls: ['./navbar.css'],
 })
-export class Navbar {
+export class Navbar implements OnInit {
+  projectId: number | null = null;
+  tieneProyecto: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private proyectoService: ProyectoService,
+    private router: Router,
+  ) {}
 
-  // 🔹 Getter directo desde localStorage
   get isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
@@ -25,6 +31,52 @@ export class Navbar {
   }
 
   logout() {
+    this.tieneProyecto = false;
+    this.projectId = null;
     this.authService.logout();
+  }
+
+  ngOnInit() {
+    this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
+      if (loggedIn && !this.isAdmin) {
+        this.cargarMiProyecto();
+      } else {
+        this.tieneProyecto = false;
+        this.projectId = null;
+      }
+    });
+
+    // 👇 Esto detecta cuando se sube un proyecto sin recargar
+    this.authService.tieneProyecto$.subscribe((tiene: boolean) => {
+      if (tiene) {
+        this.cargarMiProyecto();
+      }
+    });
+  }
+
+  cargarMiProyecto() {
+    console.log('cargarMiProyecto() llamado');
+    this.proyectoService.getMiProyecto().subscribe({
+      next: (res: any) => {
+        console.log('getMiProyecto respuesta:', res);
+        this.tieneProyecto = true;
+        this.projectId = res.data?.id ?? null;
+      },
+      error: (err) => {
+        console.log('getMiProyecto error:', err.status);
+        this.tieneProyecto = false;
+        this.projectId = null;
+      },
+    });
+  }
+
+  verProyecto() {
+    if (this.projectId) {
+      this.router.navigate(['/details-form', this.projectId]);
+    }
+  }
+
+  get isAdmin(): boolean {
+    return this.user?.rol === 'admin';
   }
 }

@@ -21,12 +21,13 @@ Route::middleware(["auth:sanctum", "admin"])->group(function () {
         Route::patch('/proyectos/{id}/uncheck', [ProyectoControllerAdmin::class, 'uncheck'])->name('admin.proyectos.uncheck');
         // Route::get('/proyectos/{id}/edit', [ProyectoControllerAdmin::class, 'edit'])->name('admin.proyectos.edit');
         Route::delete('/proyectos/{id}/destroy', [ProyectoControllerAdmin::class, 'destroy'])->name('admin.proyectos.destroy');
-
+        
         Route::get('/usuarios', [UserController::class, 'index'])->name('admin.usuarios.index');
         Route::get('/usuarios/create', [UserController::class, 'create'])->name('admin.usuarios.create');
         Route::post('/usuarios', [UserController::class, 'store'])->name('admin.usuarios.store');
         Route::get('/usuarios/{id}/edit', [UserController::class, 'edit'])->name('admin.usuarios.edit');
         Route::put('/usuarios/{id}', [UserController::class, 'update'])->name('admin.usuarios.update');
+        Route::delete('/usuarios/{id}/destroy', [UserController::class, 'destroy'])->name('admin.usuarios.destroy');
     });
 });
 
@@ -35,10 +36,3 @@ Route::get('/prueba', function(){
     return view("layouts.admin");
 }); //temporal
 Route::post('/store', [AlumnoProyectoController::class, 'store'])->name('alumno.proyectos.store');
-
-Route::get("prueba", function () {
-    return view("layouts.admin");
-});
-Route::get("prueba1", function () {
-    return view("layouts.alumno");
-});

@@ -2,63 +2,186 @@
 FORMULARIO SUBIR PROYECTO
 ===============================*/
 
+.upload-form-wrapper {
+  max-width: 680px;
+  margin: 40px auto;
+  padding: 0 var(--spacing-md);
+}
+
+.upload-form-wrapper h2 {
+  text-align: center;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-main);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Alertas */
+.upload-form-wrapper .alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  margin-bottom: var(--spacing-md);
+}
+
+.upload-form-wrapper .alert-success {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+}
+
+.upload-form-wrapper .alert-error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+/* Formulario */
 .upload-form {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: var(--spacing-md);
   background-color: var(--color-background-secondary);
   border: var(--border-default);
   border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
 }
 
-.upload-form .form-group {
+/* Grupos de campos */
+.form-group {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: 6px;
 }
 
-.upload-form label {
+/* Fila de dos columnas */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+/* Labels */
+.form-group label {
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-base);
   color: var(--color-text-main);
 }
 
-.upload-form input[type="text"],
-.upload-form input[type="file"],
+.form-group label small {
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  margin-left: 4px;
+}
+
+/* Inputs, selects, textarea */
+.upload-form input[type='text'],
 .upload-form select,
 .upload-form textarea {
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 12px;
   font-family: var(--font-body);
   font-size: var(--font-size-base);
+  color: var(--color-text-main);
+  background-color: var(--color-background);
   border: var(--border-default);
   border-radius: var(--radius-sm);
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
-.upload-form input:focus,
+.upload-form input[type='text']:focus,
 .upload-form select:focus,
 .upload-form textarea:focus {
   border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
 }
 
 .upload-form textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 100px;
 }
 
+.upload-form input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* Input file — zona de carga */
+.file-upload-zone {
+  border: 2px dashed var(--color-border, #d1d5db);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  background-color: var(--color-background);
+}
+
+.file-upload-zone:hover {
+  border-color: var(--color-primary);
+  background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
+}
+
+.file-upload-zone input[type='file'] {
+  display: none;
+}
+
+.file-upload-zone .file-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.file-upload-zone .file-upload-label span.icon {
+  font-size: 28px;
+}
+
+.file-upload-zone .file-upload-label strong {
+  color: var(--color-primary);
+}
+
+/* Lista de documentos seleccionados */
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.file-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-background);
+  border: var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: var(--font-size-small);
+  color: var(--color-text-main);
+}
+
+.file-list li::before {
+  content: '📄';
+}
+
+/* Errores inline */
 .error {
   font-size: var(--font-size-small);
   color: var(--color-danger);
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
-.upload-form button[type="submit"] {
-  padding: 10px 16px;
+/* Botón enviar */
+.upload-form .btn-submit {
+  padding: 12px 20px;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   border-radius: var(--radius-md);
@@ -66,19 +189,37 @@ FORMULARIO SUBIR PROYECTO
   cursor: pointer;
   background-color: var(--color-check);
   color: #fff;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  width: 100%;
 }
 
-.upload-form button[type="submit"]:hover {
+.upload-form .btn-submit:hover:not(:disabled) {
   background-color: var(--color-check2);
 }
 
-.upload-form input::placeholder {
+.upload-form .btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Separador de sección */
+.form-section-title {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--color-text-secondary);
+  border-bottom: var(--border-default);
+  padding-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 @media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
   .upload-form {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-md);
   }
 }
