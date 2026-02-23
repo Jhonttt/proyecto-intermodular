@@ -14,12 +14,11 @@ Route::middleware(["auth:sanctum", "admin"])->group(function () {
     Route::prefix('admin')->group(function () {
         // Lista de proyectos panel admin
         Route::get('/proyectos', [ProyectoControllerAdmin::class, 'index'])->name('admin.proyectos.index');
-
-        // Proyecto descripcion para admin
         Route::get('/proyectos/{id}', [ProyectoControllerAdmin::class, 'show'])->name('admin.proyectos.show');
         Route::patch('/proyectos/{id}/check', [ProyectoControllerAdmin::class, 'check'])->name('admin.proyectos.check');
         Route::patch('/proyectos/{id}/uncheck', [ProyectoControllerAdmin::class, 'uncheck'])->name('admin.proyectos.uncheck');
-        // Route::get('/proyectos/{id}/edit', [ProyectoControllerAdmin::class, 'edit'])->name('admin.proyectos.edit');
+        Route::get('/proyectos/{id}/edit', [ProyectoControllerAdmin::class, 'edit'])->name('admin.proyectos.edit');
+        Route::put('/proyectos/{id}', [ProyectoControllerAdmin::class, 'update'])->name('admin.proyectos.update');
         Route::delete('/proyectos/{id}/destroy', [ProyectoControllerAdmin::class, 'destroy'])->name('admin.proyectos.destroy');
         
         Route::get('/usuarios', [UserController::class, 'index'])->name('admin.usuarios.index');

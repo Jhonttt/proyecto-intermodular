@@ -82,9 +82,16 @@ class ProyectoControllerAdmin extends Controller {
         return view('admin.proyectos.show', compact('proyecto'));
     }
 
-    public function check($id) {
+    public function check(Request $request, $id) {
+
+        $request->validate([
+            'observaciones' => 'nullable|string|max:2000',
+        ]);
+
         $proyecto = Proyecto::findOrFail($id);
+
         $proyecto->checked = true;
+        $proyecto->observaciones = $request->observaciones;
         $proyecto->save();
 
         return redirect()
@@ -100,13 +107,94 @@ class ProyectoControllerAdmin extends Controller {
         return redirect()->back();
     }
 
-    // La ruta 'admin.proyectos.edit' no existe aún
-    // public function edit($id)
-    // {
-    //     $proyecto = Proyecto::findOrFail($id);
+    public function edit($id) {
+         $proyecto = Proyecto::findOrFail($id);
 
-    //     return view('admin.proyectos.edit', compact('proyecto'));
-    // }
+         return view('admin.proyectos.edit', compact('proyecto'));
+    }
+
+    public function update(Request $request, $id) {
+        $proyecto = Proyecto::findOrFail($id);
+
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'ciclo' => 'required|string|max:255',
+            'anio' => 'required|string|max:255',
+            'alumnos' => 'required|array',
+            'alumnos.*' => 'nullable|string',
+            'tags' => 'nullable|array',
+            'tags.*' => 'nullable|string|max:50',
+            'video' => 'nullable|file|mimes:mp4,mov,avi,mkv,wmv|max:30720',
+            'documentos' => 'nullable',
+            'documentos.*' => 'file|max:10240|mimes:pdf,docx,pptx,zip,rar',
+            'documentos_eliminar' => 'nullable|array',
+            'documentos_eliminar.*' => 'string',
+        ]);
+
+        $proyecto->nombre = $validated['nombre'];
+        $proyecto->descripcion = $validated['descripcion'];
+        $proyecto->ciclo = $validated['ciclo'];
+        $proyecto->anio = $validated['anio'];
+        $proyecto->alumnos = array_values(
+            array_filter($validated['alumnos'], fn ($a) => trim($a) !== '')
+        );
+        $proyecto->tags = array_values(
+            array_filter($validated['tags'] ?? [], fn ($t) => trim($t) !== '')
+        );
+
+        if ($request->hasFile('video')) {
+
+            if ($proyecto->video_url) {
+                Storage::disk('public')->delete('proyectos/' . $proyecto->video_url);
+            }
+
+            $path = $request->file('video');
+
+            $nombre = $path->getClientOriginalName();
+
+            $path->storeAs('proyectos', $nombre, 'public');
+
+            $proyecto->video_url = $nombre;
+            
+        }
+
+        $documentosActuales = $proyecto->documentos ?? [];
+
+        $documentosEliminar = $request->input('documentos_eliminar', []);
+
+        if (!empty($documentosEliminar)) {
+            foreach ($documentosEliminar as $doc) {
+                Storage::disk('public')->delete($doc);
+            }
+
+            $documentosActuales = array_values(
+                array_diff($documentosActuales, $documentosEliminar)
+            );
+        }
+
+        if ($request->hasFile('documentos')) {
+            foreach ($request->file('documentos') as $file) {
+                $originalName = $file->getClientOriginalName();
+
+                $file->storeAs(
+                    'proyectos/documentos',
+                    $originalName,
+                    'public'
+                );
+
+                $documentosActuales[] = $originalName;
+            }
+        }
+
+        $proyecto->documentos = $documentosActuales;
+
+        $proyecto->save();
+
+        return redirect()
+            ->route('admin.proyectos.show', $proyecto->id)
+            ->with('success', 'Proyecto actualizado correctamente');
+    }
 
     public function destroy($id) {
         $proyecto = Proyecto::findOrFail($id);
