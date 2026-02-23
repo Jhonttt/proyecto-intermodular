@@ -1,0 +1,307 @@
+/* =====================
+   PÁGINA: EDITAR PROYECTO
+   ===================== */
+
+.proyectos-form-page {
+    max-width: 760px;
+    margin: 24px auto;
+    padding: 0 var(--spacing-md);
+}
+
+/* =====================
+   CABECERA
+   ===================== */
+
+.proyectos-header {
+    margin-bottom: var(--spacing-md);
+}
+
+.proyectos-title h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 4px;
+}
+
+.proyectos-title p {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+/* =====================
+   ALERTA DE ERRORES
+   ===================== */
+
+.alert-danger {
+    background-color: var(--color-danger2);
+    border: 1px solid var(--color-danger);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-small);
+    color: var(--color-danger);
+}
+
+.alert-danger-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.alert-danger ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.alert-danger ul li {
+    margin-bottom: 4px;
+}
+
+/* =====================
+   CONTENEDOR DEL FORMULARIO
+   ===================== */
+
+.proyectos-form {
+    background-color: var(--color-background);
+    border: var(--border-default);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+}
+
+/* =====================
+   CAMPOS DEL FORMULARIO
+   ===================== */
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-label {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-main);
+}
+
+.mb-3 {
+    margin-bottom: var(--spacing-md);
+}
+
+.mt-4 {
+    margin-top: var(--spacing-lg);
+}
+
+/* =====================
+   INPUTS Y TEXTAREAS
+   ===================== */
+
+.proyectos-form input[type="text"],
+.proyectos-form textarea,
+.proyectos-form select {
+    width: 100%;
+    max-width: 600px;
+    padding: 8px 10px;
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    color: var(--color-text-main);
+    background-color: var(--color-background);
+    border: var(--border-default);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.2s ease;
+}
+
+.proyectos-form input[type="text"]:focus,
+.proyectos-form textarea:focus,
+.proyectos-form select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.proyectos-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.proyectos-form input[type="file"] {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+}
+
+/* =====================
+   WRAPPERS DE ALUMNOS Y TAGS
+   ===================== */
+
+#alumnos-wrapper,
+#tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+#alumnos-wrapper input[type="text"],
+#tags-wrapper input[type="text"] {
+    width: auto;
+    max-width: 220px;
+    flex: 1 1 180px;
+}
+
+.form-text {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+}
+
+/* =====================
+   BOTÓN AÑADIR ( ➕ )
+   ===================== */
+
+.btn.btn-sm.btn-outline-dark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 18px;
+    line-height: 1;
+    background-color: transparent;
+    border: 1.5px dashed var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn.btn-sm.btn-outline-dark:hover {
+    background-color: #e8f1fb;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* =====================
+   LISTA DE DOCUMENTOS
+   ===================== */
+
+.list-group {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px 0;
+    border: var(--border-default);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    max-width: 600px;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    font-size: var(--font-size-small);
+    border-bottom: var(--border-default);
+    background-color: var(--color-background);
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item span {
+    color: var(--color-text-main);
+    word-break: break-all;
+}
+
+/* =====================
+   BOTÓN ELIMINAR ( 🗑️ )
+   ===================== */
+
+.list-group-item .btn.btn-sm.btn-outline-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-size: 15px;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.list-group-item .btn.btn-sm.btn-outline-danger:hover {
+    background-color: var(--color-danger2);
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+}
+
+/* =====================
+   DROPZONES: Vídeo y Documentos
+   ===================== */
+
+label.dropzone-video,
+label.dropzone-docs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 100px;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+    cursor: pointer;
+    padding: var(--spacing-md);
+    text-align: center;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+label.dropzone-video:hover,
+label.dropzone-docs:hover {
+    border-color: var(--color-primary);
+    background-color: #e8f1fb;
+}
+
+.dropzone__icon {
+    font-size: 32px;
+}
+
+.dropzone__link {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.dropzone__link:hover {
+    text-decoration: underline;
+}
+
+/* =====================
+   UTILIDADES FLEXBOX
+   ===================== */
+
+.d-flex                  { display: flex; }
+.gap-1                   { gap: 8px; }
+.gap-2                   { gap: var(--spacing-sm); }
+.flex-wrap               { flex-wrap: wrap; }
+.justify-content-between { justify-content: space-between; }
+.align-items-center      { align-items: center; }
+
+/* =====================
+   BOTONES DE ACCIÓN FINALES
+   ===================== */
+
+.proyectos-form .d-flex.gap-2 {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}

@@ -1,0 +1,130 @@
+<section class="page">
+  <div class="container details">
+    @if (loading) {
+      <p class="alert">Cargando información del proyecto...</p>
+    }
+
+    @if (error && !loading) {
+      <div class="alert alert-error">
+        <p class="text">{{ error }}</p>
+        <hr class="divider" />
+        <button class="btn btn-primary" (click)="volverAlHome()">Volver al inicio</button>
+      </div>
+    }
+
+    @if (project && !loading && !error) {
+      <article class="card details-card" id="details-form-container">
+        <!-- Header: Título + Descripción + Ciclo/Año + Estado -->
+        <div class="card__header">
+          <div>
+            <h1 class="card__title">{{ project.nombre }}</h1>
+            <p class="text" style="white-space: pre-wrap">{{ project.descripcion }}</p>
+          </div>
+          <section class="section section--curso">
+            <p class="text"><b>Ciclo:</b> {{ project.ciclo }}</p>
+            <p class="text"><b>Año:</b> {{ project.anio }}</p>
+          </section>
+          <span [class]="getEstadoClass()">{{ getEstadoProyecto() }}</span>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Autores -->
+        <section class="section">
+          <h3 class="section__title">
+            <b>Autores:</b>
+            @for (autor of autoresArray; track autor; let last = $last) {
+              {{ autor }}{{ !last ? ', ' : '' }}
+            }
+          </h3>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- Video -->
+        @if (project.video_url) {
+          <section class="section">
+            <h3 class="text-center mb-0">Video del Proyecto</h3>
+            <div class="video-container mt-0">
+              <video
+                class="video-player"
+                controls
+                [src]="'http://localhost:8000/storage/proyectos/' + project.video_url"
+              ></video>
+            </div>
+          </section>
+          <hr class="divider" />
+        }
+
+        <!-- Documentos -->
+        @if (hasDocumentos()) {
+          <section class="section">
+            <h3 class="section__title"><b>Documentos adjuntos</b></h3>
+            <ul class="list">
+              @for (doc of project.documentos; track doc) {
+                <li class="list__item">
+                  <a
+                    [href]="'http://localhost:8000/api/documento/' + getFileName(doc)"
+                    (click)="$event.stopPropagation()"
+                  >
+                    {{ getFileIcon(doc) }} {{ getFileName(doc) }}
+                  </a>
+                </li>
+              }
+            </ul>
+          </section>
+          <hr class="divider" />
+        }
+
+        <!-- Tags -->
+        @if (hasTags()) {
+          <section class="section">
+            <h3 class="section__title"><b>Tecnologías y Etiquetas</b></h3>
+            <ul class="tag-list">
+              @for (tag of project.tags; track tag) {
+                <li class="tech-tag">{{ tag }}</li>
+              }
+            </ul>
+          </section>
+          <hr class="divider" />
+        }
+
+        <!-- Observaciones -->
+        @if (project.observaciones && project.observaciones !== 'null') {
+          <section class="section">
+            <h3 class="section__title"><b>Observaciones</b></h3>
+            <div class="alert alert-info">
+              <p class="text" style="white-space: pre-wrap">{{ project.observaciones }}</p>
+            </div>
+          </section>
+          <hr class="divider" />
+        }
+
+        <!-- Metadatos -->
+        <section class="section">
+          <h3 class="section__title"><b>Información del Sistema</b></h3>
+          <dl class="meta">
+            <div class="meta__row">
+              <dt>ID del Proyecto</dt>
+              <dd>#{{ project.id }}</dd>
+            </div>
+            <div class="meta__row">
+              <dt>Fecha de Creación</dt>
+              <dd>{{ project.created_at | date: 'short' }}</dd>
+            </div>
+            <div class="meta__row">
+              <dt>Última Actualización</dt>
+              <dd>{{ project.updated_at | date: 'short' }}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <hr class="divider" />
+
+        <footer>
+          <button class="btn btn-secondary" (click)="volverAlHome()">← Volver al inicio</button>
+        </footer>
+      </article>
+    }
+  </div>
+</section>

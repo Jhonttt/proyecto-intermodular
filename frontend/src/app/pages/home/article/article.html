@@ -1,0 +1,33 @@
+<div class="card card-project">
+  <div class="card-img-wrapper">
+    <img *ngIf="imagen !== 'images/prueba.webp'" [src]="imagen" [alt]="titulo" class="card-img-top" />
+    <div *ngIf="imagen === 'images/prueba.webp'" class="card-img-placeholder">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#ccc" viewBox="0 0 16 16">
+        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+      </svg>
+      <p>Sin imagen</p>
+    </div>
+  </div>
+
+  <div class="card-project-body">
+    <div class="card-project-title">
+      {{ titulo }}
+    </div>
+
+    <div class="card-project-subtitle">
+      {{ descripcion }}
+      <span class="badge-year">{{ anio }}</span>
+    </div>
+
+    <div class="d-flex justify-content-evenly align-items-center flex-wrap gap-2 mt-2">
+      <span *ngFor="let tech of tecnologias" class="tech-tag">
+        {{ tech }}
+      </span>
+    </div>
+
+    <div class="card-project-actions">
+      <button class="btn btn-primary" (click)="verDetalle()">Ver proyecto</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,152 @@
+<div class="upload-form-wrapper">
+  <h2>Subir proyecto</h2>
+
+  <!-- Mensaje de éxito -->
+  <div *ngIf="mensajeExito" class="alert alert-success">✓ {{ mensajeExito }}</div>
+
+  <!-- Error general -->
+  <div *ngIf="errorFormulario" class="alert alert-error">✕ {{ errorFormulario }}</div>
+
+  <form #formProyecto="ngForm" (ngSubmit)="enviarProyecto(formProyecto)" class="upload-form">
+    <!-- SECCIÓN: Información básica -->
+    <p class="form-section-title">Información del proyecto</p>
+
+    <div class="form-group">
+      <label for="titulo">Título del proyecto</label>
+      <input
+        id="titulo"
+        type="text"
+        [(ngModel)]="proyecto.titulo"
+        name="titulo"
+        required
+        #titulo="ngModel"
+        placeholder="Ej: Gestor de Tareas Web"
+      />
+      <div *ngIf="titulo.invalid && titulo.touched" class="error">El título es obligatorio.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="autores">Autor/autores</label>
+      <input
+        id="autores"
+        type="text"
+        [(ngModel)]="autoresTexto"
+        name="autores"
+        placeholder="Ej: Juan Pérez, Ana López"
+        required
+        #autores="ngModel"
+      />
+      <div *ngIf="autores.invalid && autores.touched" class="error">
+        El campo autores es obligatorio.
+      </div>
+    </div>
+
+    <!-- Curso y Ciclo en fila -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="curso">Curso académico</label>
+        <select id="curso" [(ngModel)]="proyecto.curso" name="curso" required #curso="ngModel">
+          <option value="" disabled selected hidden>Selecciona...</option>
+          <option value="2022/2023">2022/2023</option>
+          <option value="2023/2024">2023/2024</option>
+          <option value="2024/2025">2024/2025</option>
+          <option value="2025/2026">2025/2026</option>
+        </select>
+        <div *ngIf="curso.invalid && curso.touched" class="error">Selecciona un curso.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="ciclo">Ciclo</label>
+        <select id="ciclo" [(ngModel)]="proyecto.ciclo" name="ciclo" required #ciclo="ngModel">
+          <option value="" disabled selected hidden>Selecciona...</option>
+          <option value="DAW">Desarrollo de Aplicaciones Web</option>
+          <option value="DAM">Desarrollo de Aplicaciones Multiplataforma</option>
+          <option value="ASIR">Administración de Sistemas Informáticos en Red</option>
+          <option value="AF">Administración y Finanzas</option>
+          <option value="AD">Asistencia a la Dirección</option>
+          <option value="AUT">Automoción</option>
+        </select>
+        <div *ngIf="ciclo.invalid && ciclo.touched" class="error">Selecciona un ciclo.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Descripción</label>
+      <textarea
+        [(ngModel)]="proyecto.descripcion"
+        name="descripcion"
+        required
+        maxlength="200"
+        minlength="25"
+        #descripcion="ngModel"
+        placeholder="Describe brevemente el proyecto (25-200 caracteres)..."
+      ></textarea>
+      <div *ngIf="descripcion.invalid && descripcion.touched" class="error">
+        La descripción es obligatoria (entre 25 y 200 caracteres).
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Etiquetas <small>(opcional)</small></label>
+      <input
+        type="text"
+        [(ngModel)]="etiquetasTexto"
+        name="etiquetas"
+        placeholder="Angular, Laravel, MySQL..."
+      />
+    </div>
+
+    <!-- SECCIÓN: Archivos -->
+    <p class="form-section-title">Archivos</p>
+
+    <!-- Vídeo -->
+    <div class="form-group">
+      <label>Vídeo del proyecto <small>(obligatorio, máx. 30 MB)</small></label>
+      <div class="file-upload-zone">
+        <label class="file-upload-label" for="inputVideo">
+          <span class="icon">🎬</span>
+          <span> <strong>Selecciona un vídeo</strong> o arrástralo aquí </span>
+          <span *ngIf="video">{{ video.name }}</span>
+        </label>
+        <input
+          id="inputVideo"
+          type="file"
+          accept="video/mp4,video/avi,video/mpeg"
+          (change)="onVideoSeleccionado($event)"
+        />
+      </div>
+      <div *ngIf="errorVideo" class="error">{{ errorVideo }}</div>
+    </div>
+
+    <!-- Documentos PDF -->
+    <div class="form-group">
+      <label for="archivo"
+        >Documentación PDF <small>(opcional, máx. 10 MB por archivo)</small></label
+      >
+      <div class="file-upload-zone">
+        <label class="file-upload-label" for="archivo">
+          <span class="icon">📎</span>
+          <span> <strong>Selecciona los PDFs</strong> o arrástralos aquí </span>
+        </label>
+        <input
+          id="archivo"
+          type="file"
+          accept=".pdf"
+          multiple
+          (change)="onDocumentacionSeleccionada($event)"
+        />
+      </div>
+      <div *ngIf="errorArchivo" class="error">{{ errorArchivo }}</div>
+      <ul *ngIf="documentos.length > 0" class="file-list">
+        <li *ngFor="let doc of documentos">
+          {{ doc.name }} ({{ (doc.size / 1024 / 1024).toFixed(1) }} MB)
+          <button type="button" (click)="eliminarDocumento(doc)">✕</button>
+        </li>
+      </ul>
+    </div>
+
+    <button type="submit" class="btn-submit" [disabled]="enviando">
+      {{ enviando ? 'Enviando...' : 'Enviar proyecto' }}
+    </button>
+  </form>
+</div>
