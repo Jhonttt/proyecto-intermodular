@@ -118,7 +118,6 @@ class ProyectoControllerAdmin extends Controller {
 
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
-            'resumen' => 'required|string',
             'descripcion' => 'required|string',
             'ciclo' => 'required|string|max:255',
             'anio' => 'required|string|max:255',
@@ -134,7 +133,6 @@ class ProyectoControllerAdmin extends Controller {
         ]);
 
         $proyecto->nombre = $validated['nombre'];
-        $proyecto->resumen = $validated['resumen'];
         $proyecto->descripcion = $validated['descripcion'];
         $proyecto->ciclo = $validated['ciclo'];
         $proyecto->anio = $validated['anio'];
