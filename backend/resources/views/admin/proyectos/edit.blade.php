@@ -67,66 +67,36 @@
 
                     <option value="">Selecciona un ciclo</option>
 
-                    <option value="DAW 1°"
+                    <option value="DAW"
                         @selected(str_contains(old('ciclo', $proyecto->ciclo), 'DAW') && str_contains(old('ciclo', $proyecto->ciclo), '1'))>
-                        1° Desarrollo de Aplicaciones Web
+                        Desarrollo de Aplicaciones Web
                     </option>
 
-                    <option value="DAM 1°"
+                    <option value="DAM"
                         @selected(str_contains(old('ciclo', $proyecto->ciclo), 'DAM') && str_contains(old('ciclo', $proyecto->ciclo), '1'))>
-                        1° Desarrollo de Aplicaciones Multiplataforma
+                        Desarrollo de Aplicaciones Multiplataforma
                     </option>
 
-                    <option value="ASIR 1°"
+                    <option value="ASIR"
                         @selected(str_contains(old('ciclo', $proyecto->ciclo), 'ASIR') && str_contains(old('ciclo', $proyecto->ciclo), '1'))>
-                        1° Administración de Sistemas Informáticos en Red
+                        Administración de Sistemas Informáticos en Red
                     </option>
 
-                    <option value="AF 1°"
+                    <option value="AF"
                         @selected(str_contains(old('ciclo', $proyecto->ciclo), 'AF') && str_contains(old('ciclo', $proyecto->ciclo), '1'))>
-                        1° Administración y Finanzas
+                        Administración y Finanzas
                     </option>
 
-                    <option value="AD 1°"
+                    <option value="AD"
                         @selected(str_contains(old('ciclo', $proyecto->ciclo), 'AD') && str_contains(old('ciclo', $proyecto->ciclo), '1'))>
-                        1° Asistencia a la Dirección
+                        Asistencia a la Dirección
                     </option>
 
-                    <option value="AUT 1°"
+                    <option value="AUT"
                         @selected(str_contains(old('ciclo', $proyecto->ciclo), 'AUT') && str_contains(old('ciclo', $proyecto->ciclo), '1'))>
-                        1° Automoción
+                        Automoción
                     </option>
 
-                    <option value="DAW 2°"
-                        @selected(str_contains(old('ciclo', $proyecto->ciclo), 'DAW') && str_contains(old('ciclo', $proyecto->ciclo), '2'))>
-                        2° Desarrollo de Aplicaciones Web
-                    </option>
-
-
-                    <option value="DAM 2°"
-                        @selected(str_contains(old('ciclo', $proyecto->ciclo), 'DAM') && str_contains(old('ciclo', $proyecto->ciclo), '2'))>
-                        2° Desarrollo de Aplicaciones Multiplataforma
-                    </option>
-
-                    <option value="ASIR 2°"
-                        @selected(str_contains(old('ciclo', $proyecto->ciclo), 'ASIR') && str_contains(old('ciclo', $proyecto->ciclo), '2'))>
-                        2° Administración de Sistemas Informáticos en Red
-                    </option>
-
-                    <option value="AF 2°"
-                        @selected(str_contains(old('ciclo', $proyecto->ciclo), 'AF') && str_contains(old('ciclo', $proyecto->ciclo), '2'))>
-                        2° Administración y Finanzas
-                    </option>
-
-                    <option value="AD 2°"
-                        @selected(str_contains(old('ciclo', $proyecto->ciclo), 'AD') && str_contains(old('ciclo', $proyecto->ciclo), '2'))>
-                        2° Asistencia a la Dirección
-                    </option>
-
-                    <option value="AUT 2°"
-                        @selected(str_contains(old('ciclo', $proyecto->ciclo), 'AUT') && str_contains(old('ciclo', $proyecto->ciclo), '2'))>
-                        2° Automoción
-                    </option>
 
                 </select>
             </div>
