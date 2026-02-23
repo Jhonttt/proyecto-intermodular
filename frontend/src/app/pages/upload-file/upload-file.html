@@ -59,18 +59,12 @@
         <label for="ciclo">Ciclo</label>
         <select id="ciclo" [(ngModel)]="proyecto.ciclo" name="ciclo" required #ciclo="ngModel">
           <option value="" disabled selected hidden>Selecciona...</option>
-          <option value="DAW 1°">1° Desarrollo de Aplicaciones Web</option>
-          <option value="DAM 1°">1° Desarrollo de Aplicaciones Multiplataforma</option>
-          <option value="ASIR 1°">1° Administración de Sistemas Informáticos en Red</option>
-          <option value="AF 1°">1° Administración y Finanzas</option>
-          <option value="AD 1°">1° Asistencia a la Dirección</option>
-          <option value="AUT 1°">1° Automoción</option>
-          <option value="DAW 2°">2° Desarrollo de Aplicaciones Web</option>
-          <option value="DAM 2°">2° Desarrollo de Aplicaciones Multiplataforma</option>
-          <option value="ASIR 2°">2° Administración de Sistemas Informáticos en Red</option>
-          <option value="AF 2°">2° Administración y Finanzas</option>
-          <option value="AD 2°">2° Asistencia a la Dirección</option>
-          <option value="AUT 2°">2° Automoción</option>
+          <option value="DAW">1° Desarrollo de Aplicaciones Web</option>
+          <option value="DAM">1° Desarrollo de Aplicaciones Multiplataforma</option>
+          <option value="ASIR">1° Administración de Sistemas Informáticos en Red</option>
+          <option value="AF">1° Administración y Finanzas</option>
+          <option value="AD">1° Asistencia a la Dirección</option>
+          <option value="AUT">1° Automoción</option>
         </select>
         <div *ngIf="ciclo.invalid && ciclo.touched" class="error">Selecciona un ciclo.</div>
       </div>
