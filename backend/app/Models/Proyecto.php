@@ -54,7 +54,7 @@ class Proyecto extends Model {
         $path = ltrim($this->video_url, '/');
 
         if (!str_starts_with($path, 'proyectos/')) {
-            $path = 'proyectos/videos/' . $path;
+            $path = 'proyectos/' . $path;
         }
 
         return asset('storage/' . $path);

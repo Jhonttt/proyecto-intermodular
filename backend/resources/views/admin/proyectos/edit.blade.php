@@ -1,4 +1,9 @@
-@extends('layouts.admin')
+@extends('layouts.app')
+
+@push('styles')
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+<link rel="stylesheet" href="{{ asset('css/details.css') }}">
+@endpush
 
 @section('content')
 <div class="proyectos-form-page">
@@ -12,56 +17,46 @@
     </div>
 
     {{-- Errores --}}
-        @if ($errors->any())
-        <div class="alert-danger">
-            <div class="alert-danger-header">
-                <span class="material-icons" style="font-size: 18px; color: var(--color-danger);"></span>
-                <strong>Corrige los siguientes errores:</strong>
-            </div>
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    @if ($errors->any())
+    <div class="alert-danger">
+        <div class="alert-danger-header">
+            <span class="material-icons" style="font-size: 18px; color: var(--color-danger);"></span>
+            <strong>Corrige los siguientes errores:</strong>
         </div>
-        @endif
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     {{-- Formulario --}}
     <div class="proyectos-form">
-        <form method="POST" 
-              action="{{ route('admin.proyectos.update', $proyecto->id) }}"
-              enctype="multipart/form-data">
-              @csrf
+        <form method="POST"
+            action="{{ route('admin.proyectos.update', $proyecto->id) }}"
+            enctype="multipart/form-data">
+            @csrf
             @method('PUT')
 
             {{-- Nombre --}}
             <div class="form-field mb-3">
                 <label class="form-label d-block">Nombre</label>
                 <input type="text"
-                       name="nombre"
-                       style="width: 600px"
-                       maxlength="100"
-                       value="{{ old('nombre', $proyecto->nombre) }}">
-            </div>
-
-            {{-- Resumen --}}
-            <div class="form-field mb-3">
-                <label class="form-label d-block">Resumen</label>
-                <textarea name="resumen"
-                          style="width: 600px"
-                          rows="1"
-                >{{ old('resumen', $proyecto->resumen) }}</textarea>
+                    name="nombre"
+                    style="width: 600px"
+                    maxlength="100"
+                    value="{{ old('nombre', $proyecto->nombre) }}">
             </div>
 
             {{-- Descripción --}}
             <div class="form-field mb-3">
                 <label class="form-label d-block">Descripción</label>
                 <textarea name="descripcion"
-                          style="width: 600px"
-                          rows="5"
-                          minlength="25" 
-                          maxlength="200"
-                >{{ old('descripcion', $proyecto->descripcion) }}</textarea>
+                    style="width: 600px; resize: vertical; max-height: 200px;"
+                    rows="5"
+                    minlength="25"
+                    maxlength="200">{{ old('descripcion', $proyecto->descripcion) }}</textarea>
             </div>
 
             {{-- Ciclo --}}
@@ -153,10 +148,10 @@
                 <label class="form-label d-block">Alumnos</label>
                 <div id="alumnos-wrapper" class="d-flex gap-1 flex-wrap">
                     @foreach($proyecto->alumnos as $index => $alumno)
-                        <input type="text"
-                            class="mb-1"
-                            name="alumnos[]"
-                            value="{{ $alumno }}">
+                    <input type="text"
+                        class="mb-1"
+                        name="alumnos[]"
+                        value="{{ $alumno }}">
                     @endforeach
                 </div>
 
@@ -176,12 +171,14 @@
                 </script>
             </div>
 
-            {{-- Video --}}
+            {{-- Vídeo --}}
             <div class="mb-3">
                 <label class="form-label d-block">Cambiar vídeo del proyecto</label>
-                <input type="file"
-                    name="video"
-                    accept="video/*">
+                <label class="dropzone-video" for="input-video">
+                    <span class="dropzone__icon">🎬</span>
+                    <span><span class="dropzone__link">Selecciona un vídeo</span> o arrástralo aquí</span>
+                    <input id="input-video" type="file" name="video" accept="video/*" style="display:none">
+                </label>
             </div>
 
             {{-- Tags --}}
@@ -189,10 +186,10 @@
                 <label class="form-label d-block">Tags</label>
                 <div id="tags-wrapper" class="d-flex gap-1 flex-wrap">
                     @foreach($proyecto->tags as $index => $tag)
-                        <input type="text"
-                            name="tags[]"
-                            class="mb-1"
-                            value="{{ $tag }}">
+                    <input type="text"
+                        name="tags[]"
+                        class="mb-1"
+                        value="{{ $tag }}">
                     @endforeach
                 </div>
 
@@ -221,15 +218,15 @@
 
                 <ul class="list-group" id="lista-documentos">
                     @foreach($proyecto->documentos as $doc)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>{{ basename($doc) }}</span>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ basename($doc) }}</span>
 
-                            <button type="button"
-                                    class="btn btn-sm btn-outline-danger"
-                                    onclick="marcarParaBorrar(this, '{{ $doc }}')">
-                                🗑️
-                            </button>
-                        </li>
+                        <button type="button"
+                            class="btn btn-sm btn-outline-danger"
+                            onclick="marcarParaBorrar(this, '{{ $doc }}')">
+                            🗑️
+                        </button>
+                    </li>
                     @endforeach
                 </ul>
 
@@ -241,9 +238,11 @@
 
             <div class="mb-3">
                 <label class="form-label d-block">Añadir documentos</label>
-                <input type="file"
-                    name="documentos[]"
-                    multiple>
+                <label class="dropzone-docs" for="input-docs">
+                    <span class="dropzone__icon">📄</span>
+                    <span><span class="dropzone__link">Selecciona los PDFs</span> o arrástralos aquí</span>
+                    <input id="input-docs" type="file" name="documentos[]" multiple style="display:none">
+                </label>
             </div>
 
             <script>
