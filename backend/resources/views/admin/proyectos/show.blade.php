@@ -93,22 +93,23 @@
             @endif
 
             {{-- Observaciones --}}
-            <section class="section">
-                <h3 class="section__title"><b>Observaciones</b></h3>
-                @if($proyecto->checked && $proyecto->observaciones && $proyecto->observaciones !== 'null')
-                    <div class="alert alert-info">
-                        <p class="text" style="white-space: pre-wrap">{{ $proyecto->observaciones }}</p>
-                    </div>
-                @else
-                    {{ $proyecto->checked ? 'disabled' : '' }}
-                    <p class="p-3 rounded" style="background-color: #cff4fc;">
-                        {{ old('observaciones', $proyecto->observaciones !== 'null' ? $proyecto->observaciones : '') }}
-                    </p>
-                    @if($proyecto->checked)
-                        <p class="form-hint">Para modificar las observaciones, cambia el proyecto a pendiente.</p>
-                    @endif
-                @endif
-            </section>
+          <section class="section">
+    <h3 class="section__title"><b>Observaciones</b></h3>
+
+    <textarea
+        id="observaciones"
+        class="form-control"
+        style="background-color: #cff4fc; white-space: pre-wrap;"
+        rows="3"
+        {{ $proyecto->checked ? 'disabled' : '' }}
+    >{{ old('observaciones', $proyecto->observaciones ?? '') }}</textarea>
+
+    @if($proyecto->checked)
+        <div class="form-text text-muted mt-1">
+            Para modificar las observaciones, cambia el proyecto a pendiente.
+        </div>
+    @endif
+</section>
 
             <hr class="divider" />
 
@@ -175,40 +176,42 @@
         </article>
     </div>
 
-{{-- Modal confirmación eliminar proyecto --}}
-<div id="modal-eliminar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
-    <div style="background:#fff; border-radius:8px; padding:24px; max-width:400px; width:90%; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
-        <h3 style="margin-bottom:8px;">Eliminar proyecto</h3>
-        <p style="color:#6A737B; margin-bottom:24px;">
-            ¿Seguro que quieres eliminar <strong id="modal-nombre"></strong>? Esta acción no se puede deshacer.
-        </p>
-        <div style="display:flex; justify-content:flex-end; gap:8px;">
-            <button class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-            <form id="modal-form" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-            </form>
+    {{-- Modal confirmación eliminar proyecto --}}
+    <div id="modal-eliminar"
+        style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
+        <div
+            style="background:#fff; border-radius:8px; padding:24px; max-width:400px; width:90%; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+            <h3 style="margin-bottom:8px;">Eliminar proyecto</h3>
+            <p style="color:#6A737B; margin-bottom:24px;">
+                ¿Seguro que quieres eliminar <strong id="modal-nombre"></strong>? Esta acción no se puede deshacer.
+            </p>
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                <form id="modal-form" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    function abrirModal(id, nombre) {
-        document.getElementById('modal-nombre').textContent = nombre;
-        document.getElementById('modal-form').action = '/admin/proyectos/' + id;
-        const modal = document.getElementById('modal-eliminar');
-        modal.style.display = 'flex';
-    }
+    <script>
+        function abrirModal(id, nombre) {
+            document.getElementById('modal-nombre').textContent = nombre;
+            document.getElementById('modal-form').action = '/admin/proyectos/' + id;
+            const modal = document.getElementById('modal-eliminar');
+            modal.style.display = 'flex';
+        }
 
-    function cerrarModal() {
-        document.getElementById('modal-eliminar').style.display = 'none';
-    }
+        function cerrarModal() {
+            document.getElementById('modal-eliminar').style.display = 'none';
+        }
 
-    document.getElementById('modal-eliminar').addEventListener('click', function(e) {
-        if (e.target === this) cerrarModal();
-    });
-</script>
+        document.getElementById('modal-eliminar').addEventListener('click', function (e) {
+            if (e.target === this) cerrarModal();
+        });
+    </script>
     <script>
         function validarProyecto() {
             const textarea = document.getElementById('observaciones');
