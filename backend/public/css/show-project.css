@@ -1,0 +1,241 @@
+/* ==============================================
+   proyecto-show.css
+   Estilos específicos de la vista show del proyecto.
+   Requiere: styles.css (global) cargado previamente.
+================================================ */
+
+/* Página */
+.details {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.details-card {
+  padding: 12px 14px;
+}
+
+/* Header de la card */
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.card__header > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.card__title {
+  margin: 0 0 6px 0;
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.card__header .text {
+  margin: 0 0 12px 0;
+}
+
+/* Secciones */
+.section {
+  margin-top: 12px;
+}
+
+.section__title {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.section--curso {
+  margin-top: 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.section--curso .text {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  margin: 0;
+}
+
+/* Texto genérico */
+.text {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Badge de estado */
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+.estado-badge--validado {
+  background-color: #d4edda;
+  color: #1a5c2a;
+  border: 1px solid #a3d9ae;
+}
+
+.estado-badge--pendiente {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffc107;
+}
+
+/* Alert info (no está en el global) */
+.alert-info {
+  background-color: var(--color-note);
+  border: 1px solid #a0d0d6;
+  color: var(--color-text-main);
+}
+
+/* Lista de documentos */
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #dee2e6;
+  border-radius: var(--radius-sm);
+}
+
+.list__item {
+  padding: 10px 16px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.list__item:last-child {
+  border-bottom: none;
+}
+
+.list__item a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.list__item a:hover {
+  text-decoration: underline;
+}
+
+/* Tags */
+.tag-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-tag {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-medium);
+  padding: 6px 12px;
+  border-radius: 50px;
+  background-color: #f1f3f5;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  transition: all 0.2s ease-in-out;
+  cursor: default;
+}
+
+.tech-tag:hover {
+  background-color: #198754;
+  color: white;
+  border-color: #198754;
+  transform: translateY(-2px);
+}
+
+/* Video */
+.video-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.video-player {
+  width: 100%;
+  max-width: 640px;      /* 👈 Tamaño ideal */
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  background: #000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* 👈 más elegante */
+}
+
+/* Metadatos */
+.meta {
+  margin: 14px 0 0;
+}
+
+.meta__row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.meta__row dt {
+  opacity: 0.7;
+}
+
+.meta__row dd {
+  margin: 0;
+}
+
+/* Separador */
+.divider {
+  margin: 12px 0;
+  border: 0;
+  border-top: 1px solid #615e5e;
+}
+
+/* Footer de acciones */
+.details-card footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.details-card footer form {
+  margin: 0;
+  padding: 0;
+  display: contents;
+}
+
+/* Textarea observaciones */
+.observaciones-textarea {
+  width: 100%;
+  padding: 8px;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-sm);
+  border: var(--border-default);
+  background-color: #E4EEF7;
+  resize: vertical;
+}
+
+.observaciones-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.form-hint {
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+/* Utilidades puntuales */
+.text-center { text-align: center; }
+.mb-0 { margin-bottom: 0; }
+.mt-0 { margin-top: 0; }

@@ -3,7 +3,6 @@
 # ============================
 
 backend/vendor/
-backend/storage/
 backend/.env
 
 # Archivos comunes de Laravel
@@ -13,8 +12,6 @@ backend/.phpactor.json
 backend/Homestead.json
 backend/Homestead.yaml
 backend/public/storage
-backend/storage/*.key
-backend/storage/pail
 
 # ============================
 #   ANGULAR (frontend)
@@ -77,3 +74,10 @@ testem.log
 __screenshots__/
 .sass-cache/
 .history/
+
+/storage
+/storage/*
+/storage/framework
+/storage/framework/*
+/storage/logs
+/storage/logs/*
