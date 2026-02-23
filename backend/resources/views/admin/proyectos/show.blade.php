@@ -20,31 +20,30 @@
 
     <!-- Curso -->
     <div class="mb-3">
-        <strong>Curso:</strong> {{ $proyecto->curso }}
+        <strong>Curso:</strong> {{ $proyecto->ciclo }}
     </div>
 
     <!-- Año -->
     <div class="mb-3">
-        <strong>Año:</strong> 
-        {{ ($proyecto->created_at->year - 1) }}-{{ $proyecto->created_at->year % 100 }}
+        <strong>Año:</strong> {{ $proyecto->anio }}
     </div>
 
     <!-- Alumnos -->
     <div class="mb-3">
         <strong>Alumnos:</strong>
+        @foreach($proyecto->alumnos as $alumno)
+            {{ $alumno }}@if(!$loop->last), @endif
+        @endforeach
     </div>
 
     <!-- Video del proyecto -->
-    @if($proyecto->video_url)
+    @if($proyecto->video_public_url)
         <div class="mb-4">
             <h5>Vídeo del proyecto</h5>
-            <div class="ratio ratio-16x9">
-                <!-- Convertir la URL genérica a formato embed  (Las URLs watch?v= son bloqueadas por YouTube) -->
-                <iframe 
-                    src="{{ str_replace('watch?v=', 'embed/', $proyecto->video_url) }}" 
-                    allowfullscreen>
-                </iframe>
-            </div>
+            <video class="w-100" controls preload="metadata">
+                <source src="{{ $proyecto->video_public_url }}" type="video/mp4">
+                Tu navegador no soporta vídeo HTML5.
+            </video>
         </div>
     @endif
 
@@ -59,20 +58,38 @@
     @endif
 
     <!-- Documentos adjuntos -->
-    @if(!empty($proyecto->documentos))
+    @if($proyecto->documentos_public)
         <div class="mb-4">
             <strong>Documentos adjuntos:</strong>
             <ul class="list-group mt-2">
-                @foreach($proyecto->documentos as $documento)
+                @foreach($proyecto->documentos_public as $doc)
                     <li class="list-group-item">
-                        <a href="{{ asset('storage/' . $documento) }}" download>
-                            {{ basename($documento) }}
+                        <a href="{{ $doc['url'] }}" target="_blank" download>
+                            {{ $doc['name'] }}
                         </a>
                     </li>
                 @endforeach
             </ul>
         </div>
     @endif
+
+    <div class="mb-3">
+        <label class="form-label">Observaciones</label>
+
+        <textarea
+            id="observaciones"
+            class="form-control"
+            style="background-color: #E4EEF7"
+            rows="3"
+            {{ $proyecto->checked ? 'disabled' : '' }}
+        >{{ old('observaciones', $proyecto->observaciones) }}</textarea>
+
+        @if($proyecto->checked)
+            <div class="form-text text-muted">
+                Para modificar las observaciones, cambia el proyecto a pendiente.
+            </div>
+        @endif
+    </div>
 
     <!-- Estado del proyecto -->
     <div class="mt-4">
@@ -87,17 +104,34 @@
     <!-- Acciones -->
     <div class="mt-3 d-flex gap-2 justify-content-center">
         @if(!$proyecto->checked)
-            <form method="POST" action="{{ route('admin.proyectos.check', $proyecto->id) }}">
+            <form id="form-validar" method="POST"
+                  action="{{ route('admin.proyectos.check', $proyecto->id) }}">
                 @csrf
                 @method('PATCH')
-                <button class="btn btn-success">
+
+                <input type="hidden" name="observaciones" id="obs-hidden">
+
+                <button type="button" class="btn btn-success" onclick="validarProyecto()">
                     Validar
                 </button>
             </form>
 
-            <!-- Botón de modificar: falta invocar la acción con la ruta creada  -->
-            <a class="btn btn-primary">
-            Modificar
+            <script>
+            function validarProyecto() {
+                const textarea = document.getElementById('observaciones');
+                const hidden = document.getElementById('obs-hidden');
+
+                if (textarea) {
+                    hidden.value = textarea.value;
+                }
+
+                document.getElementById('form-validar').submit();
+            }
+            </script>
+
+            <a href="{{ route('admin.proyectos.edit', $proyecto->id) }}"
+               class="btn btn-primary">
+                Editar
             </a>
 
             <form method="POST" action="{{ route('admin.proyectos.destroy', $proyecto->id) }}"

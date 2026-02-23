@@ -39,7 +39,10 @@ class Proyecto extends Model {
     }
 
     //Para enlaces en JSON como "video_public_url"
-    protected $appends = ['video_public_url'];
+    protected $appends = [
+        'video_public_url',
+        'documentos_public'
+    ];
 
     public function getVideoPublicUrlAttribute(): ?string {
         if (!$this->video_url) return null;
@@ -51,9 +54,28 @@ class Proyecto extends Model {
         $path = ltrim($this->video_url, '/');
 
         if (!str_starts_with($path, 'proyectos/')) {
-            $path = 'proyectos/' . $path;
+            $path = 'proyectos/videos/' . $path;
         }
 
         return asset('storage/' . $path);
+    }
+
+    public function getDocumentosPublicAttribute(): array {
+        if (empty($this->documentos) || !is_array($this->documentos)) {
+            return [];
+        }
+
+        return collect($this->documentos)->map(function ($doc) {
+            $path = ltrim($doc, '/');
+
+            if (!str_starts_with($path, 'proyectos/')) {
+                $path = 'proyectos/documentos/' . $path;
+            }
+
+            return [
+                'name' => basename($path),
+                'url'  => asset('storage/' . $path),
+            ];
+        })->toArray();
     }
 }
